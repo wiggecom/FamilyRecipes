@@ -1,22 +1,101 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem gold, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 0px;
+    background-color: rgb(50,50,50) !important;
 }
+
+a:link,
+a:visited,
+a:active {
+    text-decoration: none;
+    color: rgba(255, 255, 128, 0.6);
+}
+
+a:hover {
+    color: rgba(255, 255, 128, 0.9);
+}
+
+p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navcolors a:link {
+    color: rgba(255, 255, 128, 0.7) !important;
+}
+
+.navcolors a:hover a:active {
+    color: rgba(255, 255, 128, 1) !important;
+    text-shadow: rgba(0,0,0,0.9) 3px 7px 5px !important;
+}
+
+.navtextyellow {
+    color: rgba(255, 255, 128, 0.7) !important;
+}
+
+.navtextyellow {
+    color: rgba(255, 255, 128, 1) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+/* *START* Fixing ugly nav-bar by cloning bootstrap parts and rebuilding to new class */
+.f-nav-link {
+    display: block;
+    color: rgba(255, 255, 192, 1);
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: 800;
+    margin-bottom: -1px;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    background: none;
+    border: 0;
+    border-radius: 0.25rem;
+    width: 100%;
+    flex: 1 1 auto;
+    text-align: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+    .f-nav-link:hover, .f-nav-link:focus {
+        color: rgba(255, 255, 192, 0.7);
+        text-shadow: rgba(0,0,0,0.6) 3px 7px 5px, rgba(255,255,192,0.8) 0px 0px 7px !important;
+    }
+
+@media (prefers-reduced-motion: reduce) {
+    .f-nav-link {
+        transition: none;
+    }
+}
+
+.navbar-branded {
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    font-weight: 1000;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* *END* Fixing ugly nav-bar by cloning bootstrap parts and reconstructing to new class */
+
