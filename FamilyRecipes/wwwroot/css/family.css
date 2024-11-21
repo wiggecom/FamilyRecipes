@@ -1,0 +1,80 @@
+﻿/* Variables for CSS */
+:root {
+    --bgplaincolor: 10, 0, 24;
+    --bgfirstcolor: 0, 66, 66;
+    --bgsecondcolor: 66, 0, 66;
+    --navfirstcolor: 0, 99, 99;
+    --navsecondcolor: 99, 0, 99;
+    --bgfadecolor: 0, 0, 0;
+    --hotpink: 255, 0, 128;
+    --bubblegumpink: 255, 128, 192;
+    --electricblue: 128, 223, 255;
+    --goldycolor: 255, 172, 0;
+    --lemonyellow: 213, 254, 44;
+    --darkxmas: 167, 5, 0;
+}
+
+.lek{
+    color: rgb(167, 5, 0)
+}
+
+/* using variables ensures conformity since we only need to change one value */
+/* var(--bgplaincolor) => 10, 0, 24 */
+/* rgb(var(--bgplaincolor)); => rgb(10, 0, 24);*/
+
+.nav-bg {
+    background-color: rgb(var(--bgplaincolor)); /* fallback color */
+    background: linear-gradient(5deg, rgba(var(--navfirstcolor),1) 0%, rgba(var(--navsecondcolor),1) 100%);
+    /* linear-gradient gives a fade between colors from start to finish */
+    /* degrees sets rotation */
+}
+
+.footer-bg {
+    background-color: rgb(var(--bgplaincolor)); /* fallback color */
+    background: linear-gradient(85deg, rgba(var(--navfirstcolor),1) 0%, rgba(var(--navsecondcolor),1) 100%);
+}
+
+.main-bg {
+    background-color: rgb(var(--bgplaincolor)); /* fallback color */
+    background: linear-gradient(135deg, rgba(var(--bgfirstcolor),1) 0%, rgba(var(--bgsecondcolor),1) 100%);
+}
+
+.t-goldy {
+    color: rgba(var(--goldycolor),1) !important; /* !important is selected over not !important */
+    text-shadow: rgba(255,128,192,0.9) 0px 0px 15px !important; 
+    /* text shadow sets shadows and glow-effects, they can be stacked with "," between */
+    /* rgb() uses Red Green Blue values, rgba() adds decimal value for transparency 0-1 (1 is opaque) */
+}
+
+.t-lemony {
+    color: rgba(var(--lemonyellow),1) !important;
+    text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
+}
+
+.t-pinky {
+    color: rgba(var(--bubblegumpink),1) !important;
+    text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
+}
+
+.t-neonpink {
+    color: rgb(var(--hotpink)) !important;
+    -webkit-text-stroke-color: rgba(255,255,255,0.4) !important;
+    -webkit-text-stroke-width: 3px !important;
+    text-shadow: rgba(255,128,192,1) 0px 0px 25px !important;
+}
+
+.t-gld {
+    color: rgb(var(--goldycolor)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.f-h1{
+    font-size: 3em;
+    font-weight: 1000; 
+    /* font-weight sets font from thin to fat, 500 is normal, 0 is thin, 1000 is fat */
+}
+
+.f-p {
+    font-size: 1.2em;
+    font-weight: 600;
+}
