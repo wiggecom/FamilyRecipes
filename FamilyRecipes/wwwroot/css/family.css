@@ -33,8 +33,11 @@
 .footer-bg {
     background-color: rgba(255,128,192,0.8);
     background: linear-gradient(15deg, rgba(var(--navsecondcolor),1) 0%, rgba(var(--goldycolor),0.1) 50%, rgba(var(--navfirstcolor),1) 100%);
+    position: fixed;
+    top: calc( 100vh - 60px );
+    bottom: 0px;
     animation-name: footerfx;
-    animation-duration: 8s;
+    animation-duration: 7.7s;
     animation-iteration-count: infinite;
     animation-direction: normal;
     transition-timing-function: ease-in-out;
@@ -52,6 +55,41 @@
     }
     100% {
         opacity: 1;
+    }
+}
+
+.footer-bg-layer {
+    background-color: rgba(255,128,192,0.8);
+    /*background: linear-gradient(-150deg, transparent 0%, rgba(var(--goldycolor),0.2) 50%, transparent 100%);*/
+    background: linear-gradient(-150deg, transparent 0%, rgb(0, 181, 103, 0.50) 50%, transparent 100%);
+    position: fixed;
+    top: calc( 100vh - 60px );
+    bottom: 0px;
+    animation-name: footerlayer;
+    animation-duration: 14.2s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    transition-timing-function: ease-in-out;
+    font-weight: 1000;
+    width: 100%;
+    z-index: 15;
+}
+
+@keyframes footerlayer {
+    0% {
+        opacity: 0;
+    }
+
+    22% {
+        opacity: 1;
+    }
+
+    51% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
     }
 }
 
@@ -138,4 +176,8 @@
 
 .maxw90{
     max-width: 90vw !important;
+}
+
+.index100{
+    z-index: 100;
 }
