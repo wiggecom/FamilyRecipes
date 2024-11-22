@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FamilyRecipes.Models;
+using FamilyRecipes.Helpers;
 
 namespace FamilyRecipes.Pages
 {
@@ -12,9 +13,21 @@ namespace FamilyRecipes.Pages
         //{
         //    _logger = logger;
         //}
+        private readonly Data.ApplicationDbContext _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public IndexModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        {
+            _context = context;
+            this.webHostEnvironment = webHostEnvironment;
+        }
 
         [BindProperty] public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
-        public void OnGet()
+        [BindProperty] public List<Category> Categories { get; set; } = new List<Category>();
+        [BindProperty] public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+        [BindProperty] public Recipe MyRecipe { get; set; } = new Recipe();
+        public string success = "Boo!";
+        public async void OnGet()
         {
             foreach (var unit in Units)
             {
@@ -23,6 +36,17 @@ namespace FamilyRecipes.Pages
                 if (!unit.IsMetrical) System.Diagnostics.Debug.WriteLine(" is an imperial measure");
             }
 
+            if (!_context.Categories.Any())
+            {
+                var seeds = new DbSeeds(_context);
+                await seeds.SeedingDataAsync();
+            }
+
+            
+            Categories = _context.Categories.ToList();
+            MyRecipe = _context.Recipes.FirstOrDefault();
+            Ingredients = _context.Ingredients.ToList();
+            if (MyRecipe != null) { success = "Great Succses!"; }
 
         }
     }
