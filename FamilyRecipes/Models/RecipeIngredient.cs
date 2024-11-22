@@ -10,13 +10,22 @@
         public int Amount { get; set; }
         public int Calories { get; set; }
 
-        public RecipeIngredient(Ingredient ingredient, string unit, bool isMetrical, int amount)
+        //public RecipeIngredient(Ingredient ingredient, string unit, bool isMetrical, int amount)
+        //{
+        //    Ingredient = ingredient;
+        //    Unit = unit;
+        //    IsMetrical = isMetrical;
+        //    Amount = amount;
+        //    Calories = CalculateCalories(amount, ingredient.Calories);
+        //}
+
+        public RecipeIngredient()
         {
-            Ingredient = ingredient;
-            Unit = unit;
-            IsMetrical = isMetrical;
-            Amount = amount;
-            Calories = CalculateCalories(amount, ingredient.Calories);
+            //Ingredient = ingredient;
+            //Unit = unit;
+            //IsMetrical = isMetrical;
+            //Amount = amount;
+            //Calories = CalculateCalories(amount, ingredient.Calories);
         }
 
         public static int CalculateCalories(int calcAmount, int calcCalories)
