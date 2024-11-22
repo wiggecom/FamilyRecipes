@@ -8,29 +8,16 @@
         public string Unit { get; set; }
         public bool IsMetrical { get; set; }
         public int Amount { get; set; }
-        public int Calories { get; set; }
-
-        //public RecipeIngredient(Ingredient ingredient, string unit, bool isMetrical, int amount)
-        //{
-        //    Ingredient = ingredient;
-        //    Unit = unit;
-        //    IsMetrical = isMetrical;
-        //    Amount = amount;
-        //    Calories = CalculateCalories(amount, ingredient.Calories);
-        //}
+        public int TotalCalories { get; set; }
 
         public RecipeIngredient()
         {
-            //Ingredient = ingredient;
-            //Unit = unit;
-            //IsMetrical = isMetrical;
-            //Amount = amount;
-            //Calories = CalculateCalories(amount, ingredient.Calories);
+
         }
 
-        public static int CalculateCalories(int calcAmount, int calcCalories)
+        public static int CalculateTotalCalories(int calcAmount, int calcIngredientCalories)
         {
-            if (calcCalories > 0) return (calcCalories / 100) * calcAmount; // Early return
+            if (calcIngredientCalories > 0) return (calcIngredientCalories / 100) * calcAmount; // Early return
             return 0;
         }
     }
