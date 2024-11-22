@@ -5,7 +5,7 @@
         // RecipeIngredient: [Ingredient], Unit, Amount, Calories
         public int Id { get; set; }
         public Ingredient Ingredient { get; set; }
-        public string Unit {  get; set; }
+        public string Unit { get; set; }
         public bool IsMetrical { get; set; }
         public int Amount { get; set; }
         public int Calories { get; set; }
