@@ -3,14 +3,18 @@
 @{
     ViewData["Title"] = "Home page";
     List<Models.Unit> units = Model.Units;
-    int numberOfUnits = 12;
+    int numberOfUnits = 999;
     List<Models.Unit> firstUnits = new List<Models.Unit>();
     if (units.Count > numberOfUnits)
     {
         firstUnits = units.Take(numberOfUnits).ToList();
     }
-
+    else
+    {
+        firstUnits = units.ToList();
+    }
 }
+
 <div class="scrollinside max80 footerspacer">
     <div class="text-center">
         <div class="f-h1 t-neonpink">t-neonpink f-h1</div>
