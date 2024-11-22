@@ -16,5 +16,7 @@ namespace FamilyRecipes.Data
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<UserRating> UserRatings { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<FamilyUser> FamilyUsers { get; set; }
     }
 }
