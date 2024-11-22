@@ -135,3 +135,7 @@
 .fw1000{
     font-weight: 1000;
 }
+
+.maxw90{
+    max-width: 90vw !important;
+}
