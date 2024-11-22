@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public string User { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string Category { get; set; }
+        public string Category { get; set; } // Add Category-object
         public int TimeRequired { get; set; }
         public string Description { get; set; }
         public List<string> Steps { get; set; }
