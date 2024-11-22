@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="~/css/family.css" asp-append-version="true" />
 
 </head>
-<body class="main-bg">
+<body class="main-bg max80">
     <header class="nav-bg">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light nav-bg border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light nav-bg border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-branded" asp-area="" asp-page="/Index">FamilyRecipes</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -34,14 +34,24 @@
             </div>
         </nav>
     </header>
-    <div class="container footerspacer">
-        <main role="main" class="pb-3">
+    <div class="container footerspacer maxw90">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer footer-bg t-lemony">
-        <div class="container">
+    <footer class="border-top footer footer-bg-container t-lemony">
+        <div class="footer-bg">
+            <div class="container">
+                &nbsp;
+            </div>
+        </div>
+        <div class="footer-bg-layer">
+            <div class="container">
+                &nbsp;
+            </div>
+        </div>
+        <div class="container t-pinky index100 text-center fw1000">
             &copy; 2024 - FamilyRecipes
         </div>
     </footer>

@@ -2,20 +2,40 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    List<Models.Unit> Units = Model.Units;
-    string unitOrigin = "";
+    List<Models.Unit> units = Model.Units;
+    int numberOfUnits = 999;
+    List<Models.Unit> firstUnits = new List<Models.Unit>();
+    if (units.Count > numberOfUnits)
+    {
+        firstUnits = units.Take(numberOfUnits).ToList();
+    }
+    else
+    {
+        firstUnits = units.ToList();
+    }
 }
 
-<div class="text-center">
-    <div class="f-h1 t-neonpink">t-neonpink f-h1</div>
+<div class="scrollinside max80 footerspacer">
+    <div class="text-center">
+        <br />
+        <div class="f-h1 t-neonpink">Family Recipes</div>
+        <br />
+        @foreach (Models.Unit u in firstUnits)
+        {
+            if (u.IsMetrical)
+            {
+                <p class="f-p t-gld">The unit @u.Name is awesome! It's Metrical!</p>
+            }
+            if (!u.IsMetrical)
+            {
+                <p class="f-p t-darkxmas">The unit @u.Name is not awesome!</p>
+            }
+        }
+        <p class="t-pinky">Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    <div class="text-center f-h1 t-neonpink">t-neonpink f-h1</div>
+    <div class="text-center t-goldy f-h1">f-h1 t-goldy</div>
+    <div class="text-center t-pinky f-h1">f-h1 t-pinky</div>
+    <div class="text-center f-p t-gld">f-p t-gld</div>
     <br />
-    @foreach(Models.Unit u in Units)
-    {
-        if (u.IsMetrical){ <p class="f-p t-gld">The unit @u.Name is awesome! It's Metrical!</p> }
-        if (!u.IsMetrical){<p class="f-p t-gld">The unit @u.Name is not awesome!</p>}
-    }
-    <p class="t-pinky">Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-<div class="text-center t-goldy f-h1">f-h1 t-goldy</div>
-<div class="text-center t-pinky f-h1">f-h1 t-pinky</div>
-<div class="text-center f-p t-gld">f-p t-gld</div>

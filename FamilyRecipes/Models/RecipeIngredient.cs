@@ -4,33 +4,30 @@
     {
         // RecipeIngredient: [Ingredient], Unit, Amount, Calories
         public int Id { get; set; }
+        public int RecipeId { get; set; }
         public Ingredient Ingredient { get; set; }
-        public string Unit {  get; set; }
+        public int IngredientId { get; set; }
+        public Unit Unit { get; set; }
+        public int UnitId { get; set; }
         public bool IsMetrical { get; set; }
         public int Amount { get; set; }
-        public int Calories { get; set; }
-
-        //public RecipeIngredient(Ingredient ingredient, string unit, bool isMetrical, int amount)
-        //{
-        //    Ingredient = ingredient;
-        //    Unit = unit;
-        //    IsMetrical = isMetrical;
-        //    Amount = amount;
-        //    Calories = CalculateCalories(amount, ingredient.Calories);
-        //}
+        public int TotalCalories { get; set; }
 
         public RecipeIngredient()
         {
-            //Ingredient = ingredient;
-            //Unit = unit;
-            //IsMetrical = isMetrical;
-            //Amount = amount;
-            //Calories = CalculateCalories(amount, ingredient.Calories);
+
         }
 
-        public static int CalculateCalories(int calcAmount, int calcCalories)
+        public static int CalculateTotalCalories(int calcAmount, int calcIngredientCalories)
         {
-            if (calcCalories > 0) return (calcCalories / 100) * calcAmount; // Early return
+            float ingredientCaloriesFloat = (float)calcIngredientCalories/100;
+            //if (calcIngredientCalories > 0) return (int)Math.Round((ingredientCaloriesFloat * calcAmount),0); // Early return
+            if (calcIngredientCalories > 0) 
+            { 
+                int myNum = (int)Math.Round((ingredientCaloriesFloat * calcAmount), 0); // Early return
+
+                return myNum;
+            }
             return 0;
         }
     }
