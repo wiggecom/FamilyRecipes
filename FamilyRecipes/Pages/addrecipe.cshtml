@@ -1,0 +1,34 @@
+﻿@page
+@model FamilyRecipes.Pages.addrecipeModel
+@{
+    ViewData["Title"] = "Home page";
+    List<Models.Unit> units = Model.Units;
+    int numberOfUnits = 999;
+    List<Models.Unit> firstUnits = new List<Models.Unit>();
+    Models.Recipe CurrentRecipe = Model.MyRecipe;
+    if (units.Count > numberOfUnits)
+    {
+        firstUnits = units.Take(numberOfUnits).ToList();
+    }
+    else
+    {
+        firstUnits = units.ToList();
+    }
+}
+
+<div class="scrollinside max80 footerspacer">
+    <div class="text-center">
+        <br />
+        <div class="f-h1 t-neonpink">Add Recipe</div>
+        <br />
+        <div>
+            <div class="t-goldy">@CurrentRecipe.Title</div>
+            <div class="t-gld">Time: @CurrentRecipe.TimeRequired</div>
+            @foreach (Models.RecipeIngredient ri in CurrentRecipe.RecipeIngredients)
+            {
+                <p>@ri.Ingredient.Name: @ri.Amount, @ri.Unit.Name</p>
+            }
+        </div>
+    </div>
+    <br />
+</div>
