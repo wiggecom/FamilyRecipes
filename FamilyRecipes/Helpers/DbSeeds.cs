@@ -47,19 +47,19 @@ namespace FamilyRecipes.Helpers
         {
             // Categories
             List<Category> categories = new List<Category>{
-                new Category { CategoryType = "Food", CategoryName = "Soup" },
-                new Category { CategoryType = "Food", CategoryName = "Chinese" },
-                new Category { CategoryType = "Food", CategoryName = "BBQ" },
-                new Category { CategoryType = "Dessert", CategoryName = "Baking" },
-                new Category { CategoryType = "Dessert", CategoryName = "Ice Cream and Milkshakes" },
-                new Category { CategoryType = "Dessert", CategoryName = "Mousses, Puddings and Jelly" },
-                new Category { CategoryType = "Drinks", CategoryName = "Sodas" },
-                new Category { CategoryType = "Drinks", CategoryName = "Warm Drinks" },
-                new Category { CategoryType = "Alcoholic Drinks", CategoryName = "Rum" },
-                new Category { CategoryType = "Food", CategoryName = "Chicken" },
+                new Category { MainCategory = "Food", SubCategory = "Soup" },
+                new Category { MainCategory = "Food", SubCategory = "Chinese" },
+                new Category { MainCategory = "Food", SubCategory = "BBQ" },
+                new Category { MainCategory = "Dessert", SubCategory = "Baking" },
+                new Category { MainCategory = "Dessert", SubCategory = "Ice Cream and Milkshakes" },
+                new Category { MainCategory = "Dessert", SubCategory = "Mousses, Puddings and Jelly" },
+                new Category { MainCategory = "Drinks", SubCategory = "Sodas" },
+                new Category { MainCategory = "Drinks", SubCategory = "Warm Drinks" },
+                new Category { MainCategory = "Alcoholic Drinks", SubCategory = "Rum" },
+                new Category { MainCategory = "Food", SubCategory = "Chicken" },
             };
 
-            return categories.OrderBy(c => c.CategoryType).ThenBy(c => c.CategoryName).ToList();
+            return categories.OrderBy(c => c.MainCategory).ThenBy(c => c.SubCategory).ToList();
         }
         public List<Ingredient> IngredientSeed()
         {
@@ -88,7 +88,7 @@ namespace FamilyRecipes.Helpers
                 Title = "Easy Chicken Curry",
                 UserName = "Mr Yamamoto",
                 CreatedDate = DateTime.Now,
-                Category = myCategories.Where(i => i.CategoryType == "Food" && i.CategoryName == "Chicken").FirstOrDefault(),
+                Category = myCategories.Where(i => i.MainCategory == "Food" && i.SubCategory == "Chicken").FirstOrDefault(),
                 TimeRequired = 45,
                 Description = "This is the best recipe ever!",
                 Steps = new List<string> { "1. Chop Chicken", "2. Fry mixed vegetables and chicken", "3. Add cream and spices" },
