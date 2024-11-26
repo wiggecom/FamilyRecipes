@@ -11,11 +11,11 @@
     --electricblue: 128, 223, 255;
     --goldycolor: 255, 172, 0;
     --lemonyellow: 213, 254, 44;
-    --darkxmas: 167, 5, 0;
+    --darkxmas: 0, 175, 215;
 }
 
 .lek{
-    color: rgb(167, 5, 0)
+    color: rgb(0, 175, 215)
 }
 
 /* using variables ensures conformity since we only need to change one value */
