@@ -7,6 +7,7 @@
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsAdult { get; set; }
+        public string UserImage { get; set; } // Image
 
 
         public FamilyUser()
