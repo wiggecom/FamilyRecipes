@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FamilyRecipes.Pages
 {
-    public class AddRecipeModel : PageModel
+    public class RecipesModel : PageModel
     {
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public AddRecipeModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public RecipesModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             this.webHostEnvironment = webHostEnvironment;
