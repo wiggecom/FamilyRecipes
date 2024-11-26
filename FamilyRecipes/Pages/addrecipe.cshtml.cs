@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FamilyRecipes.Pages
 {
     public class AddRecipeModel : PageModel
+
     {
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
