@@ -21,6 +21,8 @@ namespace FamilyRecipes.Pages
         public List<Category> Categories { get; set; } = new List<Category>();
         public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         public Recipe MyRecipe { get; set; } = new Recipe();
+
+
         public string success = "Boo!";
         public async void OnGet()
         {
