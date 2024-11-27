@@ -25,9 +25,9 @@ namespace FamilyRecipes.Pages
         public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         public Recipe? MyRecipe { get; set; } = new Recipe();
         public Recipe? AddRecipe { get; set; } = new Recipe();
+        public Category AddCategory { get; set; }
 
         [BindProperty] public string AddTitle { get; set; }
-        //[BindProperty] public Category AddCategory { get; set; }
         [BindProperty] public string MainCategory { get; set; }
         [BindProperty] public string SubCategory { get; set; }
         [BindProperty] public int AddTimeRequired { get; set; }
@@ -36,7 +36,6 @@ namespace FamilyRecipes.Pages
         [BindProperty] public List<RecipeIngredient> AddRecipeIngredients { get; set; } = new List<RecipeIngredient>();
         [BindProperty] public bool AddAdultsOnly { get; set; } = false;
         [BindProperty] public string AddImage { get; set; }
-
 
         // public string UserName { get; set; } // FamilyUser.Name
         // public DateTime CreatedDate { get; set; }
@@ -47,14 +46,6 @@ namespace FamilyRecipes.Pages
             Categories = _context.Categories.ToList();
             AllCategories = _context.Categories.ToList();
             Ingredients = _context.Ingredients.ToList();
-
-            //MyRecipe = _context.Recipes
-            //        .Include(r => r.RecipeIngredients)
-            //        .ThenInclude(ri => ri.Ingredient) // Include Ingredient
-            //        .Include(r => r.RecipeIngredients)
-            //        .ThenInclude(ri => ri.Unit)      // Include Unit
-            //        .FirstOrDefault();
-
 
             if (true)
             {
