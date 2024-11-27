@@ -88,6 +88,7 @@ namespace FamilyRecipes.Helpers
                 Title = "Easy Chicken Curry",
                 UserName = "Mr Yamamoto",
                 CreatedDate = DateTime.Now,
+                Servings = 4,
                 Category = myCategories.Where(i => i.MainCategory == "Food" && i.SubCategory == "Chicken").FirstOrDefault(),
                 TimeRequired = 45,
                 Description = "This is the best recipe ever!",

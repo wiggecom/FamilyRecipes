@@ -8,6 +8,7 @@
         public DateTime CreatedDate { get; set; }
         public Category Category { get; set; }
         public int TimeRequired { get; set; }
+        public int Servings { get; set; }
         public string Description { get; set; }
         public List<string> Steps { get; set; }
         public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
