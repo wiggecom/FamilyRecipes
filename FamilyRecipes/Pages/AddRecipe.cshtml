@@ -1,35 +1,132 @@
 ﻿@page
+@using FamilyRecipes.Models;
 @model FamilyRecipes.Pages.AddRecipeModel
 @{
-    ViewData["Title"] = "Home page";
-    List<Models.Unit> units = Model.Units;
-    int numberOfUnits = 999;
-    List<Models.Unit> firstUnits = new List<Models.Unit>();
-    Models.Recipe CurrentRecipe = Model.MyRecipe;
-    if (units.Count > numberOfUnits)
-    {
-        firstUnits = units.Take(numberOfUnits).ToList();
-    }
-    else
-    {
-        firstUnits = units.ToList();
-    }
-}
 
+    ViewData["Title"] = "Home page";
+    List<Models.Unit> units = Model.Units.ToList();
+    Recipe EditRecipe = Model.MyRecipe;
+    List<string> MainCategories = Model.Categories.Select(c => c.MainCategory).Distinct().ToList();
+    List<Category> AllCategories = Model.Categories.ToList();
+
+    string addTitle = Model.AddTitle;
+    //Category AddCategory = Model.AddCategory;
+    string addMainCategory = Model.MainCategory;
+    string selectedMainCategory = "";
+    string addSubCategory = Model.SubCategory;
+    int addTimeRequired = Model.AddTimeRequired;
+    string addDescription = Model.AddDescription;
+    List<string> addSteps = Model.AddSteps;
+    List<RecipeIngredient> addRecipeIngredients = Model.AddRecipeIngredients;
+    bool addAdultsOnly = Model.AddAdultsOnly;
+    string addImage = Model.AddImage;
+
+}
 <div class="scrollinside max80 footerspacer">
-    <div class="text-center">
+    <div class="text-center checkered-tiles">
         <br />
         <div class="f-h1 t-neonpink">Add Recipe</div>
         <br />
-        <div>
-            <div class="t-goldy">@CurrentRecipe.Title</div>
-            <div class="t-gld">Time: @CurrentRecipe.TimeRequired</div>
-            <br />
-            @foreach (Models.RecipeIngredient ri in CurrentRecipe.RecipeIngredients)
-            {
-                <div class="f-p t-gld">@ri.Ingredient.Name: @ri.Amount, @ri.Unit.Name</div>
-            }
+        <div class="card1 card-color1 glass">
+            <style scoped>
+                input[type=text], textarea, select, input {
+                    background-color: rgba(0,0,0,0.3);
+                }
+
+                button {
+                    background-color: rgba(0,0,0,0.4);
+                    border: solid 2px rgba(255,255,127,0.5);
+                    color: rgba(255,255,127,0.7);
+                    text-align: center;
+                    padding: 5px 20px 10px 20px;
+                    text-decoration: none;
+                    margin-bottom: 20px;
+                    cursor: pointer;
+                }
+
+                    button:active, button:hover, input[type=text]:active, input[type=text]:hover, textarea:active, textarea:hover, select:active, select:hover, input:active, input:hover {
+                        background-color: rgba(0,0,0,0.7);
+                        box-shadow: 3px 5px 5px rgba(0,0,0,0.8);
+                        color: rgba(255,255,127,1);
+                        cursor: pointer;
+                    }
+
+                    button:active, button:hover {
+                        border: solid 2px rgba(255,255,127,0.7);
+                    }
+
+            </style>
+            <form method="post">
+                <div>
+                    <label class="card1-title" for="Title">Title</label><br />
+                    <input class="card1-field" type="text" id="Title" name="Title" asp-for="@addTitle" />
+                    <span asp-validation-for="@addTitle"></span>
+                </div>
+
+                <label asp-for="@addMainCategory" class="card1-title">Category</label><br />
+                <select asp-for="@addMainCategory" class="card1-field" id="changeMain">
+                    <option value="">[Select Category]</option>
+                    @foreach (var c in Model.AllCategories.Select(x => x.MainCategory).Distinct())
+                    {
+                        <option value="@c">@c</option>
+                    }
+                </select>
+
+                <label asp-for="@addSubCategory" class="card1-title">Subcategory</label><br />
+                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory">
+                    <option value="">[Select Subcategory]</option>
+                </select>
+
+                <script> // AJAX SubCategory Updater
+                    document.getElementById("changeMain").onchange = async function handleChange(evt) {
+                        const value = evt.target.value;
+
+                        const response = await fetch('/AddRecipe?handler=GetSubcategories&mainCategory=' + encodeURIComponent(value));
+                        if (response.ok) {
+                            const subcategories = await response.json();
+
+                            const subCategoryDropdown = document.getElementById("addSubCategory");
+                            subCategoryDropdown.innerHTML = '<option value="">[Select Subcategory]</option>'; // Reset dropdown
+
+                            subcategories.forEach(sub => {
+                                const option = document.createElement("option");
+                                option.value = sub;
+                                option.text = sub;
+                                subCategoryDropdown.appendChild(option);
+                            });
+                        } else {
+                            console.error("Failed to fetch subcategories");
+                        }
+                    };
+                </script>
+
+
+                <div>
+                    <label class="card1-title" for="addTimeRequired">Time Required (minutes)</label><br />
+                    <input type="number" class="card1-field" id="addTimeRequired" name="addTimeRequired" asp-for="@addTimeRequired" />
+                    <span asp-validation-for="@addTimeRequired"></span>
+                </div>
+
+                <div>
+                    <label class="card1-title" for="addDescription">Description</label><br />
+                    <textarea class="card1-field" id="addDescription" name="addDescription" asp-for="@addDescription"></textarea>
+                    <span asp-validation-for="@addDescription"></span>
+                </div>
+
+                <div>
+                    <label class="card1-title" for="addSteps">Steps (leave the last empty)</label><br />
+                    <textarea class="card1-field" id="addSteps" name="addSteps"></textarea>
+                    @* <small>Skriv varje steg på en ny rad.</small> *@
+                </div>
+
+                <div>
+                    <label class="card1-title" for="addRecipeIngredients">Ingredients</label><br />
+                    <textarea class="card1-field" id="addRecipeIngredients" name="addIngredients"></textarea>
+                    @* <small>Skriv varje ingrediens i formatet: Namn, Mängd, Enhet.</small> *@
+                </div>
+                <br />
+                <button type="submit">Save</button>
+            </form>
         </div>
     </div>
-    <br />
 </div>
