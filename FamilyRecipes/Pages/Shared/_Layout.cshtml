@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/css/family.css" asp-append-version="true" />
 
 </head>
-<body class="main-bg max80">
+<body class="main-bg max100">
     <header class="nav-bg">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light nav-bg border-bottom box-shadow">
             <div class="container">
@@ -23,16 +23,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between navcolors">
                     <ul class="navbar-nav flex-grow-1 navcolors">
                         <li class="nav-item navcolors">
-                            <a class="f-nav-link navcolors" asp-area="" asp-page="/Recipes">Recipes</a>
+                            <a class="f-nav-link navcolors text-nowrap" asp-area="" asp-page="/Recipes">Recipes</a>
                         </li>
                         <li class="nav-item navcolors">
-                            <a class="f-nav-link navcolors" asp-area="" asp-page="/AddRecipe">Add Recipe</a>
+                            <a class="f-nav-link navcolors text-nowrap" asp-area="" asp-page="/AddRecipe">Add Recipe</a>
                         </li>
                         <li class="nav-item navcolors">
-                            <a class="f-nav-link navcolors" asp-area="" asp-page="/Samples">CSS Samples</a>
+                            <a class="f-nav-link navcolors text-nowrap" asp-area="" asp-page="/Samples">CSS Samples</a>
                         </li>
                         <li class="nav-item navcolors">
-                            <a class="f-nav-link navcolors" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="f-nav-link navcolors text-nowrap" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -40,13 +40,13 @@
             </div>
         </nav>
     </header>
-    <div class="container footerspacer w100">
+    <div class="f-container scrollinside max80 w100 border-bottom">
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer footer-bg-container t-lemony">
+    <footer class="footer footer-bg-container t-lemony border-top z300">
         <div class="footer-bg">
             <div class="container">
                 &nbsp;

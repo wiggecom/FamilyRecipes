@@ -31,6 +31,7 @@ namespace FamilyRecipes.Pages
         [BindProperty] public string MainCategory { get; set; }
         [BindProperty] public string SubCategory { get; set; }
         [BindProperty] public int AddTimeRequired { get; set; }
+        [BindProperty] public int AddServings { get; set; }
         [BindProperty] public string AddDescription { get; set; }
         [BindProperty] public List<string> AddSteps { get; set; } = new List<string>();
         [BindProperty] public List<RecipeIngredient> AddRecipeIngredients { get; set; } = new List<RecipeIngredient>();

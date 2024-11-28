@@ -3,6 +3,30 @@
     border: 1px solid red;
 }*/
 
+.db1{
+    border: 8px solid red;
+}
+.db2 {
+    border: 8px solid darkorange;
+}
+.db3 {
+    border: 8px solid yellow;
+}
+.db4 {
+    border: 8px solid green;
+}
+.db5 {
+    border: 8px solid aqua;
+}
+.db6 {
+    border: 8px solid blue;
+}
+.db7 {
+    border: 8px solid indigo;
+}
+
+/* --- DEBUG END --- */
+
 html {
     font-size: 14px;
 }
@@ -112,3 +136,11 @@ p {
 
 /* *END* Fixing ugly nav-bar by cloning bootstrap parts and reconstructing to new class */
 
+/* Better container */
+f-container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+/*    margin-top: 60px;
+    margin-bottom: 60px;*/
+}
