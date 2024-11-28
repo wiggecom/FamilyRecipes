@@ -3,6 +3,7 @@
     --bgplaincolor: 10, 0, 24;
     --bgfirstcolor: 0, 66, 66;
     --bgsecondcolor: 66, 0, 66;
+    --darkpurple: 66, 0, 66;
     --navfirstcolor: 0, 99, 99;
     --navsecondcolor: 99, 0, 99;
     --bgfadecolor: 0, 0, 0;
@@ -13,13 +14,63 @@
     --lemonyellow: 213, 254, 44;
     --darkxmas: 0, 175, 215;
     --cardbgcolor1: 255, 255, 170;
+    --cardbgcolor2: 64, 64, 64;
     --cardtextcolor1: 255, 255, 127;
     --brightyellow: 255, 255, 127;
 }
 
-.lek {
+.root-samples {
+    color: rgb(var(--bgplaincolor));
+    color: rgb(10, 0, 24);
+    /* --------------------------- */
+    color: rgb(var(--bgfirstcolor));
+    color: rgb(0, 66, 66);
+    /* --------------------------- */
+    color: rgb(var(--bgsecondcolor));
+    color: rgb(66, 0, 66);
+    /* --------------------------- */
+    color: rgb(var(--darkpurple));
+    color: rgb(66, 0, 66);
+    /* --------------------------- */
+    color: rgb(var(--navfirstcolor));
+    color: rgb(0, 99, 99);
+    /* --------------------------- */
+    color: rgb(var(--navsecondcolor));
+    color: rgb(99, 0, 99);
+    /* --------------------------- */
+    color: rgb(var(--bgfadecolor));
+    color: rgb(0, 0, 0);
+    /* --------------------------- */
+    color: rgb(var(--hotpink));
+    color: rgb(255, 0, 128);
+    /* --------------------------- */
+    color: rgb(var(--bubblegumpink));
+    color: rgb(255, 128, 192);
+    /* --------------------------- */
+    color: rgb(var(--electricblue));
+    color: rgb(128, 223, 255);
+    /* --------------------------- */
+    color: rgb(var(--goldycolor));
+    color: rgb(255, 172, 0);
+    /* --------------------------- */
+    color: rgb(var(--lemonyellow));
+    color: rgb(213, 254, 44);
+    /* --------------------------- */
+    color: rgb(var(--darkxmas));
+    color: rgb(0, 175, 215);
+    /* --------------------------- */
+    color: rgb(var(--cardbgcolor1));
+    color: rgb(255, 255, 170);
+    /* --------------------------- */
+    color: rgb(var(--cardbgcolor2));
+    color: rgb(64, 64, 64);
+    /* --------------------------- */
+    color: rgb(var(--cardtextcolor1));
     color: rgb(255, 255, 127);
-    Background: rgb(255, 171, 19);
+    /* --------------------------- */
+    color: rgb(var(--brightyellow));
+    color: rgb(255, 255, 127);
+    /* --------------------------- */
 }
 
 /* using variables ensures conformity since we only need to change one value */
@@ -168,11 +219,12 @@
 }
 
 .scrollinside{
-    overflow:scroll;
+    overflow-y:scroll;
+    overscroll-behavior-y:contain;
 }
 
 .noscroll {
-    overflow:clip;
+    overflow:hidden;
 }
 
 .max80 {
@@ -181,7 +233,13 @@
 }
 
 .max100{
-    max-height:100%;
+    max-height:100vh;
+    min-height: 100vh;
+}
+
+.pr100 {
+    max-height: 100%;
+    min-height: 100%;
 }
 
 .fw1000{
@@ -204,6 +262,12 @@
     backdrop-filter: blur(8px);
 }
 
+.lockbox {
+    position:absolute;
+    left: 0px;
+    top: 60px;
+}
+
 /* --------------------------- CARDS -----------------------------*/
 
 .card-color1 {
@@ -214,6 +278,16 @@
                         rgba(var(--cardbgcolor1),0.1) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
     border: solid 4px rgba(0,0,0,0.4);
 }
+
+.card-color2 {
+    background-image: linear-gradient(170deg, 
+    rgba(var(--darkpurple),0.4) clamp(25%, 120px, 120px), 
+    rgba(var(--darkpurple),0.2) clamp(25%, 120px, 120px), 
+    rgba(var(--darkpurple),0.3) clamp(75%, calc(100% - 120px), calc(100% - 120px)), 
+    rgba(var(--darkpurple),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
+    border: solid 4px rgba(0,0,0,0.4);
+}
+
 
 .card1 {
     width: clamp(350px, 50%, 500px);
@@ -248,6 +322,10 @@
     outline: inset;
 }
 
+.card-shadow_large{
+    box-shadow: rgba(0,0,0,0.5) 3px 15px 15px;
+}
+
 /*.card1-field, input[type=text], input[type=textarea] {
     background-color: rgba(var(--cardtextcolor), 0.5) !important;
 }*/
@@ -259,3 +337,131 @@
     width: 100%;
     height: 100%;
 }
+
+.z300{
+    z-index:300;
+}
+
+/* ---------------- SunnyMountains Background ----------------- */
+.bg-trees_sun {
+    position: relative;
+}
+
+    .bg-trees_sun:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("../images/graphics/trees_sun_v3.svg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: 50% 0;
+        animation-name: sun;
+        animation-duration: 40s;
+        animation-iteration-count: infinite;
+        animation-direction: normal;
+        transition-timing-function: ease-in-out;
+        /*opacity: 0.6;*/
+    }
+    @keyframes sun{
+        0% {
+            opacity: 0.5;
+        }
+
+        25% {
+            opacity: 0.6;
+        }
+        40% {
+            opacity: 0.5;
+        }
+        55% {
+            opacity: 0.7;
+        }
+        70% {
+            opacity: 0.55;
+        }
+        90% {
+            opacity: 0.9;
+        }
+        100% {
+            opacity: 0.5;
+        }
+    }
+
+.bg-trees_base {
+    position:relative;
+}
+
+.bg-trees_base:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/graphics/trees_mountains_supersunny.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: 50% 0;
+    opacity: 0.2;
+}
+
+.bg-trees_left {
+    position: relative;
+}
+
+    .bg-trees_left:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        background-image: url("../images/graphics/trees_left.svg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: left center;
+        background-size: auto 100%;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+    }
+
+.bg-trees_right {
+    position: relative;
+}
+
+    .bg-trees_right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-image: url("../images/graphics/trees_right.svg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: right center;
+        background-size: auto 100%;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+    }
+
+.pop {
+    position:relative;
+    z-index: 200;
+}
+
+    .pop:before {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 60px;
+    }
+
+/* ---------------- SunnyMountains Background END ------------- */
