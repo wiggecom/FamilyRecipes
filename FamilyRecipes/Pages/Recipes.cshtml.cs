@@ -40,13 +40,16 @@ namespace FamilyRecipes.Pages
             }
 
             Categories = _context.Categories.ToList();
-            Recipe? MyRecipe = _context.Recipes
+            Recipe? firstRecipe = _context.Recipes
                     .Include(r => r.RecipeIngredients)
                     .ThenInclude(ri => ri.Ingredient) // Include Ingredient
                     .Include(r => r.RecipeIngredients)
                     .ThenInclude(ri => ri.Unit)      // Include Unit
                     .FirstOrDefault();
-
+            if (firstRecipe != null)
+            {
+                MyRecipe = firstRecipe;
+            }
 
             Ingredients = _context.Ingredients.ToList();
             if (MyRecipe != null)
