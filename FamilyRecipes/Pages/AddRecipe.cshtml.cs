@@ -80,5 +80,15 @@ namespace FamilyRecipes.Pages
 
             return new JsonResult(subcategories);
         }
+
+        public JsonResult OnGetGetIngredientByType(string ingredientType)
+        {
+            // Use _context to fetch subcategories for the selected main category
+            var ingredientsOfType = _context.Ingredients
+                .Where(i => i.Type == ingredientType)
+                .ToList();
+
+            return new JsonResult(ingredientsOfType);
+        }
     }
 }

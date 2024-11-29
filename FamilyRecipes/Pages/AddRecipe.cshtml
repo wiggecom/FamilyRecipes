@@ -66,13 +66,13 @@
                 <div>
                     <label class="card1-title" for="Title">Title</label><br />
                     <input class="card1-field" type="text" id="Title" name="AddTitle" 
-                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" />
+                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" required/>
                     <span asp-validation-for="@addTitle"></span>
                 </div>
                 <br />
                 <hr class="hr1" />
                 <label asp-for="@addMainCategory" class="card1-title">Category</label><br />
-                <select asp-for="@addMainCategory" class="card1-field" id="changeMain" name="AddMainCategory">
+                <select asp-for="@addMainCategory" class="card1-field" id="changeMain" name="AddMainCategory" required>
                     <option value="">[Select Category]</option>
                     @foreach (var c in Model.AllCategories.Select(x => x.MainCategory).Distinct())
                     {
@@ -81,7 +81,7 @@
                 </select>
 
                 <label asp-for="@addSubCategory" class="card1-title">Subcategory</label><br />
-                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory" name="AddSubCategory">
+                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory" name="AddSubCategory" required>
                     <option value="">[Select Subcategory]</option>
                 </select>
 
@@ -114,7 +114,7 @@
                 <div>
                     <label class="card1-title" for="addTimeRequired">Time Required (minutes)</label><br />
                     <input type="number" class="card1-field" id="addTimeRequired" name="addTimeRequired"
-                           value="45" asp-for="@addTimeRequired" />
+                           placeholder="45" asp-for="@addTimeRequired" required />
                     <span asp-validation-for="@addTimeRequired"></span>
                 </div>
 
@@ -129,7 +129,7 @@
                 <div>
                     <label class="card1-title" for="addDescription">Description</label><br />
                     <textarea class="card1-field" id="addDescription" name="AddDescription"
-                              value="A description.." asp-for="@addDescription"></textarea>
+                              placeholder="Add description" asp-for="@addDescription" required></textarea>
                     <span asp-validation-for="@addDescription"></span>
                 </div>
                 <br />
@@ -138,17 +138,17 @@
                     <label class="card1-title">Steps</label><br />
                     <div id="stepsList">
                         <input type="text" class="card1-field" name="AddSteps" value=""
-                               placeholder="No numbering needed, just instructions" asp-for="@addSteps" />
+                               placeholder="No numbering needed, just instructions" asp-for="@addSteps" required/>
                     </div>
                     <br />
-                    <button type="button" onclick="addInput()">Add Step</button>
+                    <button type="button" onclick="addInput('stepsList', 'AddSteps')">Add Step</button>
 
                     <script>
-                        function addInput() {
-                            const container = document.getElementById('stepsList');
+                        function addInput(id, name) {
+                            const container = document.getElementById(id);
                             const input = document.createElement('input');
                             input.type = 'text';
-                            input.name = 'AddSteps'; // Maintain consistent name for binding
+                            input.name = name; // Maintain consistent name for binding
                             input.className = 'card1-field fieldspacer'
                             container.appendChild(input);
                         }
@@ -158,9 +158,16 @@
                 <br />
                 <hr class="hr1" />
                 <div>
-                    <label class="card1-title" for="addImage">Add Image</label><br />
-                    <textarea class="card1-field" id="addImage" name="AddImage"
-                              value="An image.." asp-for="@addImage"></textarea>
+                    <!--
+                    <label class="card1-title" for="Title">Title</label><br />
+                    <input class="card1-field" type="text" id="Title" name="AddTitle"
+                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" required/>
+                    <span asp-validation-for="@addTitle"></span>
+                    -->
+                    <label class="card1-title" for="Image">Add Image</label><br />
+                    <input class="card1-field" type="text" id="Image" name="AddImage"
+                    placeholder="Image-url (for now)" value="testimage.png" asp-for="@addImage"></input>
+                    <span asp-validation-for="@addImage"></span>
                 </div>
                 <br />
                 <hr class="hr1" />
@@ -170,11 +177,16 @@
                 </div>
                 <hr class="hr1" />
                 <div>
-                    <label class="card1-title" for="addRecipeIngredients">Add Ingredients</label><br />
-                        <label class="card1-number" for="addIngredient">Add Ingredient</label>
-                        <textarea class="card1-field" id="addIngredient" name="AddRecipeIngredients"
-                                  value="@fakeRecipeIngredients" asp-for="@fakeRecipeIngredients"></textarea>
-                        <span asp-validation-for="@fakeRecipeIngredients"></span>
+                    <div class="card1-title">Add Ingredients</div><br />
+                    <label class="card1-title" for="Ingredient">Add Ingredient</label><br />
+                    <input class="card1-field" type="text" id="Ingredient" name="AddRecipeIngredients"
+                           value="Ingredient" asp-for="@addRecipeIngredients"></input>
+                    <span asp-validation-for="@addRecipeIngredients"></span>
+
+@*                  <label class="card1-number" for="addIngredient">Add Ingredient</label>
+                    <textarea class="card1-field" id="addIngredient" name="AddRecipeIngredients"
+                        value="Ingredient" asp-for="@addRecipeIngredients"></textarea>
+                    <span asp-validation-for="@addRecipeIngredients"></span> *@
                     
                     <br /><br />
                     <button>Add More</button>

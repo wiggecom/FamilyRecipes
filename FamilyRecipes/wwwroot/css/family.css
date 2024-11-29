@@ -280,6 +280,34 @@ hr.hr1 {
     margin-top: 10px;
 }
 
+.ch8 {
+    width: 8ch !important;
+}
+
+.ch10 {
+    width: 10ch !important;
+}
+
+.ch16 {
+    width: 16ch !important;
+}
+
+.ch24 {
+    width: 24ch !important;
+    text-align: left !important;
+}
+
+.ch8, ch10, ch16, ch24 {
+    display: inline-block;
+    text-align: right;
+    margin-inline-end: 1ch;
+}
+
+.blockcenter{
+    margin:auto;
+    max-width: 80%;
+    min-width:fit-content;
+}
 /* --------------------------- CARDS -----------------------------*/
 
 .card-color1 {

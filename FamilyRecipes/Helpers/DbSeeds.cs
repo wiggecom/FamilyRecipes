@@ -66,12 +66,12 @@ namespace FamilyRecipes.Helpers
             // Ingredients
             List<Ingredient> ingredients = new List<Ingredient>
             {
-                new Ingredient { Name="Potato", Calories=77, Description="Plant-based thing", Type="Vegetable", IsMeasuredAsFluid=false},
-                new Ingredient { Name="Milk", Calories=42, Description="Moo", Type="Dairy-product", IsMeasuredAsFluid=true},
-                new Ingredient { Name="Cocoa Powder", Calories=228, Description="Chocolate", Type="Fruit", IsMeasuredAsFluid=true},
-                new Ingredient { Name="Chicken", Calories=239, Description="Without feathers", Type="Poultry", IsMeasuredAsFluid=false },
-                new Ingredient { Name="Mixed Vegetables", Calories=60, Description="Frozen mix", Type="Vegetable", IsMeasuredAsFluid=false },
-                new Ingredient { Name="Cream", Calories=196, Description="It's creamy!", Type="Dairy-product", IsMeasuredAsFluid=true }
+                new Ingredient { Name="Potato", Calories=77, Description="Plant-based thing", Type="Vegetable", IsMeasuredByVolume=false},
+                new Ingredient { Name="Milk", Calories=42, Description="Moo", Type="Dairy-product", IsMeasuredByVolume=true},
+                new Ingredient { Name="Cocoa Powder", Calories=228, Description="Chocolate", Type="Fruit", IsMeasuredByVolume=true},
+                new Ingredient { Name="Chicken", Calories=239, Description="Without feathers", Type="Poultry", IsMeasuredByVolume=false },
+                new Ingredient { Name="Mixed Vegetables", Calories=60, Description="Frozen mix", Type="Vegetable", IsMeasuredByVolume=false },
+                new Ingredient { Name="Cream", Calories=196, Description="It's creamy!", Type="Dairy-product", IsMeasuredByVolume=true }
             };
 
             return ingredients.OrderBy(c => c.Type).ThenBy(c => c.Name).ToList();
@@ -92,7 +92,7 @@ namespace FamilyRecipes.Helpers
                 Category = myCategories.Where(i => i.MainCategory == "Food" && i.SubCategory == "Chicken").FirstOrDefault(),
                 TimeRequired = 45,
                 Description = "This is the best recipe ever!",
-                Steps = new List<string> { "1. Chop Chicken", "2. Fry mixed vegetables and chicken", "3. Add cream and spices" },
+                Steps = new List<string> { "Chop Chicken", "Fry mixed vegetables and chicken", "Add cream and spices" },
                 RecipeIngredients = new List<RecipeIngredient>
                 {
                     new RecipeIngredient
