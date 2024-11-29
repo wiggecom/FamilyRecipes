@@ -42,7 +42,15 @@ namespace FamilyRecipes.Pages
                 await seeds.SeedingDataAsync();
             }
 
-            
+            // Example of IsNullOrWhiteSpace
+            //if (!string.IsNullOrWhiteSpace(MyRecipe.Title)) 
+            //{
+            //    System.Diagnostics.Debug.WriteLine(MyRecipe.Title);
+            //}
+
+            //if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
+            //if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "
+
             Categories = _context.Categories.ToList();
             MyRecipe = _context.Recipes.FirstOrDefault();
             Ingredients = _context.Ingredients.ToList();
