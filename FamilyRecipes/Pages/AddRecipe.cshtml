@@ -11,19 +11,25 @@
 
     string addTitle = Model.AddTitle;
     //Category AddCategory = Model.AddCategory;
-    string addMainCategory = Model.MainCategory;
+    string addMainCategory = Model.AddMainCategory;
     string selectedMainCategory = "";
-    string addSubCategory = Model.SubCategory;
+    string addSubCategory = Model.AddSubCategory;
     int addTimeRequired = Model.AddTimeRequired;
+    int addServings = Model.AddServings;
     string addDescription = Model.AddDescription;
     List<string> addSteps = Model.AddSteps;
+    List<string> allSteps = new List<string>();
+    List<string> fakeSteps = new List<string> { "1. Do something", "2. Do something more", "3. Done" };
     List<RecipeIngredient> addRecipeIngredients = Model.AddRecipeIngredients;
+    List<RecipeIngredient> fakeRecipeIngredients = new List<RecipeIngredient>();
+    RecipeIngredient addOneIngredient = new RecipeIngredient();
+    int numberOfIngredients = 3;
     bool addAdultsOnly = Model.AddAdultsOnly;
     string addImage = Model.AddImage;
 
 }
-<div class="scrollinside max80 footerspacer">
-    <div class="text-center checkered-tiles">
+<div class="scrollinside max80">
+    <div class="text-center max80 checkered-tiles">
         <br />
         <div class="f-h1 t-neonpink">Add Recipe</div>
         <br />
@@ -56,15 +62,17 @@
                     }
 
             </style>
-            <form method="post">
+            <form method="post" asp-page-handler="AddRecipe" enctype="multipart/form-data">
                 <div>
                     <label class="card1-title" for="Title">Title</label><br />
-                    <input class="card1-field" type="text" id="Title" name="Title" asp-for="@addTitle" />
+                    <input class="card1-field" type="text" id="Title" name="AddTitle" 
+                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" />
                     <span asp-validation-for="@addTitle"></span>
                 </div>
-
+                <br />
+                <hr class="hr1" />
                 <label asp-for="@addMainCategory" class="card1-title">Category</label><br />
-                <select asp-for="@addMainCategory" class="card1-field" id="changeMain">
+                <select asp-for="@addMainCategory" class="card1-field" id="changeMain" name="AddMainCategory">
                     <option value="">[Select Category]</option>
                     @foreach (var c in Model.AllCategories.Select(x => x.MainCategory).Distinct())
                     {
@@ -73,11 +81,12 @@
                 </select>
 
                 <label asp-for="@addSubCategory" class="card1-title">Subcategory</label><br />
-                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory">
+                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory" name="AddSubCategory">
                     <option value="">[Select Subcategory]</option>
                 </select>
 
-                <script> // AJAX SubCategory Updater
+                <script>
+                    // AJAX SubCategory Updater
                     document.getElementById("changeMain").onchange = async function handleChange(evt) {
                         const value = evt.target.value;
 
@@ -99,29 +108,78 @@
                         }
                     };
                 </script>
-
+                <br />
+                <br />
+                <hr class="hr1" />
                 <div>
                     <label class="card1-title" for="addTimeRequired">Time Required (minutes)</label><br />
-                    <input type="number" class="card1-field" id="addTimeRequired" name="addTimeRequired" asp-for="@addTimeRequired" />
+                    <input type="number" class="card1-field" id="addTimeRequired" name="addTimeRequired"
+                           value="45" asp-for="@addTimeRequired" />
                     <span asp-validation-for="@addTimeRequired"></span>
                 </div>
 
                 <div>
+                    <label class="card1-title" for="addServings">Number of Servings</label><br />
+                    <input type="number" class="card1-field" id="addServings" name="addServings" value="4" 
+                    asp-for="@addServings" />
+                    <span asp-validation-for="@addServings"></span>
+                </div>
+                <br />
+                <hr class="hr1"/>
+                <div>
                     <label class="card1-title" for="addDescription">Description</label><br />
-                    <textarea class="card1-field" id="addDescription" name="addDescription" asp-for="@addDescription"></textarea>
+                    <textarea class="card1-field" id="addDescription" name="AddDescription"
+                              value="A description.." asp-for="@addDescription"></textarea>
                     <span asp-validation-for="@addDescription"></span>
                 </div>
-
+                <br />
+                <hr class="hr1" />
                 <div>
-                    <label class="card1-title" for="addSteps">Steps (leave the last empty)</label><br />
-                    <textarea class="card1-field" id="addSteps" name="addSteps"></textarea>
-                    @* <small>Skriv varje steg på en ny rad.</small> *@
+                    <label class="card1-title">Steps</label><br />
+                    <div id="stepsList">
+                        <input type="text" class="card1-field" name="AddSteps" value=""
+                               placeholder="No numbering needed, just instructions" asp-for="@addSteps" />
+                    </div>
+                    <br />
+                    <button type="button" onclick="addInput()">Add Step</button>
+
+                    <script>
+                        function addInput() {
+                            const container = document.getElementById('stepsList');
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.name = 'AddSteps'; // Maintain consistent name for binding
+                            input.className = 'card1-field fieldspacer'
+                            container.appendChild(input);
+                        }
+                    </script>
+                    <br /><br />
                 </div>
-
+                <br />
+                <hr class="hr1" />
                 <div>
-                    <label class="card1-title" for="addRecipeIngredients">Ingredients</label><br />
-                    <textarea class="card1-field" id="addRecipeIngredients" name="addIngredients"></textarea>
-                    @* <small>Skriv varje ingrediens i formatet: Namn, Mängd, Enhet.</small> *@
+                    <label class="card1-title" for="addImage">Add Image</label><br />
+                    <textarea class="card1-field" id="addImage" name="AddImage"
+                              value="An image.." asp-for="@addImage"></textarea>
+                </div>
+                <br />
+                <hr class="hr1" />
+                <div>
+                    <label class="card1-title" for="AdultsOnly">Adults Only</label>
+                    <input type="checkbox" id="AdultsOnly" name="AddAdultsOnly" asp-for="@addAdultsOnly" />
+                </div>
+                <hr class="hr1" />
+                <div>
+                    <label class="card1-title" for="addRecipeIngredients">Add Ingredients</label><br />
+                        <label class="card1-number" for="addIngredient">Add Ingredient</label>
+                        <textarea class="card1-field" id="addIngredient" name="AddRecipeIngredients"
+                                  value="@fakeRecipeIngredients" asp-for="@fakeRecipeIngredients"></textarea>
+                        <span asp-validation-for="@fakeRecipeIngredients"></span>
+                    
+                    <br /><br />
+                    <button>Add More</button>
+                    &nbsp;
+                    <button>Done</button>
                 </div>
                 <br />
                 <button type="submit">Save</button>
