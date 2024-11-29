@@ -40,7 +40,7 @@ namespace FamilyRecipes.Pages
             }
 
             Categories = _context.Categories.ToList();
-            MyRecipe = _context.Recipes
+            Recipe? MyRecipe = _context.Recipes
                     .Include(r => r.RecipeIngredients)
                     .ThenInclude(ri => ri.Ingredient) // Include Ingredient
                     .Include(r => r.RecipeIngredients)
