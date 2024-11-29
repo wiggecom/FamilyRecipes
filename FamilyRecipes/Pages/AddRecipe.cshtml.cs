@@ -28,14 +28,14 @@ namespace FamilyRecipes.Pages
         public Category AddCategory { get; set; }
 
         [BindProperty] public string AddTitle { get; set; }
-        [BindProperty] public string MainCategory { get; set; }
-        [BindProperty] public string SubCategory { get; set; }
+        [BindProperty] public string AddMainCategory { get; set; }
+        [BindProperty] public string AddSubCategory { get; set; }
         [BindProperty] public int AddTimeRequired { get; set; }
         [BindProperty] public int AddServings { get; set; }
         [BindProperty] public string AddDescription { get; set; }
         [BindProperty] public List<string> AddSteps { get; set; } = new List<string>();
         [BindProperty] public List<RecipeIngredient> AddRecipeIngredients { get; set; } = new List<RecipeIngredient>();
-        [BindProperty] public bool AddAdultsOnly { get; set; } = false;
+        [BindProperty] public bool AddAdultsOnly { get; set; }
         [BindProperty] public string AddImage { get; set; }
 
         // public string UserName { get; set; } // FamilyUser.Name
@@ -47,6 +47,20 @@ namespace FamilyRecipes.Pages
             Categories = _context.Categories.ToList();
             AllCategories = _context.Categories.ToList();
             Ingredients = _context.Ingredients.ToList();
+
+            if (true)
+            {
+                Thread.Sleep(1000);
+                return;
+            }
+
+        }
+
+        public void OnPostAddRecipe()
+        {
+            //Categories = _context.Categories.ToList();
+            //AllCategories = _context.Categories.ToList();
+            //Ingredients = _context.Ingredients.ToList();
 
             if (true)
             {

@@ -218,6 +218,14 @@
     font-weight: 600;
 }
 
+hr.hr1 {
+    border: 2px dashed rgb(var(--cardtextcolor1));
+    color: black;
+    margin-top: 5px;
+    margin-bottom: -5px;
+    opacity: 0.6;
+}
+
 .scrollinside{
     overflow-y:scroll;
     overscroll-behavior-y:contain;
@@ -228,8 +236,8 @@
 }
 
 .max80 {
-    max-height: calc( 100vh - 120px );
-    min-height: calc( 100vh - 120px );
+    max-height: calc( 100vh - 122px );
+    min-height: calc( 100vh - 122px );
 }
 
 .max100{
@@ -268,6 +276,10 @@
     top: 60px;
 }
 
+.fieldspacer{
+    margin-top: 10px;
+}
+
 /* --------------------------- CARDS -----------------------------*/
 
 .card-color1 {
@@ -292,7 +304,7 @@
 .card1 {
     width: clamp(350px, 50%, 500px);
     color: rgb(var(--cardtextcolor1));
-    max-height: 180vh;
+    max-height: 70vh;
     min-height: 40vh;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -310,6 +322,14 @@
     font-weight: 700;
     padding-top: 20px;
     padding-bottom: 10px;
+}
+.card1-number {
+    color: rgb(var(--cardtextcolor1));
+    text-shadow: 2px 3px 3px rgba(0,0,0,0.7);
+    font-size: 1em;
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 .card1-field {
@@ -361,7 +381,7 @@
         background-size: cover;
         background-position: 50% 0;
         animation-name: sun;
-        animation-duration: 40s;
+        animation-duration: 20s;
         animation-iteration-count: infinite;
         animation-direction: normal;
         transition-timing-function: ease-in-out;
@@ -404,7 +424,7 @@
     top: 0px;
     width: 100%;
     height: 100%;
-    background-image: url("../images/graphics/trees_mountains_supersunny.png");
+    background-image: url("../images/graphics/trees_mountains.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -454,7 +474,7 @@
 
 .pop {
     position:relative;
-    z-index: 200;
+    z-index: 250;
 }
 
     .pop:before {
