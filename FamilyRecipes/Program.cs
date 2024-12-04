@@ -1,6 +1,7 @@
 using FamilyRecipes.Data;
 using FamilyRecipes.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 public class Program
@@ -18,7 +19,14 @@ public class Program
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<ApplicationDbContext>();
-        builder.Services.AddRazorPages();
+        // OfflineTest
+        //builder.Services.AddRazorPages();
+        builder.Services.AddRazorPages(options =>
+        {
+            options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+        });
+
+
         builder.Services.AddTransient<DbSeeds>();
 
         builder.Services.Configure<IdentityOptions>(options =>

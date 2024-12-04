@@ -10,7 +10,7 @@
     List<Category> AllCategories = Model.Categories.ToList();
 
     string addTitle = Model.AddTitle;
-    //Category AddCategory = Model.AddCategory;
+    Category AddCategory = Model.AddCategory;
     string addMainCategory = Model.AddMainCategory;
     string selectedMainCategory = "";
     string addSubCategory = Model.AddSubCategory;
@@ -21,13 +21,24 @@
     List<string> allSteps = new List<string>();
     List<string> fakeSteps = new List<string> { "1. Do something", "2. Do something more", "3. Done" };
     List<RecipeIngredient> addRecipeIngredients = Model.AddRecipeIngredients;
-    List<RecipeIngredient> fakeRecipeIngredients = new List<RecipeIngredient>();
+    List<RecipeIngredientMapSource> recipeIngredientsMapSource = Model.RecipeIngredientsMapSource;
     RecipeIngredient addOneIngredient = new RecipeIngredient();
     int numberOfIngredients = 3;
     bool addAdultsOnly = Model.AddAdultsOnly;
     string addImage = Model.AddImage;
 
+    string addRI_IngredientName = Model.AddRI_IngredientName;
+    string addRI_UnitName = Model.AddRI_UnitName;
+    int addRI_Amount = Model.AddRI_Amount;
+
+    string addI_IngredientName = Model.AddI_IngredientName;
+    string addI_Description = Model.AddI_Description;
+    string addI_Type = Model.AddI_Type;
+    int addI_Calories = Model.AddI_Calories;
 }
+<script>
+    localStorage.setItem('counter', 0);
+</script>
 <div class="scrollinside max80">
     <div class="text-center max80 checkered-tiles">
         <br />
@@ -63,30 +74,35 @@
 
             </style>
             <form method="post" asp-page-handler="AddRecipe" enctype="multipart/form-data">
+                <!-- Title -->
                 <div>
                     <label class="card1-title" for="Title">Title</label><br />
-                    <input class="card1-field" type="text" id="Title" name="AddTitle" 
-                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" required/>
+                    <input class="card1-field" type="text" id="Title" name="AddTitle"
+                           placeholder="Enter Title" value="A title.." asp-for="@addTitle" required />
                     <span asp-validation-for="@addTitle"></span>
                 </div>
                 <br />
-                <hr class="hr1" />
-                <label asp-for="@addMainCategory" class="card1-title">Category</label><br />
-                <select asp-for="@addMainCategory" class="card1-field" id="changeMain" name="AddMainCategory" required>
-                    <option value="">[Select Category]</option>
-                    @foreach (var c in Model.AllCategories.Select(x => x.MainCategory).Distinct())
-                    {
-                        <option value="@c">@c</option>
-                    }
-                </select>
-
-                <label asp-for="@addSubCategory" class="card1-title">Subcategory</label><br />
-                <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory" name="AddSubCategory" required>
-                    <option value="">[Select Subcategory]</option>
-                </select>
-
+                <!-- Main Category -->
+                <div>
+                    <hr class="hr1" />
+                    <label asp-for="@addMainCategory" class="card1-title">Category</label><br />
+                    <select asp-for="@addMainCategory" class="card1-field" id="changeMain" name="AddMainCategory" required>
+                        <option value="">[Select Category]</option>
+                        @foreach (var c in Model.AllCategories.Select(x => x.MainCategory).Distinct())
+                        {
+                            <option value="@c">@c</option>
+                        }
+                    </select>
+                </div>
+                <!-- Subcategory -->
+                <div>
+                    <label asp-for="@addSubCategory" class="card1-title">Subcategory</label><br />
+                    <select asp-for="@addSubCategory" class="card1-field" id="addSubCategory" name="AddSubCategory" required>
+                        <option value="">[Select Subcategory]</option>
+                    </select>
+                </div>
+                <!-- AJAX SubCategory Updater -->
                 <script>
-                    // AJAX SubCategory Updater
                     document.getElementById("changeMain").onchange = async function handleChange(evt) {
                         const value = evt.target.value;
 
@@ -111,21 +127,23 @@
                 <br />
                 <br />
                 <hr class="hr1" />
+                <!-- Time Required -->
                 <div>
                     <label class="card1-title" for="addTimeRequired">Time Required (minutes)</label><br />
                     <input type="number" class="card1-field" id="addTimeRequired" name="addTimeRequired"
-                           placeholder="45" asp-for="@addTimeRequired" required />
+                           placeholder="45" value="45" asp-for="@addTimeRequired" required />
                     <span asp-validation-for="@addTimeRequired"></span>
                 </div>
-
+                <!-- Servings -->
                 <div>
                     <label class="card1-title" for="addServings">Number of Servings</label><br />
-                    <input type="number" class="card1-field" id="addServings" name="addServings" value="4" 
-                    asp-for="@addServings" />
+                    <input type="number" class="card1-field" id="addServings" name="addServings" value="4"
+                           asp-for="@addServings" />
                     <span asp-validation-for="@addServings"></span>
                 </div>
                 <br />
-                <hr class="hr1"/>
+                <hr class="hr1" />
+                <!-- Description -->
                 <div>
                     <label class="card1-title" for="addDescription">Description</label><br />
                     <textarea class="card1-field" id="addDescription" name="AddDescription"
@@ -134,11 +152,12 @@
                 </div>
                 <br />
                 <hr class="hr1" />
+                <!-- Steps -->
                 <div>
                     <label class="card1-title">Steps</label><br />
                     <div id="stepsList">
                         <input type="text" class="card1-field" name="AddSteps" value=""
-                               placeholder="No numbering needed, just instructions" asp-for="@addSteps" required/>
+                               placeholder="No numbering needed, just instructions" asp-for="@addSteps" required />
                     </div>
                     <br />
                     <button type="button" onclick="addInput('stepsList', 'AddSteps')">Add Step</button>
@@ -157,42 +176,312 @@
                 </div>
                 <br />
                 <hr class="hr1" />
+                <!-- Image -->
                 <div>
-                    <!--
-                    <label class="card1-title" for="Title">Title</label><br />
-                    <input class="card1-field" type="text" id="Title" name="AddTitle"
-                    placeholder="Enter Title" value="A title.." asp-for="@addTitle" required/>
-                    <span asp-validation-for="@addTitle"></span>
-                    -->
                     <label class="card1-title" for="Image">Add Image</label><br />
                     <input class="card1-field" type="text" id="Image" name="AddImage"
-                    placeholder="Image-url (for now)" value="testimage.png" asp-for="@addImage"></input>
+                           placeholder="Image-url (for now)" value="testimage.png" asp-for="@addImage"></input>
                     <span asp-validation-for="@addImage"></span>
                 </div>
                 <br />
                 <hr class="hr1" />
+                <!-- Adults Only -->
                 <div>
                     <label class="card1-title" for="AdultsOnly">Adults Only</label>
                     <input type="checkbox" id="AdultsOnly" name="AddAdultsOnly" asp-for="@addAdultsOnly" />
                 </div>
                 <hr class="hr1" />
+                <!-- Add Recipe Ingredients -->
                 <div>
-                    <div class="card1-title">Add Ingredients</div><br />
-                    <label class="card1-title" for="Ingredient">Add Ingredient</label><br />
-                    <input class="card1-field" type="text" id="Ingredient" name="AddRecipeIngredients"
+                    <div class="card1-title">Add Recipe Ingredients</div><br />
+                    <!-- List any ingredients added -->
+
+@*                             <div id="currentingredients">
+
+                            </div> *@
+
+                    <!-- Select Ingredient Type -->
+                    <div class="card1-title">Ingredient Type</div>
+                    <select class="card1-field" id="changeRIType" required>
+                        <option value="">[Select Type]</option>
+                        @foreach (var t in Model.IngredientTypes)
+                        {
+                            <option value="@t">@t</option>
+                        }
+                    </select>
+
+                    <!-- Select Ingredient -->
+                    <div class="card1-title">Ingredient</div>
+                    <select asp-for="@addRI_IngredientName" class="card1-field" id="addRIIngredientName" name="AddRI_IngredientName" required>
+                        <option value="">[Select Ingredient]</option>
+                    </select>
+
+                    <!-- AJAX GetIngredientsByType -->
+                    <script>
+                        document.getElementById("changeRIType").onchange = async function handleChange(evt) {
+                            const value = evt.target.value;
+                            localStorage.setItem('ingredientName', '');
+                            localStorage.setItem('unitName', '');
+                            localStorage.setItem('amount', '');
+                            const response = await fetch('/AddRecipe?handler=GetIngredientsByType&ingredientType=' + encodeURIComponent(value));
+                            if (response.ok) {
+                                const subcategories = await response.json();
+
+                                const subCategoryDropdown = document.getElementById("addRIIngredientName");
+                                subCategoryDropdown.innerHTML = '<option value="">[Select Ingredient]</option>'; // Reset dropdown
+
+                                subcategories.forEach(sub => {
+                                    const option = document.createElement("option");
+                                    option.value = sub;
+                                    option.text = sub;
+                                    subCategoryDropdown.appendChild(option);
+                                });
+                            } else {
+                                console.error("Failed to fetch ingredients");
+                            }
+                        };
+                    </script>
+
+                    <!-- Select measure -->
+                    <div class="card1-title">Select Measure</div>
+                    <select asp-for="@addRI_UnitName" class="card1-field" id="addRIUnitName" name="AddRI_UnitName" required>
+                        <option value="">[Select Measure]</option>
+                        @*                         @foreach (var u in units)
+                        {
+                        <option value="@u.Name">@u.Name</option>
+                        } *@
+                    </select>
+
+                    <!-- AJAX AddRIUnitName Updater -->
+                    <script>
+                        document.getElementById("addRIIngredientName").onchange = async function handleChange(evt) {
+                            const value = evt.target.value;
+                            localStorage.setItem('ingredientName', value);
+                            localStorage.setItem('unitName', '');
+                            localStorage.setItem('amount', '');
+                            const response = await fetch('/AddRecipe?handler=GetUnitsByType&ingredientName=' + encodeURIComponent(value));
+                            if (response.ok) {
+                                const subcategories = await response.json();
+
+                                const subCategoryDropdown = document.getElementById("addRIUnitName");
+                                subCategoryDropdown.innerHTML = '<option value="">[Select Measure]</option>'; // Reset dropdown
+
+                                subcategories.forEach(sub => {
+                                    const option = document.createElement("option");
+                                    option.value = sub;
+                                    option.text = sub;
+                                    subCategoryDropdown.appendChild(option);
+                                });
+                            } else {
+                                console.error("Failed to fetch ingredients");
+                            }
+                        };
+                    </script>
+                    <!-- Snoop UnitName -->
+                    <script>
+                        document.getElementById("addRIUnitName").onchange = function handleChange(evt) {
+                            const value = evt.target.value;
+                            localStorage.setItem('unitName', value);
+                        };
+                    </script>
+                    <!-- Amount -->
+                    <div>
+                        <div class="card1-title">Amount</div>
+                        <input type="number" class="card1-field" id="addRIAmount" name="addRI_Amount"
+                               placeholder="Enter Amount" asp-for="@addRI_Amount" required />
+                    </div>
+                    <!-- Snoop Amount -->
+                    <script>
+                        document.getElementById("addRIAmount").onchange = function handleChange(evt) {
+                            const value = evt.target.value;
+                            localStorage.setItem('amount', value);
+                        };
+                    </script>
+
+                    <br />
+                    <!-- FUNCTION saveIngredient should get fields data,
+                        send to backend to build RecipeIngredient,
+                        show up on list of ingredients,
+                        clear fields of inputs for RecipeIngredient
+                        (ready for new input, if needed send empty data as hidden with form)
+                    -->
+                    @* <button type="button" onclick="@addRecipeIngredients.Add(new RecipeIngredient{ Amount=addRI_Amount };)">Test</button> *@
+                    @* <button type="button" UseSubmitBehaviour="false" onclick="saveIngredient()">Save Ingredient</button> *@
+                    <button type="button" onclick="saveIngredient()">Save Ingredient</button>
+
+                    <div id="currentingredients">
+                    </div>
+                    <!-- Save Recipe Ingredient -->
+                    <script type="text/javascript">
+                        function saveIngredient() {
+                            let localIngredientName = localStorage.getItem('ingredientName');
+                            let localUnitName = localStorage.getItem('unitName');
+                            let localAmount = localStorage.getItem('amount');
+                            let counter = Number(localStorage.getItem('counter'));
+                            counter = counter + 1;
+                            localStorage.setItem('counter', counter);
+
+                            var recipeIngredientsMapSource = @Html.Raw(Json.Serialize(recipeIngredientsMapSource));
+
+                            const recipeIngredient = {
+                                IngredientName: localIngredientName,
+                                UnitName: localUnitName,
+                                Amount: localAmount,
+                            };
+
+                            // Add to the recipeIngredients list
+                            recipeIngredientsMapSource.push(recipeIngredient);
+                            console.log("This list:", recipeIngredientsMapSource);
+
+                            // Update backendfetch('/UpdateIngredients', {
+                            method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ ingredients: recipeIngredientsMapSource })
+                        })
+                        .then(response => response.json())
+                            .then(data => {
+                                console.log("Server response:", data);
+                            })
+                            .catch(error => console.error("Error updating ingredients:", error));
+
+
+                            // Add HTML
+                            // Get the container where rows will be added
+                            const container = document.getElementById("currentingredients");
+
+                            // Create a new div or span to hold the row (for better structure)
+                            const newRow = document.createElement("div"); // Or use a <span> if you prefer
+                            newRow.id = 'ingredient'+counter;
+
+                            // Create the first span for Amount and UnitName
+                            const amountUnitSpan = document.createElement("span");
+                            amountUnitSpan.className = "t-pinky textright"; // Add your classes
+                            amountUnitSpan.textContent = `${localAmount} ${localUnitName}`; // Set the text
+
+                            // Create the second span for IngredientName
+                            const ingredientSpan = document.createElement("span");
+                            ingredientSpan.className = "t-gld"; // Add your classes
+                            ingredientSpan.textContent = ' - ' + localIngredientName; // Set the text
+
+                            // Remove-link
+                            const removeLink = document.createElement("a");
+                            removeLink.href = "#"; // Prevent default navigation
+                            removeLink.textContent = " Remove";
+                            removeLink.className = "remove-link"; // Optional class for styling
+                            removeLink.style.marginLeft = "10px"; // Optional: Add some spacing
+                            removeLink.onclick = function (e) {
+                                e.preventDefault(); // Prevent the default action of the link
+                                container.removeChild(newRow); // Remove the current row
+                                console.log(`${localIngredientName} removed`);
+                                // run secondary script
+                                removeIngredient(localIngredientName);
+                                heyman('hola amigo');
+                            };
+                            
+
+                            // Append both spans to the new row
+                            newRow.appendChild(amountUnitSpan);
+                            newRow.appendChild(ingredientSpan);
+                            newRow.appendChild(removeLink);
+
+                            // Append the new row to the container
+                            container.appendChild(newRow);
+                        }
+                        // Remove Recipe Ingredient
+                        function removeIngredient(ingredientName) {
+                            console.log(`Removing ${ingredientName} from the list.`);
+                            var recipeIngredientsMapSource = @Html.Raw(Json.Serialize(recipeIngredientsMapSource));
+                            recipeIngredientsMapSource = recipeIngredientsMapSource.filter(
+                                item => item.IngredientName !== ingredientName
+                            );
+
+                            console.log("Updated list:", recipeIngredientsMapSource);
+                        }
+                        function heyman(heeey) {
+                            alert(heeey);
+                        }
+                    </script>
+@*                     <script type="text/javascript">
+                        async function saveIngredient() {
+                            let localIngredientName = localStorage.getItem('ingredientName');
+                            let localUnitName = localStorage.getItem('unitName');
+                            let localAmount = localStorage.getItem('amount');
+
+                            // JSON-serializer
+                            const ingredientList = JSON.parse(localStorage.getItem('ingredientList')) || [];
+
+                            ingredientList.push({
+                                IngredientName: localIngredientName,
+                                UnitName: localUnitName,
+                                Amount: localAmount
+                            });
+
+                            localStorage.setItem('ingredientList', JSON.stringify(ingredientList));
+
+                            try {
+                                const response = await fetch('/AddRecipe?handler=AddRecipeIngredient', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ ingredientList })
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                const data = await response.json();
+                                console.log(data);
+
+                                // Code to insert HTML or handle success goes here
+
+                            } catch (error) {
+                                console.error("Failed to fetch recipe ingredients:", error);
+                            }
+                        }
+                    </script> *@
+
+                    <span asp-validation-for="@addRecipeIngredients"></span>
+
+                    <br /><br />
+                </div>
+                <!-- Add New Ingredient -->
+                <div class="hidden" id="addnewingredient">
+                    <hr class="hr1" />
+                    <div class="card1-title">Add New Ingredient</div><br />
+                    <label class="card1-title" for="newingredient">Name</label><br />
+                    <input class="card1-field" type="text" id="newingredient" name="AddRecipeIngredients"
                            value="Ingredient" asp-for="@addRecipeIngredients"></input>
                     <span asp-validation-for="@addRecipeIngredients"></span>
 
-@*                  <label class="card1-number" for="addIngredient">Add Ingredient</label>
-                    <textarea class="card1-field" id="addIngredient" name="AddRecipeIngredients"
-                        value="Ingredient" asp-for="@addRecipeIngredients"></textarea>
-                    <span asp-validation-for="@addRecipeIngredients"></span> *@
-                    
                     <br /><br />
-                    <button>Add More</button>
-                    &nbsp;
-                    <button>Done</button>
+                    <hr class="hr1" />
                 </div>
+                <!-- AJAX AddNewIngredient Updater
+                @*<script> 
+                document.getElementById("-id-").onchange = async function handleChange(evt) {
+                const value = evt.target.value;
+
+                const response = await fetch('/AddRecipe?handler=GetSubcategories&mainCategory=' + encodeURIComponent(value));
+                if (response.ok) {
+                const subcategories = await response.json();
+
+                const subCategoryDropdown = document.getElementById("addSubCategory");
+                subCategoryDropdown.innerHTML = '<option value="">[Select Subcategory]</option>'; // Reset dropdown
+
+                subcategories.forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub;
+                option.text = sub;
+                subCategoryDropdown.appendChild(option);
+                });
+                } else {
+                console.error("Failed to fetch ingredients");
+                }
+                };
+                </script> *@
+                 -->
                 <br />
                 <button type="submit">Save</button>
             </form>
@@ -200,3 +489,5 @@
         <br />
     </div>
 </div>
+
+
