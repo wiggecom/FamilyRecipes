@@ -133,7 +133,6 @@ p {
     text-decoration: none;
     white-space: nowrap;
 }
-
 /* *END* Fixing ugly nav-bar by cloning bootstrap parts and reconstructing to new class */
 
 /* Better container */
@@ -141,6 +140,9 @@ f-container {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
-/*    margin-top: 60px;
-    margin-bottom: 60px;*/
+}
+
+/* Hider */
+.hidden{
+    display: none;
 }

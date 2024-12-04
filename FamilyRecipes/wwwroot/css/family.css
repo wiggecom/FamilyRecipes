@@ -294,13 +294,18 @@ hr.hr1 {
 
 .ch24 {
     width: 24ch !important;
-    text-align: left !important;
 }
 
 .ch8, ch10, ch16, ch24 {
     display: inline-block;
-    text-align: right;
     margin-inline-end: 1ch;
+}
+
+.textleft {
+    text-align: left !important;
+}
+.textright {
+    text-align: right !important;
 }
 
 .blockcenter{
@@ -330,7 +335,7 @@ hr.hr1 {
 
 
 .card1 {
-    width: clamp(350px, 50%, 500px);
+    width: clamp(350px, 70%, 700px);
     color: rgb(var(--cardtextcolor1));
     max-height: 70vh;
     min-height: 40vh;
@@ -361,7 +366,7 @@ hr.hr1 {
 }
 
 .card1-field {
-    width: 80%;
+    width: 60%;
     color: rgb(var(--cardtextcolor1));
     text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
     padding: 5px;
@@ -409,7 +414,7 @@ hr.hr1 {
         background-size: cover;
         background-position: 50% 0;
         animation-name: sun;
-        animation-duration: 20s;
+        animation-duration: 10s;
         animation-iteration-count: infinite;
         animation-direction: normal;
         transition-timing-function: ease-in-out;
@@ -417,26 +422,26 @@ hr.hr1 {
     }
     @keyframes sun{
         0% {
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         25% {
-            opacity: 0.6;
+            opacity: 0.5;
         }
         40% {
-            opacity: 0.5;
+            opacity: 0.6;
         }
         55% {
-            opacity: 0.7;
-        }
-        70% {
-            opacity: 0.55;
-        }
-        90% {
             opacity: 0.9;
         }
+        70% {
+            opacity: 0.65;
+        }
+        90% {
+            opacity: 1;
+        }
         100% {
-            opacity: 0.5;
+            opacity: 0.6;
         }
     }
 
