@@ -6,6 +6,7 @@
     int numberOfUnits = 999;
     List<Models.Unit> firstUnits = new List<Models.Unit>();
     Models.Recipe CurrentRecipe = Model.MyRecipe;
+    bool hasCaloriesAny = Model.HasCaloriesAny;
 
     if (units.Count > numberOfUnits)
     {
@@ -28,55 +29,68 @@
             <div class="f-h2 t-pinky">by @CurrentRecipe.UserName</div>
             <div class="t-gld">@CurrentRecipe.CreatedDate.ToShortDateString()</div>
             <div class="t-gld">@CurrentRecipe.Category.MainCategory - @CurrentRecipe.Category.SubCategory</div>
+            @if (CurrentRecipe.AdultsOnly == true)
+            {
+                <div class="t-pinky">This recipe is for adults only</div>
+            }
+            else
+            {
+                <div class="t-pinky">This recipe is for everyone</div>
+            }
+            <br />
             <div class="text-start blockcenter">
-                @if (CurrentRecipe.AdultsOnly == true)
-                {
-                    <div class="t-pinky">This recipe is for adults only</div>
-                }
-                else
-                {
-                    <div class="t-pinky">This recipe is for everyone</div>
-                }
+
                 <div>
-                    <span class="t-pinky ch8">Time:</span>
-                    <span class="t-gld ch24">@CurrentRecipe.TimeRequired minutes</span>
+                    <span class="t-pinky ch8 textright">Time:</span>
+                    <span class="t-gld ch24 textleft">@CurrentRecipe.TimeRequired minutes</span>
                     <span> - </span>
-                    <span class="t-pinky ch10">Servings:</span>
-                    <span class="t-gld ch24">@CurrentRecipe.Servings</span>
+                    <span class="t-pinky ch10 textright">Servings:</span>
+                    <span class="t-gld ch24 textleft">@CurrentRecipe.Servings</span>
                 </div>
-                @if(CurrentRecipe.RecipeIngredients[0].TotalCalories != 0)
+
+                <!-- Logic: Check recipeIngredients for totalcalories in backend -->
+                <!-- If any has calories data can be displayed -->
+                <!-- If recipe also has number of servings, show kcal/serving -->
+                @if (hasCaloriesAny)
                 {
                     int xCal = 0;
-                    foreach(Models.RecipeIngredient rx in CurrentRecipe.RecipeIngredients)
+                    int sCal = 0;
+                    foreach (Models.RecipeIngredient rx in CurrentRecipe.RecipeIngredients)
                     {
                         xCal += rx.TotalCalories;
                     }
-                <div>
-                    <span class="t-pinky ch10">Calories:</span>
-                    <span class="t-gld ch24"> @xCal kcal</span>
-@*                     <span> - </span>
-                    <span class="t-pinky ch10">Servings:</span>
-                    <span class="t-gld ch24">@CurrentRecipe.Servings</span> *@
-                </div>
+                    <div>
+                        <span class="t-pinky ch10 textright">Calories:</span>
+                        <span class="t-gld ch24 textleft"> @xCal kcal</span>
+                        @if (CurrentRecipe.Servings > 0)
+                        {
+                            sCal = xCal / CurrentRecipe.Servings;
+                            <span> - </span>
+                            <span class="t-pinky ch10 textright">Serving:</span>
+                            <span class="t-gld ch24 textleft"> @sCal kcal</span>
+                        }
+                    </div>
                 }
                 <br />
+                <div class="t-gld ch16 textleft">Ingredients</div>
                 @foreach (Models.RecipeIngredient ri in CurrentRecipe.RecipeIngredients)
                 {
                     <div>
-                        <span class="t-pinky ch8">@ri.Amount@ri.Unit.Short</span><span class="t-gld">@ri.Ingredient.Name</span>
-                    @if(ri.TotalCalories != 0)
-                    {
-                        <span class="t-pinky ch16"> (@ri.TotalCalories kcal)</span>
-                    }
-                    else
-                    {
-                        <span class="t-pinky ch8"> (Calories N/A)</span>
-                    }
+                        <span class="t-pinky ch8 textright">@ri.Amount@ri.Unit.Short</span><span class="t-gld">@ri.Ingredient.Name</span>
+                        @if (ri.TotalCalories != 0)
+                        {
+                            <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
+                        }
+                        else
+                        {
+                            <span class="t-pinky ch8 textleft"> (Calories N/A)</span>
+                        }
                     </div>
                 }
+                <br />
                 @for (int i = 1; i <= CurrentRecipe.Steps.Count; i++)
                 {
-                    <div class="t-pinky">@i. - <span class="t-gld">@CurrentRecipe.Steps[i - 1]</span></div>
+                    <div class="t-pinky">@i. <span class="t-gld">@CurrentRecipe.Steps[i - 1]</span></div>
                 }
                 <br />
                 <div class="t-gld">@CurrentRecipe.Description</div>

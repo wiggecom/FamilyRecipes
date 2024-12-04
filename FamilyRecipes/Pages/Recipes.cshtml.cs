@@ -21,6 +21,7 @@ namespace FamilyRecipes.Pages
         public List<Category> Categories { get; set; } = new List<Category>();
         public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         public Recipe MyRecipe { get; set; } = new Recipe();
+        public bool HasCaloriesAny { get; set; } = false;
 
 
         public string success = "Boo!";
@@ -49,6 +50,10 @@ namespace FamilyRecipes.Pages
             if (firstRecipe != null)
             {
                 MyRecipe = firstRecipe;
+                foreach (var ri in MyRecipe.RecipeIngredients)
+                {
+                    if(ri.TotalCalories > 0) { HasCaloriesAny = true; break; }
+                }
             }
 
             Ingredients = _context.Ingredients.ToList();
