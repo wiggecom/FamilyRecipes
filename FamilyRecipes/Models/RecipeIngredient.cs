@@ -12,9 +12,6 @@
         public int Amount { get; set; }
         public int TotalCalories { get; set; }
 
-        //public string UnitName { get; set; }
-        //public string IngredientName {  get; set; }
-
         public RecipeIngredient()
         {
 

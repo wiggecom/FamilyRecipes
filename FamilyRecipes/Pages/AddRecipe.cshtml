@@ -19,7 +19,6 @@
     string addDescription = Model.AddDescription;
     List<string> addSteps = Model.AddSteps;
     List<string> allSteps = new List<string>();
-    List<string> fakeSteps = new List<string> { "1. Do something", "2. Do something more", "3. Done" };
     List<RecipeIngredient> addRecipeIngredients = Model.AddRecipeIngredients;
     List<RecipeIngredientMapSource> recipeIngredientsMapSource = Model.RecipeIngredientsMapSource;
     RecipeIngredient addOneIngredient = new RecipeIngredient();
@@ -38,6 +37,8 @@
 }
 <script>
     localStorage.setItem('counter', 0);
+    let mapSource = []; // No unexpected data
+
 </script>
 <div class="scrollinside max80">
     <div class="text-center max80 checkered-tiles">
@@ -195,10 +196,9 @@
                 <div>
                     <div class="card1-title">Add Recipe Ingredients</div><br />
                     <!-- List any ingredients added -->
+                    @*                             <div id="currentingredients">
 
-@*                             <div id="currentingredients">
-
-                            </div> *@
+                    </div> *@
 
                     <!-- Select Ingredient Type -->
                     <div class="card1-title">Ingredient Type</div>
@@ -220,9 +220,9 @@
                     <script>
                         document.getElementById("changeRIType").onchange = async function handleChange(evt) {
                             const value = evt.target.value;
-                            localStorage.setItem('ingredientName', '');
-                            localStorage.setItem('unitName', '');
-                            localStorage.setItem('amount', '');
+                            localStorage.setItem('myIngredientName', '');
+                            localStorage.setItem('myUnitName', '');
+                            //localStorage.setItem('myAmount', '');
                             const response = await fetch('/AddRecipe?handler=GetIngredientsByType&ingredientType=' + encodeURIComponent(value));
                             if (response.ok) {
                                 const subcategories = await response.json();
@@ -246,19 +246,15 @@
                     <div class="card1-title">Select Measure</div>
                     <select asp-for="@addRI_UnitName" class="card1-field" id="addRIUnitName" name="AddRI_UnitName" required>
                         <option value="">[Select Measure]</option>
-                        @*                         @foreach (var u in units)
-                        {
-                        <option value="@u.Name">@u.Name</option>
-                        } *@
                     </select>
 
                     <!-- AJAX AddRIUnitName Updater -->
                     <script>
                         document.getElementById("addRIIngredientName").onchange = async function handleChange(evt) {
                             const value = evt.target.value;
-                            localStorage.setItem('ingredientName', value);
-                            localStorage.setItem('unitName', '');
-                            localStorage.setItem('amount', '');
+                            localStorage.setItem('myIngredientName', value);
+                            localStorage.setItem('myUnitName', '');
+                            //localStorage.setItem('myAmount', '');
                             const response = await fetch('/AddRecipe?handler=GetUnitsByType&ingredientName=' + encodeURIComponent(value));
                             if (response.ok) {
                                 const subcategories = await response.json();
@@ -281,10 +277,10 @@
                     <script>
                         document.getElementById("addRIUnitName").onchange = function handleChange(evt) {
                             const value = evt.target.value;
-                            localStorage.setItem('unitName', value);
+                            localStorage.setItem('myUnitName', value);
                         };
                     </script>
-                    <!-- Amount -->
+                    <!-- Amount : TODO Can this value be set from different javascript properly ie UnitName -->
                     <div>
                         <div class="card1-title">Amount</div>
                         <input type="number" class="card1-field" id="addRIAmount" name="addRI_Amount"
@@ -294,7 +290,7 @@
                     <script>
                         document.getElementById("addRIAmount").onchange = function handleChange(evt) {
                             const value = evt.target.value;
-                            localStorage.setItem('amount', value);
+                            localStorage.setItem('myAmount', value);
                         };
                     </script>
 
@@ -313,45 +309,105 @@
                     </div>
                     <!-- Save Recipe Ingredient -->
                     <script type="text/javascript">
+
                         function saveIngredient() {
-                            let localIngredientName = localStorage.getItem('ingredientName');
-                            let localUnitName = localStorage.getItem('unitName');
-                            let localAmount = localStorage.getItem('amount');
+                            let localIngredientName = localStorage.getItem('myIngredientName');
+                            let localUnitName = localStorage.getItem('myUnitName');
+                            let localAmount = localStorage.getItem('myAmount');
                             let counter = Number(localStorage.getItem('counter'));
                             counter = counter + 1;
                             localStorage.setItem('counter', counter);
 
-                            var recipeIngredientsMapSource = @Html.Raw(Json.Serialize(recipeIngredientsMapSource));
+                            //LocalStorage START
+                            const ingredientList = JSON.parse(localStorage.getItem('ingredientList')) || [];
 
-                            const recipeIngredient = {
+                            ingredientList.push({
                                 IngredientName: localIngredientName,
                                 UnitName: localUnitName,
-                                Amount: localAmount,
-                            };
+                                Amount: localAmount
+                            });
+                            localStorage.setItem('ingredientList', JSON.stringify(ingredientList));
+                            //LocalStorage END
+                            addingredienthtml(localIngredientName, localUnitName, localAmount);
+                        }
 
-                            // Add to the recipeIngredients list
-                            recipeIngredientsMapSource.push(recipeIngredient);
-                            console.log("This list:", recipeIngredientsMapSource);
+                        // ----------------------------------------------------------------
+                        // Unresolved issues with pre-populated list that gets overwritten
+                        // Directly from form when running the script 
+                        // ----------------------------------------------------------------
+                        // async function saveIngredient() {
+                        //     console.log("---------------------------------------");
+                        //     let mapSource = @Html.Raw(Json.Serialize(Model.RecipeIngredientsMapSource));
+                        //     console.log("Initial mapSource:", mapSource);
+                        //     let localIngredientName = localStorage.getItem('myIngredientName');
+                        //     let localUnitName = localStorage.getItem('myUnitName');
+                        //     let localAmount = localStorage.getItem('myAmount');
+                        //     console.log("Get mapsource list:", mapSource);
+                        //     const recipeIngredient = {
+                        //         IngredientName: localIngredientName,
+                        //         UnitName: localUnitName,
+                        //         Amount: localAmount,
+                        //     };
+                        //     // Add to the recipeIngredients list
+                        //     mapSource.push(recipeIngredient);
+                        //     console.log("Pushed to new list:", mapSource);
+                        //     //Update backend
+                        //     await fetch('/AddRecipe?handler=UpdateIngredients', {
+                        //         method: 'POST',
+                        //         headers: { 'Content-Type': 'application/json' },
+                        //         body: JSON.stringify({ ingredients: mapSource })
+                        //     })
+                        //         .then(response => {
+                        //             if (!response.ok) {
+                        //                 throw new Error("HTTP error " + response.status);
+                        //             }
+                        //             return response.json();
+                        //         })
+                        //         .then(data => {
+                        //             if (data.success) {
+                        //                 console.log("Server response:", data);
+                        //                 console.log("Server data ingredients:", data.ingredients);
+                        //                 // Update the frontend list with the returned data
+                        //                 mapSource = data.ingredients;
+                        //                 console.log("Updated from data:", mapSource);
+                        //                 // Clear and re-render the list
+                        //                 const ingredientContainer = document.getElementById("currentingredients");
+                        //                 ingredientContainer.innerHTML = ""; // Clear the existing content
+                        //                 mapSource.forEach(item => {
+                        //                     addingredienthtml(item.IngredientName, item.UnitName, item.Amount);
+                        //                     console.log("Fetched item:", item);
+                        //                     console.log("Fetched item.IngredientName:", item.IngredientName);
+                        //                     console.log("Fetched item.UnitName:", item.UnitName);
+                        //                     console.log("Fetched item.Amount:", item.Amount);
+                        //                 });
+                        //             } else {
+                        //                 console.error("Error updating ingredients:", data.message);
+                        //             }
+                        //         })
+                        //         .catch(error => console.error("Error during update:", error));
+                        //     let freshMapSource = @Html.Raw(Json.Serialize(Model.RecipeIngredientsMapSource));
+                        //     console.log("After fetch:", freshMapSource);
+                        //     // Add HTML
+                        //     //addingredienthtml(localIngredientName, localUnitName, localAmount);
+                        // }
 
-                            // Update backendfetch('/UpdateIngredients', {
-                            method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ ingredients: recipeIngredientsMapSource })
-                        })
-                        .then(response => response.json())
-                            .then(data => {
-                                console.log("Server response:", data);
-                            })
-                            .catch(error => console.error("Error updating ingredients:", error));
 
 
-                            // Add HTML
+
+                        // Add HTML
+
+                        function addingredienthtml(localIngredientName, localUnitName, localAmount) {
+
+                            let counter = Number(localStorage.getItem('counter'));
+                            counter = counter + 1;
+                            localStorage.setItem('counter', counter);
+
                             // Get the container where rows will be added
                             const container = document.getElementById("currentingredients");
 
                             // Create a new div or span to hold the row (for better structure)
                             const newRow = document.createElement("div"); // Or use a <span> if you prefer
-                            newRow.id = 'ingredient'+counter;
+                            newRow.id = 'ingredient' + counter;
 
                             // Create the first span for Amount and UnitName
                             const amountUnitSpan = document.createElement("span");
@@ -364,29 +420,30 @@
                             ingredientSpan.textContent = ' - ' + localIngredientName; // Set the text
 
                             // Remove-link
-                            const removeLink = document.createElement("a");
-                            removeLink.href = "#"; // Prevent default navigation
-                            removeLink.textContent = " Remove";
-                            removeLink.className = "remove-link"; // Optional class for styling
-                            removeLink.style.marginLeft = "10px"; // Optional: Add some spacing
-                            removeLink.onclick = function (e) {
-                                e.preventDefault(); // Prevent the default action of the link
-                                container.removeChild(newRow); // Remove the current row
-                                console.log(`${localIngredientName} removed`);
-                                // run secondary script
-                                removeIngredient(localIngredientName);
-                                heyman('hola amigo');
-                            };
-                            
+                            // const removeLink = document.createElement("a");
+                            // removeLink.href = "#"; // Prevent default navigation
+                            // removeLink.textContent = " Remove";
+                            // removeLink.className = "remove-link"; // Optional class for styling
+                            // removeLink.style.marginLeft = "10px"; // Optional: Add some spacing
+                            // removeLink.onclick = function (e) {
+                            //     e.preventDefault(); // Prevent the default action of the link
+                            //     container.removeChild(newRow); // Remove the current row
+                            //     console.log(`${localIngredientName} removed`);
+                            //     // run secondary script
+                            //     removeIngredient(localIngredientName);
+                            //     // heyman('hola amigo');
+                            // };
+
 
                             // Append both spans to the new row
                             newRow.appendChild(amountUnitSpan);
                             newRow.appendChild(ingredientSpan);
-                            newRow.appendChild(removeLink);
+                            //newRow.appendChild(removeLink);
 
                             // Append the new row to the container
                             container.appendChild(newRow);
                         }
+
                         // Remove Recipe Ingredient
                         function removeIngredient(ingredientName) {
                             console.log(`Removing ${ingredientName} from the list.`);
@@ -395,51 +452,52 @@
                                 item => item.IngredientName !== ingredientName
                             );
 
-                            console.log("Updated list:", recipeIngredientsMapSource);
+                            // console.log("After Removed:", ingredientList);
                         }
                         function heyman(heeey) {
                             alert(heeey);
                         }
+
                     </script>
-@*                     <script type="text/javascript">
-                        async function saveIngredient() {
-                            let localIngredientName = localStorage.getItem('ingredientName');
-                            let localUnitName = localStorage.getItem('unitName');
-                            let localAmount = localStorage.getItem('amount');
+                    @*                     <script type="text/javascript">
+                    async function saveIngredient() {
+                    let localIngredientName = localStorage.getItem('myIngredientName');
+                    let localUnitName = localStorage.getItem('myUnitName');
+                    let localAmount = localStorage.getItem('myAmount');
 
-                            // JSON-serializer
-                            const ingredientList = JSON.parse(localStorage.getItem('ingredientList')) || [];
+                    // JSON-serializer
+                    const ingredientList = JSON.parse(localStorage.getItem('ingredientList')) || [];
 
-                            ingredientList.push({
-                                IngredientName: localIngredientName,
-                                UnitName: localUnitName,
-                                Amount: localAmount
-                            });
+                    ingredientList.push({
+                    IngredientName: localIngredientName,
+                    UnitName: localUnitName,
+                    Amount: localAmount
+                    });
 
-                            localStorage.setItem('ingredientList', JSON.stringify(ingredientList));
+                    localStorage.setItem('ingredientList', JSON.stringify(ingredientList));
 
-                            try {
-                                const response = await fetch('/AddRecipe?handler=AddRecipeIngredient', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({ ingredientList })
-                                });
+                    try {
+                    const response = await fetch('/AddRecipe?handler=AddRecipeIngredient', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ingredientList })
+                    });
 
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! status: ${response.status}`);
-                                }
+                    if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                    }
 
-                                const data = await response.json();
-                                console.log(data);
+                    const data = await response.json();
+                    console.log(data);
 
-                                // Code to insert HTML or handle success goes here
+                    // Code to insert HTML or handle success goes here
 
-                            } catch (error) {
-                                console.error("Failed to fetch recipe ingredients:", error);
-                            }
-                        }
+                    } catch (error) {
+                    console.error("Failed to fetch recipe ingredients:", error);
+                    }
+                    }
                     </script> *@
 
                     <span asp-validation-for="@addRecipeIngredients"></span>
@@ -459,7 +517,7 @@
                     <hr class="hr1" />
                 </div>
                 <!-- AJAX AddNewIngredient Updater
-                @*<script> 
+                @*<script>
                 document.getElementById("-id-").onchange = async function handleChange(evt) {
                 const value = evt.target.value;
 

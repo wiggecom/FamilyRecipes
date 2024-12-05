@@ -36,7 +36,7 @@ namespace FamilyRecipes.Pages
                 if (!unit.IsMetrical) System.Diagnostics.Debug.WriteLine(" is an imperial measure");
             }
 
-            if (!_context.Categories.Any())
+            if (!_context.Categories.Any() || !_context.Units.Any() || !_context.Ingredients.Any() || !_context.Recipes.Any())
             {
                 var seeds = new DbSeeds(_context);
                 await seeds.SeedingDataAsync();
@@ -51,10 +51,12 @@ namespace FamilyRecipes.Pages
             //if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
             //if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "
 
+            // Used?
             Categories = _context.Categories.ToList();
-            MyRecipe = _context.Recipes.FirstOrDefault();
             Ingredients = _context.Ingredients.ToList();
+            MyRecipe = _context.Recipes.FirstOrDefault();
             if (MyRecipe != null) { success = "Great Succses!"; }
+            //
 
         }
     }

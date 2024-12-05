@@ -25,7 +25,11 @@ public class Program
         {
             options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
         });
-
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+             {
+                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
+             });
 
         builder.Services.AddTransient<DbSeeds>();
 

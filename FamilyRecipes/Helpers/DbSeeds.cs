@@ -63,7 +63,7 @@ namespace FamilyRecipes.Helpers
                 {
                     new RecipeIngredient
                     {
-                                Ingredient = myIngredients.Where(i => i.Name=="Chicken").FirstOrDefault(),
+                                Ingredient = myIngredients.Where(i => i.Name=="Chicken Breast").FirstOrDefault(),
                                 Unit = myUnits.Where(u => u.Name=="Gram").FirstOrDefault(),
                                 Amount = 500,
                     },
@@ -75,7 +75,7 @@ namespace FamilyRecipes.Helpers
                     },
                     new RecipeIngredient
                     {
-                                Ingredient = myIngredients.Where(i => i.Name=="Cream").FirstOrDefault(),
+                                Ingredient = myIngredients.Where(i => i.Name=="Cream (Heavy)").FirstOrDefault(),
                                 Unit = myUnits.Where(u => u.Name=="Millilitre").FirstOrDefault(),
                                 Amount = 500,
                     }
