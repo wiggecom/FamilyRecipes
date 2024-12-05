@@ -48,6 +48,8 @@
                 new Category { MainCategory = "Stews and Soups", SubCategory = "Soup (Cold)" },
                 new Category { MainCategory = "Meat", SubCategory = "Pork" },
                 new Category { MainCategory = "Meat", SubCategory = "Beef" },
+                new Category { MainCategory = "Meat", SubCategory = "Game" },
+                new Category { MainCategory = "Meat", SubCategory = "Other" },
                 new Category { MainCategory = "Meat", SubCategory = "Poultry" },
                 new Category { MainCategory = "Oceanic", SubCategory = "Fish" },
                 new Category { MainCategory = "Oceanic", SubCategory = "Seafood" },
