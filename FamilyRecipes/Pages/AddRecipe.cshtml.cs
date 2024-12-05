@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace FamilyRecipes.Pages
 {
@@ -118,7 +119,7 @@ namespace FamilyRecipes.Pages
             if (chosenIngredient.IsMeasuredByVolume)
             {
                 unitsByType = _context.Units
-                .Where(x => x.IsVolume == true 
+                .Where(x => x.IsVolume == true
                 && x.IsMetrical == currentUser.PreferMetrical)
                 .OrderBy(x => x.InMl)
                 .Select(x => x.Name).ToList();
@@ -138,20 +139,48 @@ namespace FamilyRecipes.Pages
             return new JsonResult(unitsByType);
         }
 
-        public JsonResult UpdateIngredients([FromBody] List<RecipeIngredientMapSource> ingredients)
-        {
-            // Assuming this list is stored somewhere on the server (e.g., in memory or a database)
-            // Update the server-side list
-            foreach (var ingredient in ingredients)
-            {
-                Console.WriteLine($"Ingredient: {ingredient.IngredientName}, Unit: {ingredient.UnitName}, Amount: {ingredient.Amount}");
-            }
+        #region old update ingredients
+        //public JsonResult UpdateIngredients([FromBody] List<RecipeIngredientMapSource> ingredients)
+        //{
+        //    if (ingredients.Any())
+        //    {
+        //        foreach (var ingredient in ingredients)
+        //        {
+        //            Console.WriteLine($"Ingredient: {ingredient.IngredientName}, Unit: {ingredient.UnitName}, Amount: {ingredient.Amount}");
+        //        }
+        //    }
+        //    return new JsonResult(new { success = true });
+        //}
+        #endregion
 
-            // Return a confirmation response
-            return new JsonResult(new { success = true, count = ingredients.Count });
-        }
+        //public JsonResult OnPostUpdateIngredients([FromBody] IngredientsUpdateModel ingredients)
+        //{
+        //    if (ingredients == null || ingredients.Ingredients == null)
+        //    {
+        //        return new JsonResult(new { success = false, message = "Invalid data" });
+        //    }
+
+        //    foreach (var ingredient in ingredients.Ingredients)
+        //    {
+        //        RecipeIngredientsMapSource.Add(ingredient);
+        //    }
+
+        //    // Serialize the updated list and return it
+        //    return new JsonResult(new
+        //    {
+        //        success = true,
+        //        ingredients = RecipeIngredientsMapSource.Select(i => new
+        //        {
+        //            IngredientName = i.IngredientName,
+        //            UnitName = i.UnitName,
+        //            Amount = i.Amount
+        //        }).ToList()
+        //    });
+        //}
 
 
+
+        #region old add recipeingredient
         //public JsonResult OnPostAddRecipeIngredient([FromBody] RecipeIngredientListModel model)
         //{
         //    // Ensure the list is not null
@@ -188,6 +217,7 @@ namespace FamilyRecipes.Pages
         //    //return new JsonResult(model.IngredientList);
         //    return new JsonResult(newList);
         //}
+        #endregion
 
         // Helper class for deserialization
         public class RecipeIngredientListModel
@@ -197,7 +227,10 @@ namespace FamilyRecipes.Pages
             public string IngredientName { get; set; }
         }
 
-
+        public class IngredientsUpdateModel
+        {
+            public List<RecipeIngredientMapSource> Ingredients { get; set; }
+        }
 
     }
 }
