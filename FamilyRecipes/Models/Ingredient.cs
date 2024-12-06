@@ -513,7 +513,6 @@ new Ingredient { Name="Unsweetened Cocoa Powder", Calories=12, Type="Baking", Is
                 new Ingredient { Name="Limoncello", Calories=175, Type="Alcohol", IsMeasuredByVolume=true },
                 new Ingredient { Name="Creme de Menthe", Calories=152, Type="Alcohol", IsMeasuredByVolume=true },
                 new Ingredient { Name="Pimm's No. 1", Calories=170, Type="Alcohol", IsMeasuredByVolume=true },
-                new Ingredient { Name="Absinthe", Calories=120, Type="Alcohol", IsMeasuredByVolume=true },
                 new Ingredient { Name="Beer (Lager)", Calories=150, Type="Alcohol", IsMeasuredByVolume=true },
                 new Ingredient { Name="Beer (Pilsner)", Calories=140, Type="Alcohol", IsMeasuredByVolume=true },
                 new Ingredient { Name="Beer (Porter)", Calories=180, Type="Alcohol", IsMeasuredByVolume=true },
