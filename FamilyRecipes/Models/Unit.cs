@@ -19,7 +19,7 @@
             return new List<Unit>
             {
                 // Fluid/Volume measures
-                new Unit { Name = "Number",       Short = "pc",    IsMetrical = true,  IsVolume = false, InMl=1.0f},
+                //new Unit { Name = "Number",       Short = "pc",    IsMetrical = true,  IsVolume = false, InMl=1.0f},
                 new Unit { Name = "Litre",        Short = "l",     IsMetrical = true,  IsVolume = true,  InMl=1000.0f},
                 new Unit { Name = "Decilitre",    Short = "dl",    IsMetrical = true,  IsVolume = true,  InMl=100.0f},
                 new Unit { Name = "Centilitre",   Short = "cl",    IsMetrical = true,  IsVolume = true,  InMl=10.0f},
