@@ -1,10 +1,12 @@
 using FamilyRecipes.Helpers;
 using FamilyRecipes.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace FamilyRecipes.Pages
 {
@@ -21,15 +23,11 @@ namespace FamilyRecipes.Pages
         }
 
         public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
-        public List<Category> Categories { get; set; } = new List<Category>();
-        public List<Category> AllCategories { get; set; }
-        public Recipe? MyRecipe { get; set; } = new Recipe();
-        public Recipe? AddRecipe { get; set; } = new Recipe();
+        public List<string> DistinctMainCategories { get; set; } = new List<string>();
         public Category AddCategory { get; set; }
         public List<string> IngredientTypes { get; set; } = new List<string>();
 
         [BindProperty] public string AddTitle { get; set; }
-
         [BindProperty] public List<RecipeIngredientMapSource> RecipeIngredientsMapSource { get; set; } = new List<RecipeIngredientMapSource>();
         [BindProperty] public string AddMainCategory { get; set; }
         [BindProperty] public string AddSubCategory { get; set; }
@@ -46,12 +44,12 @@ namespace FamilyRecipes.Pages
         public string AddRI_UnitName { get; set; }
         public int AddRI_Amount { get; set; }
 
-        // BaseIngredient
-        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        public string AddI_IngredientName { get; set; }
-        public string AddI_Description { get; set; }
-        public string AddI_Type { get; set; }
-        public int AddI_Calories { get; set; }
+        // BaseIngredient (Not used, upcoming feature)
+        //public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+        //public string AddI_IngredientName { get; set; }
+        //public string AddI_Description { get; set; }
+        //public string AddI_Type { get; set; }
+        //public int AddI_Calories { get; set; }
 
         // public string UserName { get; set; } // FamilyUser.Name
         // public DateTime CreatedDate { get; set; }
@@ -59,32 +57,75 @@ namespace FamilyRecipes.Pages
 
         public void OnGet()
         {
-            Categories = _context.Categories.ToList();
-            AllCategories = _context.Categories.ToList();
-            Ingredients = _context.Ingredients.ToList();
+            DistinctMainCategories = _context.Categories.Select(c => c.MainCategory).Distinct().ToList();
+            //AllIngredients = _context.Ingredients.ToList();
             IngredientTypes = Ingredient.GetIngredientTypes();
 
-            if (true)
-            {
-                Thread.Sleep(1000);
-                return;
-            }
+            //if (true)
+            //{
+            //    Thread.Sleep(1000);
+            //    return;
+            //}
 
         }
 
-        public void OnPostAddRecipe()
+        public async Task<IActionResult> OnPostAddRecipe(string ingredientList)
         {
-            //Categories = _context.Categories.ToList();
-            //AllCategories = _context.Categories.ToList();
-            //Ingredients = _context.Ingredients.ToList();
-
-            if (true)
+            if (string.IsNullOrEmpty(ingredientList))
             {
-                Thread.Sleep(1000);
-                return;
+                return BadRequest("No ingredients provided.");
             }
 
+            List<Category> allCategories = _context.Categories.ToList();
+            List<Ingredient> allIngredients = _context.Ingredients.ToList();
+            List<Unit> allUnits = _context.Units.ToList();
+            List<Recipe> allRecipes = _context.Recipes.ToList();
+            Recipe thisRecipe = new Recipe();
+            FamilyUser thisUser = FamilyUser.GetFakeUser("Feta Greta", true);
 
+            // Deserialize the ingredient list from JSON
+            var ingredients = JsonSerializer.Deserialize<List<RecipeIngredientMapSource>>(ingredientList);
+            thisRecipe.Title = AddTitle;
+            thisRecipe.UserName = thisUser.Name;
+            thisRecipe.CreatedDate = DateTime.Now;
+            thisRecipe.Category = allCategories.Where(c => c.SubCategory == AddSubCategory).FirstOrDefault();
+            thisRecipe.TimeRequired = AddTimeRequired;
+            thisRecipe.Servings = AddServings;
+            thisRecipe.Description = AddDescription;
+            thisRecipe.Image = AddImage;
+            thisRecipe.AdultsOnly = AddAdultsOnly;
+            foreach(string s in AddSteps)
+            {
+                thisRecipe.Steps.Add(s);
+            }
+            foreach (RecipeIngredientMapSource i in ingredients)
+            {
+                RecipeIngredient r = new RecipeIngredient();
+                r.Ingredient = allIngredients.Where(a => a.Name == i.IngredientName).FirstOrDefault();
+                r.Unit = allUnits.Where(u => u.Name == i.UnitName).FirstOrDefault();
+                r.Amount = int.Parse(i.Amount);
+                thisRecipe.RecipeIngredients.Add(r);
+            }
+            foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
+            { 
+                r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
+            }
+
+            
+            try
+            {
+                _context.Recipes.Add(thisRecipe);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                List<string> errors = new List<string>(); 
+                foreach (string s in errors) { errors.Add(s); }
+                throw;
+            }
+            
+
+                return RedirectToAction("/AddRecipe");
         }
 
         public JsonResult OnGetGetSubcategories(string mainCategory)
@@ -178,7 +219,43 @@ namespace FamilyRecipes.Pages
         //    });
         //}
 
+        /*
+         AddRecipeIngredientList
+         */
+        public JsonResult OnPostAddRecipeIngredientList([FromBody] AddRecipeIngredientListModel model)
+        {
+            if (model == null)
+            {
+                return new JsonResult("Model is null");
+            }
 
+            if (model.Ingredients == null)
+            {
+                return new JsonResult("Ingredients list is null");
+            }
+
+
+            // Process the received data
+            foreach (var item in model.Ingredients)
+            {
+                // Guard-clause, Reversed If-Statement, Early Return
+                if (string.IsNullOrWhiteSpace(item.IngredientName)) return new JsonResult(model.Ingredients);
+                if (string.IsNullOrWhiteSpace(item.UnitName)) return new JsonResult(model.Ingredients);
+                if (item.Amount == null || item.Amount == "0") return new JsonResult(model.Ingredients);
+
+                RecipeIngredientMapSource thisIngredient = new RecipeIngredientMapSource();
+                thisIngredient.IngredientName = item.IngredientName;
+                thisIngredient.UnitName = item.UnitName;
+                thisIngredient.Amount = item.Amount;
+                RecipeIngredientsMapSource.Add(thisIngredient);
+
+            }
+
+            // Return the updated list
+            //return new JsonResult(model.IngredientList);
+            //return new JsonResult(model.Ingredients);
+            return new JsonResult(RecipeIngredientsMapSource);
+        }
 
         #region old add recipeingredient
         //public JsonResult OnPostAddRecipeIngredient([FromBody] RecipeIngredientListModel model)
@@ -227,7 +304,7 @@ namespace FamilyRecipes.Pages
             public string IngredientName { get; set; }
         }
 
-        public class IngredientsUpdateModel
+        public class AddRecipeIngredientListModel
         {
             public List<RecipeIngredientMapSource> Ingredients { get; set; }
         }
