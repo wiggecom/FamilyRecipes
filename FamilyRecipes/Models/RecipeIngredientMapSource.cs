@@ -9,6 +9,6 @@ namespace FamilyRecipes.Models
 
         [JsonPropertyName("UnitName")] public string UnitName { get; set; }
 
-        [JsonPropertyName("Amount")] public int Amount { get; set; }
+        [JsonPropertyName("Amount")] public string Amount { get; set; }
     }
 }
