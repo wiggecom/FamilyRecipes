@@ -46,5 +46,16 @@
             //Grädde:  450
         }
 
+        public static int CalculateTotalCalories(int calcAmount, int calcIngredientCalories)
+        {
+            float ingredientCaloriesFloat = (float)calcIngredientCalories / 100;
+            if (calcIngredientCalories > 0)
+            {
+                int myNum = (int)Math.Round((ingredientCaloriesFloat * calcAmount), 0); // Early return
+
+                return myNum;
+            }
+            return 0;
+        }
     }
 }
