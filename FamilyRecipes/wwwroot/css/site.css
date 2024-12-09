@@ -31,6 +31,18 @@ html {
     font-size: 14px;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+
 @media (min-width: 768px) {
     html {
         font-size: 16px;
