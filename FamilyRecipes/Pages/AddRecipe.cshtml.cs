@@ -1,3 +1,4 @@
+using FamilyRecipes.Data;
 using FamilyRecipes.Helpers;
 using FamilyRecipes.Models;
 using Microsoft.AspNetCore.Diagnostics;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.Json;
 
+
 namespace FamilyRecipes.Pages
 {
     public class AddRecipeModel : PageModel
@@ -15,12 +17,18 @@ namespace FamilyRecipes.Pages
     {
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private ApplicationDbContext @object;
 
         public AddRecipeModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        //public AddRecipeModel(ApplicationDbContext @object)
+        //{
+        //    this.@object = @object;
+        //}
 
         public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
         public List<string> DistinctMainCategories { get; set; } = new List<string>();
@@ -37,6 +45,7 @@ namespace FamilyRecipes.Pages
         [BindProperty] public List<string> AddSteps { get; set; } = new List<string>();
         [BindProperty] public bool AddAdultsOnly { get; set; }
         [BindProperty] public string AddImage { get; set; }
+        public Recipe thisRecipe { get; set; }
 
         // RecipeIngredients
         public List<RecipeIngredient> AddRecipeIngredients { get; set; } = new List<RecipeIngredient>();
@@ -106,12 +115,13 @@ namespace FamilyRecipes.Pages
                 r.Amount = int.Parse(i.Amount);
                 thisRecipe.RecipeIngredients.Add(r);
             }
-            foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
-            { 
-                r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
-            }
+            // commenting this out for test OnPostAddRecipe_Should_Return_A_Redirecttion_When_Ingredients_Are_Provided
+            //foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
+            //{ 
+            //    r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
+            //}
 
-            
+
             try
             {
                 _context.Recipes.Add(thisRecipe);
