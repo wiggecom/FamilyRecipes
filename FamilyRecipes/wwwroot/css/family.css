@@ -452,131 +452,9 @@ hr.hr1 {
     box-shadow: rgba(0,0,0,0.5) 3px 15px 15px;
 }
 
-/*.card1-field, input[type=text], input[type=textarea] {
-    background-color: rgba(var(--cardtextcolor), 0.5) !important;
-}*/
-
-.checkered-tiles{
-    background-image: url("../images/graphics/checkers_tile.svg");
-    background-repeat:repeat;
-    background-attachment:fixed;
-    width: 100%;
-    height: 100%;
-}
-
 .z300{
     z-index:300;
 }
-
-/* ---------------- SunnyMountains Background ----------------- */
-.bg-trees_sun {
-    position: relative;
-}
-
-    .bg-trees_sun:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("../images/graphics/trees_sun_v3.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        background-position: 50% 0;
-        animation-name: sun;
-        animation-duration: 10s;
-        animation-iteration-count: infinite;
-        animation-direction: normal;
-        transition-timing-function: ease-in-out;
-        /*opacity: 0.6;*/
-    }
-    @keyframes sun{
-        0% {
-            opacity: 0.6;
-        }
-
-        25% {
-            opacity: 0.5;
-        }
-        40% {
-            opacity: 0.6;
-        }
-        55% {
-            opacity: 0.9;
-        }
-        70% {
-            opacity: 0.65;
-        }
-        90% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0.6;
-        }
-    }
-
-.bg-trees_base {
-    position:relative;
-}
-
-.bg-trees_base:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    background-image: url("../images/graphics/trees_mountains.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: 50% 0;
-    opacity: 0.2;
-}
-
-.bg-trees_left {
-    position: relative;
-}
-
-    .bg-trees_left:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        background-image: url("../images/graphics/trees_left.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: left center;
-        background-size: auto 100%;
-        width: 100%;
-        height: 100vh;
-        min-height: 100vh;
-    }
-
-.bg-trees_right {
-    position: relative;
-}
-
-    .bg-trees_right:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background-image: url("../images/graphics/trees_right.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: right center;
-        background-size: auto 100%;
-        width: 100%;
-        height: 100vh;
-        min-height: 100vh;
-    }
 
 .pop {
     position:relative;
@@ -589,5 +467,3 @@ hr.hr1 {
         left: 0;
         top: 60px;
     }
-
-/* ---------------- SunnyMountains Background END ------------- */
