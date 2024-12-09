@@ -1,5 +1,6 @@
 using FamilyRecipes.Data;
 using FamilyRecipes.Helpers;
+using FamilyRecipes.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ public class Program
             .AddEntityFrameworkStores<ApplicationDbContext>();
         // OfflineTest
         //builder.Services.AddRazorPages();
+        builder.Services.AddHttpClient();
         builder.Services.AddRazorPages(options =>
         {
             options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
@@ -32,6 +34,7 @@ public class Program
              });
 
         builder.Services.AddTransient<DbSeeds>();
+        builder.Services.AddScoped<ICalculations, Calculations>();
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
