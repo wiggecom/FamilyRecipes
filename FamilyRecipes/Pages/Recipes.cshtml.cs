@@ -34,12 +34,6 @@ namespace FamilyRecipes.Pages
                 if (!unit.IsMetrical) System.Diagnostics.Debug.WriteLine(" is an imperial measure");
             }
 
-            if (!_context.Categories.Any())
-            {
-                var seeds = new DbSeeds(_context);
-                await seeds.SeedingDataAsync();
-            }
-
             Categories = _context.Categories.ToList();
             Recipe? firstRecipe = _context.Recipes
                     .Include(r => r.RecipeIngredients)
