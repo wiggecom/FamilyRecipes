@@ -1,6 +1,7 @@
 using FamilyRecipes.Data;
 using FamilyRecipes.Helpers;
 using FamilyRecipes.Models;
+using FamilyRecipes.Interfaces;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,12 +17,15 @@ namespace FamilyRecipes.Pages
 
     {
         private readonly Data.ApplicationDbContext _context;
+        private readonly ICalculations _calculations;
         private readonly IWebHostEnvironment webHostEnvironment;
         private ApplicationDbContext @object;
 
-        public AddRecipeModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public AddRecipeModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment,
+            ICalculations calculations)
         {
             _context = context;
+            _calculations = calculations;
             this.webHostEnvironment = webHostEnvironment;
         }
 
@@ -115,11 +119,10 @@ namespace FamilyRecipes.Pages
                 r.Amount = int.Parse(i.Amount);
                 thisRecipe.RecipeIngredients.Add(r);
             }
-            // commenting this out for test OnPostAddRecipe_Should_Return_A_Redirecttion_When_Ingredients_Are_Provided
-            //foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
-            //{ 
-            //    r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
-            //}
+            foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
+            { 
+                r.TotalCalories = _calculations.CalculateTotalCalories(r.Ingredient.Name, r.Unit.Name, r.Amount);
+            }
 
 
             try
