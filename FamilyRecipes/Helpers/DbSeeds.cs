@@ -1,15 +1,20 @@
 ﻿using FamilyRecipes.Models;
+using FamilyRecipes.Data;
+using FamilyRecipes.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using FamilyRecipes.Interfaces;
 
 namespace FamilyRecipes.Helpers
 {
     public class DbSeeds
     {
-        private readonly Data.ApplicationDbContext _context;
-        public DbSeeds(Data.ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly ICalculations _calculations;
+        public DbSeeds(ApplicationDbContext context, ICalculations calculations)
         {
             _context = context;
+            _calculations = calculations;
         }
 
         public async Task SeedingDataAsync()
@@ -86,15 +91,8 @@ namespace FamilyRecipes.Helpers
             };
             foreach (RecipeIngredient ri in recipe.RecipeIngredients)
             {
-                ri.TotalCalories = RecipeIngredient.CalculateTotalCalories(ri.Amount, ri.Ingredient.Calories);
+                ri.TotalCalories = _calculations.CalculateTotalCalories(ri.Ingredient.Name, ri.Unit.Name, ri.Amount);
             }
-
-            //int chickenTotal = RecipeIngredient.CalculateTotalCalories(recipe.RecipeIngredients[0].Amount, recipe.RecipeIngredients[0].Ingredient.Calories);
-            //recipe.RecipeIngredients[0].TotalCalories = chickenTotal;
-            //int veggiesTotal = RecipeIngredient.CalculateTotalCalories(recipe.RecipeIngredients[1].Amount, recipe.RecipeIngredients[1].Ingredient.Calories);
-            //recipe.RecipeIngredients[1].TotalCalories = veggiesTotal;
-            //int creamTotal = RecipeIngredient.CalculateTotalCalories(recipe.RecipeIngredients[2].Amount, recipe.RecipeIngredients[2].Ingredient.Calories);
-            //recipe.RecipeIngredients[2].TotalCalories = creamTotal;
 
             return recipe;
         }
