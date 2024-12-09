@@ -48,7 +48,7 @@
     color: rgb(255, 128, 192);
     /* --------------------------- */
     color: rgb(var(--electricblue));
-    color: rgb(128, 223, 255);
+    color: rgb(86, 233, 255);
     /* --------------------------- */
     color: rgb(var(--goldycolor));
     color: rgb(255, 172, 0);
@@ -175,9 +175,17 @@
     text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
 }
 
+.t-electricblue {
+    color: rgb(var(--electricblue)) !important;
+    text-shadow: rgba(var(--electricblue),0.5) 0px 0px 6px, rgba(0,0,0,1) 0px 5px 5px, rgba(0,0,0,1) 0px 5px 10px, rgba(0,0,0,1) 0px 5px 15px !important;
+    -webkit-text-stroke: rgba(0,0,0,0.7) 1px;
+    /* Shadow order: top > mid > bottom */
+}
+
+
 .t-pinky {
     color: rgba(var(--bubblegumpink),1) !important;
-    text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
+    text-shadow: rgba(255,128,192,0.9) 0px 0px 15px, rgba(255,128,192,0.9) 0px 0px 4px, rgba(0,0,0,1) 0px 5px 10px !important;
 }
 
 .t-darkxmas {
@@ -216,6 +224,10 @@
 .f-p {
     font-size: 1.2em;
     font-weight: 600;
+}
+
+.f-shadow_black {
+    text-shadow: rgba(0,0,0,0.9) 0px 5px 15px !important;
 }
 
 hr.hr1 {
