@@ -7,6 +7,12 @@
     --navfirstcolor: 0, 99, 99;
     --navsecondcolor: 99, 0, 99;
     --bgfadecolor: 0, 0, 0;
+    --sandy: 246, 136, 88;
+    --great: 100, 255, 100;
+    --good: 110, 210, 180;
+    --ok: 225, 200, 80;
+    --caution: 255, 125, 60;
+    --warning: 255, 85, 85;
     --hotpink: 255, 0, 128;
     --bubblegumpink: 255, 128, 192;
     --electricblue: 128, 223, 255;
@@ -18,7 +24,9 @@
     --cardtextcolor1: 255, 255, 127;
     --brightyellow: 255, 255, 127;
 }
+.x {
 
+}
 .root-samples {
     color: rgb(var(--bgplaincolor));
     color: rgb(10, 0, 24);
@@ -41,6 +49,24 @@
     color: rgb(var(--bgfadecolor));
     color: rgb(0, 0, 0);
     /* --------------------------- */
+    color: rgb(var(--great));
+    color: rgb(100, 255, 100);
+    /* --------------------------- */
+    color: rgb(var(--good));
+    color: rgb(110, 210, 180);
+    /* --------------------------- */
+    color: rgb(var(--ok));
+    color: rgb(225, 200, 80);
+    /* --------------------------- */
+    color: rgb(var(--caution));
+    color: rgb(255, 125, 60);
+    /* --------------------------- */
+    color: rgb(var(--warning));
+    color: rgb(255, 85, 85);
+    /* --------------------------- */
+    color: rgb(var(--sandy));
+    color: rgb(246, 136, 88);
+    /* --------------------------- */
     color: rgb(var(--hotpink));
     color: rgb(255, 0, 128);
     /* --------------------------- */
@@ -48,7 +74,7 @@
     color: rgb(255, 128, 192);
     /* --------------------------- */
     color: rgb(var(--electricblue));
-    color: rgb(128, 223, 255);
+    color: rgb(86, 233, 255);
     /* --------------------------- */
     color: rgb(var(--goldycolor));
     color: rgb(255, 172, 0);
@@ -175,9 +201,17 @@
     text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
 }
 
+.t-electricblue_pop {
+    color: rgb(var(--electricblue)) !important;
+    text-shadow: rgba(var(--electricblue),0.5) 0px 0px 6px, rgba(0,0,0,1) 0px 5px 5px, rgba(0,0,0,1) 0px 5px 10px, rgba(0,0,0,1) 0px 5px 15px !important;
+    -webkit-text-stroke: rgba(0,0,0,0.7) 1px;
+    /* Shadow order: top > mid > bottom */
+}
+
+
 .t-pinky {
     color: rgba(var(--bubblegumpink),1) !important;
-    text-shadow: rgba(255,128,192,0.9) 0px 0px 25px !important;
+    text-shadow: rgba(255,128,192,0.9) 0px 0px 15px, rgba(255,128,192,0.9) 0px 0px 4px, rgba(0,0,0,1) 0px 5px 10px !important;
 }
 
 .t-darkxmas {
@@ -194,6 +228,41 @@
 
 .t-gld {
     color: rgb(var(--goldycolor)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-hotpink {
+    color: rgb(var(--bubblegumpink)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-electricblue {
+    color: rgb(var(--electricblue)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-great {
+    color: rgb(var(--great)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-good {
+    color: rgb(var(--good)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-ok {
+    color: rgb(var(--ok)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-caution {
+    color: rgb(var(--caution)) !important;
+    text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
+}
+
+.t-warning {
+    color: rgb(var(--warning)) !important;
     text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
 }
 
@@ -216,6 +285,10 @@
 .f-p {
     font-size: 1.2em;
     font-weight: 600;
+}
+
+.f-shadow_black {
+    text-shadow: rgba(0,0,0,0.9) 0px 5px 15px !important;
 }
 
 hr.hr1 {
