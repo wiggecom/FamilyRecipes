@@ -6,7 +6,9 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public int Calories { get; set; } // per 100g
+        public int Calories { get; set; } // always per 100g
+        public double Volume100Grams { get; set; }
+        public int TypicalUnitWeight { get; set; }
         public bool IsMeasuredByVolume { get; set; } // Helps selecting available measures
         public Ingredient() { }
 
