@@ -75,3 +75,15 @@ copy checkers.png warmsalads.png
 copy checkers.png warmsandwiches.png
 copy checkers.png warmdrinks.png
 copy checkers.png whiskey.png
+
+
+
+
+// Example of IsNullOrWhiteSpace
+//if (!string.IsNullOrWhiteSpace(MyRecipe.Title)) 
+//{
+//    System.Diagnostics.Debug.WriteLine(MyRecipe.Title);
+//}
+
+//if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
+//if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "

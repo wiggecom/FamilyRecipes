@@ -53,40 +53,13 @@ namespace FamilyRecipes.Pages
                 await seeds.SeedingDataAsync();
             }
 
-            // Used?
-            Categories = _context.Categories.ToList();
-            Ingredients = _context.Ingredients.ToList();
-            MyRecipe = _context.Recipes.FirstOrDefault();
-            if (MyRecipe != null) { success = "Great Succses!"; }
-
-            //await GetPriceAsync();
             priceList = await Electricity.GetPrice(0);
             if (DateTime.Now.Hour >= 14) 
             {
                 priceListTomorrow = await Electricity.GetPrice(1);
             }
-            foreach (ElectricityPrice price in priceList)
-            {
-                System.Diagnostics.Debug.WriteLine(price.time_start.ToString("HH") + " - " + price.SEK_per_kWh);
-            }
-
-            if (true)
-            {
-                Thread.Sleep(10);
-
-            }
-
         }
     }
 }
 
-
-// Example of IsNullOrWhiteSpace
-//if (!string.IsNullOrWhiteSpace(MyRecipe.Title)) 
-//{
-//    System.Diagnostics.Debug.WriteLine(MyRecipe.Title);
-//}
-
-//if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
-//if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "
 
