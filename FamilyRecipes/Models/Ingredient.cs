@@ -7,8 +7,8 @@
         public string Name { get; set; }
         public string Type { get; set; }
         public int Calories { get; set; } // always per 100g
-        public double Volume100Grams { get; set; }
-        public int TypicalUnitWeight { get; set; }
+        public double Volume100Grams { get; set; } // eg. calculate calories from 1dl of flour
+        public int TypicalUnitWeight { get; set; } // eg. Average weight of a standard potato
         public bool IsMeasuredByVolume { get; set; } // Helps selecting available measures
         public Ingredient() { }
 
