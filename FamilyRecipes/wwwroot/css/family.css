@@ -23,6 +23,8 @@
     --cardbgcolor2: 64, 64, 64;
     --cardtextcolor1: 255, 255, 127;
     --brightyellow: 255, 255, 127;
+    --recipemenu: 57, 35, 90;
+    --recipedroptext: 246, 255, 124;
 }
 .x {
 
@@ -96,6 +98,12 @@
     /* --------------------------- */
     color: rgb(var(--brightyellow));
     color: rgb(255, 255, 127);
+    /* --------------------------- */
+    color: rgb(var(--recipemenu));
+    color: rgb(57, 35, 90);
+    /* --------------------------- */
+    color: rgb(var(--recipedroptext));
+    color: rgb(246, 255, 124);
     /* --------------------------- */
 }
 
@@ -398,6 +406,11 @@ hr.hr1 {
 }
 
 .card-color2 {
+    background-image: linear-gradient(170deg, rgba(var(--cardbgcolor2),0.4) clamp(25%, 120px, 120px), rgba(var(--cardbgcolor2),0.2) clamp(25%, 120px, 120px), rgba(var(--cardbgcolor2),0.3) clamp(75%, calc(100% - 120px), calc(100% - 120px)), rgba(var(--cardbgcolor2),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
+    border: solid 4px rgba(0,0,0,0.4);
+}
+
+.card-color2 {
     background-image: linear-gradient(170deg, 
     rgba(var(--darkpurple),0.4) clamp(25%, 120px, 120px), 
     rgba(var(--darkpurple),0.2) clamp(25%, 120px, 120px), 
@@ -405,7 +418,6 @@ hr.hr1 {
     rgba(var(--darkpurple),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
     border: solid 4px rgba(0,0,0,0.4);
 }
-
 
 .card1 {
     width: clamp(350px, 70%, 700px);
@@ -452,131 +464,55 @@ hr.hr1 {
     box-shadow: rgba(0,0,0,0.5) 3px 15px 15px;
 }
 
-/*.card1-field, input[type=text], input[type=textarea] {
-    background-color: rgba(var(--cardtextcolor), 0.5) !important;
-}*/
+.recipes-drop-title {
+    color: rgb(var(--recipedroptext));
+    text-shadow: 2px 3px 3px rgba(0,0,0,0.7);
+    /*background-color: rgba(var(--recipemenu), 1.0);*/
+    font-size: 1.2em;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
 
-.checkered-tiles{
-    background-image: url("../images/graphics/checkers_tile.svg");
-    background-repeat:repeat;
-    background-attachment:fixed;
-    width: 100%;
-    height: 100%;
+.recipes-drop-field {
+    width: 200px;
+    color: rgb(var(--recipedroptext));
+    background-color: rgba(var(--recipemenu), 1.0);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    padding: 5px;
+    font-weight: 700;
+    border: none;
+    outline: inset;
+}
+
+.recipes-field {
+    width: 400px;
+    color: rgb(var(--recipedroptext));
+    background-color: rgba(var(--recipemenu), 1.0);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    padding: 5px;
+    font-weight: 700;
+    border: none;
+    outline: inset;
+}
+    .recipes-field:hover, .recipes-field:focus, .recipes-field::selection {
+        width: 400px;
+        color: rgb(var(--great));
+        background-color: rgba(var(--recipemenu), 1.0);
+        text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+        padding: 5px;
+        font-weight: 700;
+        border: none;
+        outline: inset;
+    }
+.recipes-spacer{
+    margin-bottom: 20px;
+    padding-bottom:20px;
 }
 
 .z300{
     z-index:300;
 }
-
-/* ---------------- SunnyMountains Background ----------------- */
-.bg-trees_sun {
-    position: relative;
-}
-
-    .bg-trees_sun:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("../images/graphics/trees_sun_v3.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        background-position: 50% 0;
-        animation-name: sun;
-        animation-duration: 10s;
-        animation-iteration-count: infinite;
-        animation-direction: normal;
-        transition-timing-function: ease-in-out;
-        /*opacity: 0.6;*/
-    }
-    @keyframes sun{
-        0% {
-            opacity: 0.6;
-        }
-
-        25% {
-            opacity: 0.5;
-        }
-        40% {
-            opacity: 0.6;
-        }
-        55% {
-            opacity: 0.9;
-        }
-        70% {
-            opacity: 0.65;
-        }
-        90% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0.6;
-        }
-    }
-
-.bg-trees_base {
-    position:relative;
-}
-
-.bg-trees_base:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    background-image: url("../images/graphics/trees_mountains.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: 50% 0;
-    opacity: 0.2;
-}
-
-.bg-trees_left {
-    position: relative;
-}
-
-    .bg-trees_left:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        background-image: url("../images/graphics/trees_left.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: left center;
-        background-size: auto 100%;
-        width: 100%;
-        height: 100vh;
-        min-height: 100vh;
-    }
-
-.bg-trees_right {
-    position: relative;
-}
-
-    .bg-trees_right:before {
-        content: ' ';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background-image: url("../images/graphics/trees_right.svg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: right center;
-        background-size: auto 100%;
-        width: 100%;
-        height: 100vh;
-        min-height: 100vh;
-    }
 
 .pop {
     position:relative;
@@ -590,4 +526,11 @@ hr.hr1 {
         top: 60px;
     }
 
-/* ---------------- SunnyMountains Background END ------------- */
+.topmenu{
+    display:flex;
+}
+
+.hider {
+    display: none;
+    visibility: hidden;
+}

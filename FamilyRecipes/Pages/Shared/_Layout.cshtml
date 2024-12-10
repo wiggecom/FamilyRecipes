@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="~/FamilyRecipes.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/family.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/backgrounds.css" asp-append-version="true" />
 
 </head>
-<body class="main-bg max100">
+<body class="main-bg">
     <header class="nav-bg">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light nav-bg border-bottom box-shadow">
             <div class="container">
@@ -40,12 +41,17 @@
             </div>
         </nav>
     </header>
-    <div class="f-container scrollinside max80 w100 border-bottom">
-        <main role="main">
+    <div role="main" class="f-container scrollinside max80 w100 border-bottom">
             @RenderBody()
-        </main>
     </div>
+<!--
+        <div class="f-container scrollinside max80 w100 border-bottom">
+            <main role="main">
+    RenderBody()
+            </main>
+        </div>
 
+-->
     <footer class="footer footer-bg-container t-lemony border-top z300">
         <div class="footer-bg">
             <div class="container">
@@ -57,8 +63,8 @@
                 &nbsp;
             </div>
         </div>
-        <div class="container t-pinky index100 text-center fw1000">
-            &copy; 2024 - FamilyRecipes
+        <div class="container t-pinky index100 text-center fw1000 pop">
+            &copy; 2024 - FamilySystem
         </div>
     </footer>
 

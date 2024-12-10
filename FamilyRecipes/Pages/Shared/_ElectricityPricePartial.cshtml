@@ -92,42 +92,4 @@
 }
 <br />
 <br />
-@* <div class="card1 card-color2 card-shadow_large glass">
-    <div class="f-h3 t-neonpink">@todayName - @todayDate</div>
-    @foreach (ElectricityPrice e in todayPrice)
-    {
-        int startTime = e.time_start.Hour;
-        int endTime = e.time_end.Hour;
-        double priceNow = Math.Round(e.SEK_per_kWh, 2);
-        if (e.SEK_per_kWh < 1)
-        {
-            <div class="f-p t-gld">@startTime - @priceNow - @endTime</div>
-        }
-        if (e.SEK_per_kWh >= 1)
-        {
-            <div class="f-p t-darkxmas">@startTime - @priceNow - @endTime</div>
-        }
-    }
-    <br />
-</div>
-@if(hourNow >= 14)
-{
-    <div class="card1 card-color2 card-shadow_large glass">
-        <div class="f-h3 t-neonpink">@tomorrowName - @tomorrowDate</div>
-        @foreach (ElectricityPrice t in tomorrowPrice)
-        {
-            int startTime = t.time_start.Hour;
-            int endTime = t.time_end.Hour;
-            double priceNow = Math.Round(t.SEK_per_kWh, 2);
-            if (t.SEK_per_kWh < 1)
-            {
-                <div class="f-p t-gld">@startTime - @priceNow - @endTime</div>
-            }
-            if (t.SEK_per_kWh >= 1)
-            {
-                <div class="f-p t-darkxmas">@startTime - @priceNow - @endTime</div>
-            }
-        }
-        <br />
-    </div>
-} *@
+
