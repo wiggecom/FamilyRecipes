@@ -23,6 +23,8 @@
     --cardbgcolor2: 64, 64, 64;
     --cardtextcolor1: 255, 255, 127;
     --brightyellow: 255, 255, 127;
+    --recipemenu: 57, 35, 90;
+    --recipedroptext: 246, 255, 124;
 }
 .x {
 
@@ -96,6 +98,12 @@
     /* --------------------------- */
     color: rgb(var(--brightyellow));
     color: rgb(255, 255, 127);
+    /* --------------------------- */
+    color: rgb(var(--recipemenu));
+    color: rgb(57, 35, 90);
+    /* --------------------------- */
+    color: rgb(var(--recipedroptext));
+    color: rgb(246, 255, 124);
     /* --------------------------- */
 }
 
@@ -398,6 +406,11 @@ hr.hr1 {
 }
 
 .card-color2 {
+    background-image: linear-gradient(170deg, rgba(var(--cardbgcolor2),0.4) clamp(25%, 120px, 120px), rgba(var(--cardbgcolor2),0.2) clamp(25%, 120px, 120px), rgba(var(--cardbgcolor2),0.3) clamp(75%, calc(100% - 120px), calc(100% - 120px)), rgba(var(--cardbgcolor2),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
+    border: solid 4px rgba(0,0,0,0.4);
+}
+
+.card-color2 {
     background-image: linear-gradient(170deg, 
     rgba(var(--darkpurple),0.4) clamp(25%, 120px, 120px), 
     rgba(var(--darkpurple),0.2) clamp(25%, 120px, 120px), 
@@ -405,7 +418,6 @@ hr.hr1 {
     rgba(var(--darkpurple),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
     border: solid 4px rgba(0,0,0,0.4);
 }
-
 
 .card1 {
     width: clamp(350px, 70%, 700px);
@@ -452,6 +464,52 @@ hr.hr1 {
     box-shadow: rgba(0,0,0,0.5) 3px 15px 15px;
 }
 
+.recipes-drop-title {
+    color: rgb(var(--recipedroptext));
+    text-shadow: 2px 3px 3px rgba(0,0,0,0.7);
+    /*background-color: rgba(var(--recipemenu), 1.0);*/
+    font-size: 1.2em;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.recipes-drop-field {
+    width: 200px;
+    color: rgb(var(--recipedroptext));
+    background-color: rgba(var(--recipemenu), 1.0);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    padding: 5px;
+    font-weight: 700;
+    border: none;
+    outline: inset;
+}
+
+.recipes-field {
+    width: 400px;
+    color: rgb(var(--recipedroptext));
+    background-color: rgba(var(--recipemenu), 1.0);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    padding: 5px;
+    font-weight: 700;
+    border: none;
+    outline: inset;
+}
+    .recipes-field:hover, .recipes-field:focus, .recipes-field::selection {
+        width: 400px;
+        color: rgb(var(--great));
+        background-color: rgba(var(--recipemenu), 1.0);
+        text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+        padding: 5px;
+        font-weight: 700;
+        border: none;
+        outline: inset;
+    }
+.recipes-spacer{
+    margin-bottom: 20px;
+    padding-bottom:20px;
+}
+
 .z300{
     z-index:300;
 }
@@ -467,3 +525,12 @@ hr.hr1 {
         left: 0;
         top: 60px;
     }
+
+.topmenu{
+    display:flex;
+}
+
+.hider {
+    display: none;
+    visibility: hidden;
+}

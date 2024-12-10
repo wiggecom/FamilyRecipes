@@ -1,9 +1,28 @@
-﻿.checkered-tiles{
-    background-image: url("../images/graphics/checkers_tile.svg");
-    background-repeat:repeat;
-    background-attachment:fixed;
+﻿.checkered-tiles {
+    background-image: url("../images/graphics/bg/checkers_tile.png");
+    background-repeat: repeat;
+    background-attachment: fixed;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 2px); /* -2px for upper and lower border line */
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 61px;
+}
+
+.recipe-bg {
+    background-image: url('../images/graphics/bg/checkers_tile.png');
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: auto;
+    width: 100%;
+    height: 100%; /* -2px for upper and lower border line */
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 61px;
 }
 
 /* ---------------- SunnyMountains Background ----------------- */
