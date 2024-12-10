@@ -1,20 +1,12 @@
 ﻿@page
 @model IndexModel
+@using FamilyRecipes.Models;
 @{
-    ViewData["Title"] = "Home page";
-    List<Models.Unit> units = Model.Units;
-    int numberOfUnits = 999;
-    List<Models.Unit> firstUnits = new List<Models.Unit>();
-    if (units.Count > numberOfUnits)
-    {
-        firstUnits = units.Take(numberOfUnits).ToList();
-    }
-    else
-    {
-        firstUnits = units.ToList();
-    }
+    ViewData["Title"] = "Family Recipes";
 }
+<script>
 
+</script>
 <div class="bg-trees_sun">
     <div class="bg-trees_base">
         <div class="bg-trees_left">
@@ -23,21 +15,20 @@
                     <br />
                     <div class="f-h1 t-neonpink">Family Recipes<br />DELUXE</div>
                     <br />
-                    <br />
                     <div class="card1 card-color2 card-shadow_large glass">
-                        @foreach (Models.Unit u in firstUnits)
-                        {
-                            if (u.IsMetrical)
-                            {
-                                <p class="f-p t-gld">The unit @u.Name is awesome! It's Metrical!</p>
-                            }
-                            if (!u.IsMetrical)
-                            {
-                                <p class="f-p t-darkxmas">The unit @u.Name is not awesome!</p>
-                            }
-                        }
-                        <br />
+                        <div class="f-h3 t-electricblue_pop">
+                            <p>Welcome to the Family Recipes</p>
+                            <p>This is the first part of the FamilySystem</p>
+                            <p>which will get additional modules soon.</p>
+                            <p>For now there is the recipe bank which will hold</p>
+                            <p>all of your favorite recipes, features in progress</p>
+                            <p>includes internal users under main account, ratings</p>
+                            <p>top lists and conversions.</p>
+                        </div>
                     </div>
+                    <br />
+                    <br />
+                    <partial name="_ElectricityPricePartial">
                     <br />
                     <br />
                 </div>

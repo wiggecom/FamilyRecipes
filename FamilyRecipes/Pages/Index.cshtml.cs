@@ -2,6 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FamilyRecipes.Models;
 using FamilyRecipes.Helpers;
+using FamilyRecipes.Interfaces;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.Xml;
+using static System.Net.WebRequestMethods;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace FamilyRecipes.Pages
 {
@@ -15,11 +21,17 @@ namespace FamilyRecipes.Pages
         //}
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ICalculations _calculations;
+        private readonly HttpClient _httpClient;
 
-        public IndexModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public IndexModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment,
+            ICalculations calculations, HttpClient httpClient)
         {
             _context = context;
+            _calculations = calculations;
+            _httpClient = httpClient;
             this.webHostEnvironment = webHostEnvironment;
+            _httpClient.Timeout = TimeSpan.FromSeconds(120);
         }
 
         [BindProperty] public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
@@ -27,38 +39,27 @@ namespace FamilyRecipes.Pages
         [BindProperty] public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         [BindProperty] public Recipe MyRecipe { get; set; } = new Recipe();
         public string success = "Boo!";
-        public async void OnGet()
-        {
-            foreach (var unit in Units)
-            {
-                System.Diagnostics.Debug.Write(unit.Name);
-                if (unit.IsMetrical) System.Diagnostics.Debug.WriteLine(" is a metrical measure");
-                if (!unit.IsMetrical) System.Diagnostics.Debug.WriteLine(" is an imperial measure");
-            }
 
+        public dynamic ApiData { get; private set; } // GetPrice()
+
+        [BindProperty] public List<ElectricityPrice> priceList { get; set; } = new List<ElectricityPrice>();
+        [BindProperty] public List<ElectricityPrice> priceListTomorrow { get; set; } = new List<ElectricityPrice>();
+
+        public async Task OnGetAsync()
+        {
             if (!_context.Categories.Any() || !_context.Units.Any() || !_context.Ingredients.Any() || !_context.Recipes.Any())
             {
-                var seeds = new DbSeeds(_context);
+                var seeds = new DbSeeds(_context, _calculations);
                 await seeds.SeedingDataAsync();
             }
 
-            // Example of IsNullOrWhiteSpace
-            //if (!string.IsNullOrWhiteSpace(MyRecipe.Title)) 
-            //{
-            //    System.Diagnostics.Debug.WriteLine(MyRecipe.Title);
-            //}
-
-            //if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
-            //if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "
-
-            // Used?
-            Categories = _context.Categories.ToList();
-            Ingredients = _context.Ingredients.ToList();
-            MyRecipe = _context.Recipes.FirstOrDefault();
-            if (MyRecipe != null) { success = "Great Succses!"; }
-            //
-
+            priceList = await Electricity.GetPrice(0);
+            if (DateTime.Now.Hour >= 14) 
+            {
+                priceListTomorrow = await Electricity.GetPrice(1);
+            }
         }
     }
 }
+
 

@@ -1,0 +1,89 @@
+﻿// Cloning images to defaults for missing //
+copy checkers.png african.png
+copy checkers.png appetizer.png
+copy checkers.png arabic.png
+copy checkers.png baked.png
+copy checkers.png beef.png
+copy checkers.png brazilian.png
+copy checkers.png breads.png
+copy checkers.png cakes.png
+copy checkers.png candies.png
+copy checkers.png caribbean.png
+copy checkers.png christmas.png
+copy checkers.png cocktail.png
+copy checkers.png cold.png
+copy checkers.png condiment.png
+copy checkers.png cookies.png
+copy checkers.png creamy.png
+copy checkers.png dough.png
+copy checkers.png easter.png
+copy checkers.png english.png
+copy checkers.png entry.png
+copy checkers.png fishstew.png
+copy checkers.png fish.png
+copy checkers.png french.png
+copy checkers.png freshveg.png
+copy checkers.png freshsalads.png
+copy checkers.png game.png
+copy checkers.png gin.png
+copy checkers.png greek.png
+copy checkers.png ice-cream.png
+copy checkers.png indian.png
+copy checkers.png italian.png
+copy checkers.png juice.png
+copy checkers.png legume.png
+copy checkers.png liqueur.png
+copy checkers.png longdrink.png
+copy checkers.png meatstew.png
+copy checkers.png meatbbq.png
+copy checkers.png mexican.png
+copy checkers.png milkshake.png
+copy checkers.png milkshake(alcohol).png
+copy checkers.png northamerican.png
+copy checkers.png omelettes.png
+copy checkers.png othermeat.png
+copy checkers.png otherstew.png
+copy checkers.png pancake.png
+copy checkers.png pork.png
+copy checkers.png poultry.png
+copy checkers.png puddingsandjelly.png
+copy checkers.png caloricpunch.png
+copy checkers.png punch.png
+copy checkers.png rum.png
+copy checkers.png sauce.png
+copy checkers.png seafood.png
+copy checkers.png snack.png
+copy checkers.png soda.png
+copy checkers.png soup.png
+copy checkers.png soup(cold).png
+copy checkers.png soup(warm).png
+copy checkers.png southamerican.png
+copy checkers.png spanish.png
+copy checkers.png spice.png
+copy checkers.png spritzer.png
+copy checkers.png stew.png
+copy checkers.png styles.png
+copy checkers.png subs.png
+copy checkers.png swedish.png
+copy checkers.png thanksgiving.png
+copy checkers.png pizzatopping.png
+copy checkers.png desserttoppings.png
+copy checkers.png vegetablebbq.png
+copy checkers.png vodka.png
+copy checkers.png warm(alcohol).png
+copy checkers.png warmsalads.png
+copy checkers.png warmsandwiches.png
+copy checkers.png warmdrinks.png
+copy checkers.png whiskey.png
+
+
+
+
+// Example of IsNullOrWhiteSpace
+//if (!string.IsNullOrWhiteSpace(MyRecipe.Title)) 
+//{
+//    System.Diagnostics.Debug.WriteLine(MyRecipe.Title);
+//}
+
+//if (string.IsNullOrEmpty(success)) { } //will trigger on null and "" but not " "
+//if (string.IsNullOrWhiteSpace(success)) { } //will trigger on null, "" and " "

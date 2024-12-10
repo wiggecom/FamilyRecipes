@@ -1,0 +1,95 @@
+﻿@using FamilyRecipes.Models;
+@model FamilyRecipes.Pages.IndexModel
+
+@{
+    List<ElectricityPrice> todayPrice = Model.priceList;
+    List<ElectricityPrice> tomorrowPrice = Model.priceListTomorrow;
+    int hourNow = DateTime.Now.Hour;
+    string todayName = DateTime.Now.ToString("dddd");
+    string tomorrowName = DateTime.Now.AddDays(1).ToString("dddd");
+    string todayDate = DateTime.Now.ToShortDateString();
+    string tomorrowDate = DateTime.Now.AddDays(1).ToShortDateString();
+    string rate = "t-warning";
+}
+<div class="card1 card-color2 card-shadow_large glass">
+    <div class="f-h2 t-neonpink">Current Electricity Price</div>
+    <div class="f-h3 t-neonpink">@todayName - @todayDate</div>
+    @foreach (var e in todayPrice)
+    {
+        if (e.time_start.Hour >= (hourNow - 6))
+        {
+            string startTime = e.time_start.ToString("HH");
+            string endTime = e.time_end.ToString("HH");
+            double priceNow = Math.Round(e.SEK_per_kWh, 2);
+
+            switch (priceNow)
+            {
+                case (< 0.5):
+                    rate = "t-great";
+                    break;
+                case (< 1):
+                    rate = "t-good";
+                    break;
+                case (< 1.5):
+                    rate = "t-ok";
+                    break;
+                case (< 2):
+                    rate = "t-caution";
+                    break;
+                default:
+                    rate = "t-warning";
+                    break;
+            }
+            if (DateTime.Now.ToString("HH") == startTime)
+            {
+                <span class="f-p @rate">&mdash;&nbsp;&nbsp;</span>
+            }
+            <span class="f-p @rate">@startTime.00 - @priceNow.ToString("0.00") SEK</span>
+            if (DateTime.Now.ToString("HH") == startTime)
+            {
+                <span class="f-p @rate">&nbsp;&nbsp;&mdash;</span>
+            }
+            <br />
+        }
+    }
+    <br />
+</div>
+@if (hourNow >= 14)
+{
+    <br />
+    <div class="card1 card-color2 card-shadow_large glass">
+        <div class="f-h2 t-neonpink">Tomorrows Electricity Price</div>
+        <div class="f-h3 t-neonpink">@tomorrowName - @tomorrowDate</div>
+        @foreach (var e in tomorrowPrice)
+        {
+            string startTime = e.time_start.ToString("HH");
+            string endTime = e.time_end.ToString("HH");
+            double priceNow = Math.Round(e.SEK_per_kWh, 2);
+            switch (priceNow)
+            {
+                case (< 0.5):
+                    rate = "t-great";
+                    break;
+                case (< 1):
+                    rate = "t-good";
+                    break;
+                case (< 1.5):
+                    rate = "t-ok";
+                    break;
+                case (< 2):
+                    rate = "t-caution";
+                    break;
+                default:
+                    rate = "t-warning";
+                    break;
+            }
+            <span class="f-p @rate">@startTime.00 - @priceNow.ToString("0.00") SEK</span>
+
+            <br />
+        }
+        <br />
+    </div>
+}
+<br />
+<br />
+

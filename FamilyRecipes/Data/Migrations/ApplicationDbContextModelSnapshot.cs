@@ -30,14 +30,6 @@ namespace FamilyRecipes.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CategoryIcon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CategoryImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MainCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,6 +105,12 @@ namespace FamilyRecipes.Data.Migrations
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypicalUnitWeight")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Volume100Grams")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

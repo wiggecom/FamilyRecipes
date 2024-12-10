@@ -1,103 +1,247 @@
 ﻿@page
 @model FamilyRecipes.Pages.RecipesModel
+@using FamilyRecipes.Models
 @{
     ViewData["Title"] = "Home page";
-    List<Models.Unit> units = Model.Units;
-    int numberOfUnits = 999;
-    List<Models.Unit> firstUnits = new List<Models.Unit>();
-    Models.Recipe CurrentRecipe = Model.MyRecipe;
+    List<Unit> units = Model.Units;
+    Recipe currentRecipe = Model.MyRecipe;
     bool hasCaloriesAny = Model.HasCaloriesAny;
-
-    if (units.Count > numberOfUnits)
-    {
-        firstUnits = units.Take(numberOfUnits).ToList();
-    }
-    else
-    {
-        firstUnits = units.ToList();
-    }
+    List<Category> categories = Model.Categories;
+    Recipe selectedRecipe = new Recipe();
+    string mainCategory = "";
+    string subCategory = "";
+    string selectRecipe = "";
+    string wallpaper = subCategory;
 }
+<script>
 
-<div class="scrollinside max80 footerspacer">
-    <div class="text-center">
+</script>
+<div class="scrollinside max80">
+    <div class="text-center max80 recipe-bg scrollinside" id="recipe-bg">
         <br />
-        <div class="f-h1 t-neonpink">Recipes</div>
-        <br />
-        <div class="card1 card-color1 glass">
-            <br />
-            <div class="f-h2 t-goldy">@CurrentRecipe.Title</div>
-            <div class="f-h2 t-pinky">by @CurrentRecipe.UserName</div>
-            <div class="t-gld">@CurrentRecipe.CreatedDate.ToShortDateString()</div>
-            <div class="t-gld">@CurrentRecipe.Category.MainCategory - @CurrentRecipe.Category.SubCategory</div>
-            @if (CurrentRecipe.AdultsOnly == true)
-            {
-                <div class="t-pinky">This recipe is for adults only</div>
-            }
-            else
-            {
-                <div class="t-pinky">This recipe is for everyone</div>
-            }
-            <br />
-            <div class="text-start blockcenter">
-
-                <div>
-                    <span class="t-pinky ch8 textright">Time:</span>
-                    <span class="t-gld ch24 textleft">@CurrentRecipe.TimeRequired minutes</span>
-                    <span> - </span>
-                    <span class="t-pinky ch10 textright">Servings:</span>
-                    <span class="t-gld ch24 textleft">@CurrentRecipe.Servings</span>
-                </div>
-
-                <!-- Logic: Check recipeIngredients for totalcalories in backend -->
-                <!-- If any has calories data can be displayed -->
-                <!-- If recipe also has number of servings, show kcal/serving -->
-                @if (hasCaloriesAny)
-                {
-                    int xCal = 0;
-                    int sCal = 0;
-                    foreach (Models.RecipeIngredient rx in CurrentRecipe.RecipeIngredients)
+        <div class="d-flex flex-row justify-content-center">
+            <div class="flex-column">
+                <label asp-for="@mainCategory" class="recipes-drop-title">Category</label><br />
+                <select asp-for="@mainCategory" class="recipes-drop-field" id="maincategory" name="MainCategory">
+                    <option value="">[Select Category]</option>
+                    @foreach (string c in categories.Select(c => c.MainCategory).Distinct().ToList())
                     {
-                        xCal += rx.TotalCalories;
+                        <option value="@c">@c</option>
                     }
-                    <div>
-                        <span class="t-pinky ch10 textright">Calories:</span>
-                        <span class="t-gld ch24 textleft"> @xCal kcal</span>
-                        @if (CurrentRecipe.Servings > 0)
-                        {
-                            sCal = xCal / CurrentRecipe.Servings;
-                            <span> - </span>
-                            <span class="t-pinky ch10 textright">Serving:</span>
-                            <span class="t-gld ch24 textleft"> @sCal kcal</span>
-                        }
-                    </div>
-                }
-                <br />
-                <div class="t-gld ch16 textleft">Ingredients</div>
-                @foreach (Models.RecipeIngredient ri in CurrentRecipe.RecipeIngredients)
-                {
-                    <div>
-                        <span class="t-pinky ch8 textright">@ri.Amount@ri.Unit.Short</span><span class="t-gld">@ri.Ingredient.Name</span>
-                        @if (ri.TotalCalories != 0)
-                        {
-                            <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
-                        }
-                        else
-                        {
-                            <span class="t-pinky ch8 textleft"> (Calories N/A)</span>
-                        }
-                    </div>
-                }
-                <br />
-                @for (int i = 1; i <= CurrentRecipe.Steps.Count; i++)
-                {
-                    <div class="t-pinky">@i. <span class="t-gld">@CurrentRecipe.Steps[i - 1]</span></div>
-                }
-                <br />
-                <div class="t-gld">@CurrentRecipe.Description</div>
-
+                </select>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="flex-column">
+                <label asp-for="@subCategory" class="recipes-drop-title">Subcategory</label><br />
+                <select asp-for="@subCategory" class="recipes-drop-field" id="subcategory" name="SubCategory">
+                    <option value="">[Select Subcategory]</option>
+                </select>
             </div>
 
         </div>
+        <br />
+        <div class="d-flex flex-row justify-content-left hider" id="recipelist">
+            <div class="card1 card-color2 glass recipes-spacer">
+                <label asp-for="@selectRecipe" class="recipes-drop-title">Subcategory</label><br />
+                <select class="recipes-field" name="Recipes" size="12" id="listbox">
+                    <option class="recipes-field" value="">[Select Recipe]</option>
+                </select>
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+        <br />
+        <!-- Show Recipe START -->
+        <div class="d-flex flex-row justify-content-left hider" id="showrecipe">
+            <div class="card1 card-color2 glass" id="recipe">
+                <br />
+                <div class="f-h2 t-goldy">@currentRecipe.Title</div>
+                <div class="f-h2 t-pinky">by @currentRecipe.UserName</div>
+                <div class="t-gld">@currentRecipe.CreatedDate.ToShortDateString()</div>
+                <div class="t-gld">@currentRecipe.Category.MainCategory - @currentRecipe.Category.SubCategory</div>
+                @if (currentRecipe.AdultsOnly == true)
+                {
+                    <div class="t-pinky">This recipe is for adults only</div>
+                }
+                else
+                {
+                    <div class="t-pinky">This recipe is for everyone</div>
+                }
+                <br />
+                <div class="text-start blockcenter">
+
+                    <div>
+                        <span class="t-pinky ch8 textright">Time:</span>
+                        <span class="t-gld ch24 textleft">@currentRecipe.TimeRequired minutes</span>
+                        <span> - </span>
+                        <span class="t-pinky ch10 textright">Servings:</span>
+                        <span class="t-gld ch24 textleft">@currentRecipe.Servings</span>
+                    </div>
+
+                    <!-- Logic: Check recipeIngredients for totalcalories in backend -->
+                    <!-- If any has calories data can be displayed -->
+                    <!-- If recipe also has number of servings, show kcal/serving -->
+                    @if (hasCaloriesAny)
+                    {
+                        int xCal = 0;
+                        int sCal = 0;
+                        foreach (Models.RecipeIngredient rx in currentRecipe.RecipeIngredients)
+                        {
+                            xCal += rx.TotalCalories;
+                        }
+                        <div>
+                            <span class="t-pinky ch10 textright">Calories:</span>
+                            <span class="t-gld ch24 textleft"> @xCal kcal</span>
+                            @if (currentRecipe.Servings > 0)
+                            {
+                                sCal = xCal / currentRecipe.Servings;
+                                <span> - </span>
+                                <span class="t-pinky ch10 textright">Serving:</span>
+                                <span class="t-gld ch24 textleft"> @sCal kcal</span>
+                            }
+                        </div>
+                    }
+                    <br />
+                    <div class="t-gld ch16 textleft">Ingredients</div>
+                    @foreach (Models.RecipeIngredient ri in currentRecipe.RecipeIngredients)
+                    {
+                        <div>
+                            <span class="t-pinky ch8 textright">@ri.Amount@ri.Unit.Short</span><span class="t-gld">@ri.Ingredient.Name</span>
+                            @if (ri.TotalCalories != 0)
+                            {
+                                <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
+                            }
+                            else
+                            {
+                                <span class="t-pinky ch16 textleft"> (Calories N/A)</span>
+                            }
+                        </div>
+                    }
+                    <br />
+                    @for (int i = 1; i <= currentRecipe.Steps.Count; i++)
+                    {
+                        <div class="t-pinky">@i. <span class="t-gld">@currentRecipe.Steps[i - 1]</span></div>
+                    }
+                    <br />
+                    <div class="t-gld">@currentRecipe.Description</div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- Show Recipe END -->
+        <div>
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
     </div>
-    <br />
 </div>
+<script type="text/javascript">
+    // Get Category //
+    document.getElementById("maincategory").onchange = async function handleChange(evt) {
+        const value = evt.target.value;
+
+        const response = await fetch('/Recipes?handler=GetSubcategories&mainCategory=' + encodeURIComponent(value));
+        if (response.ok) {
+            const subcategories = await response.json();
+
+            const subCategoryDropdown = document.getElementById("subcategory");
+            subCategoryDropdown.innerHTML = '<option value="">[Select Subcategory]</option>'; // Reset dropdown
+
+            subcategories.forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub;
+                option.text = sub;
+                subCategoryDropdown.appendChild(option);
+            });
+            hide('recipelist');
+        } else {
+            console.error("Failed to fetch subcategories");
+        }
+    };
+
+    // Get Subcategory //
+    document.getElementById("subcategory").onchange = async function handleChange(evt) {
+        const value = evt.target.value;
+        let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
+        const response = await fetch('/Recipes?handler=GetRecipes&subCategory=' + encodeURIComponent(value));
+        if (response.ok) {
+            const recipes = await response.json();
+            document.getElementById("listbox").innerHTML = "";
+            const recipeSelector = document.getElementById("listbox");
+            // subCategoryDropdown.innerHTML = '<option value="">[Select Recipe]</option>'; // Reset dropdown
+
+            recipes.forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub;
+                option.text = sub;
+                recipeSelector.appendChild(option);
+            });
+            
+        } else {
+            console.error("Failed to fetch subcategories");
+        }
+        
+        wallpapermod(wallpaperName);
+        // show('showrecipe');
+        show('recipelist');
+    };
+
+    // Get Recipe //
+    document.getElementById("listbox").onchange = async function handleChange(evt) {
+        const value = evt.target.value;
+        //let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
+        const response = await fetch('/Recipes?handler=GetSelectRecipe&selectRecipe=' + encodeURIComponent(value));
+        if (response.ok) {
+            const selectedrecipe = await response.json();
+            //document.getElementById("listbox").innerHTML = "";
+            localStorage.setItem('selectedRecipeStorage', JSON.stringify(selectedrecipe));
+            const recipeSelector = document.getElementById("listbox");
+            // subCategoryDropdown.innerHTML = '<option value="">[Select Recipe]</option>'; // Reset dropdown
+
+            recipes.forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub;
+                option.text = sub;
+                recipeSelector.appendChild(option);
+            });
+
+        } else {
+            console.error("Failed to fetch subcategories");
+        }
+
+        //wallpapermod(wallpaperName);
+        show('showrecipe');
+        //show('recipelist');
+    };
+
+    // Wallpaper swapper //
+    function wallpapermod(wallpaper) {
+        document.getElementById("recipe-bg").style.backgroundImage = "url('../images/graphics/bg/" + wallpaper + "')";
+        document.getElementById("recipe-bg").style.backgroundRepeat = "no-repeat";
+        document.getElementById("recipe-bg").style.backgroundSize = "cover";
+    }
+    // ShowHidden //
+    function show(id) {
+        document.getElementById(id).style.display = "block";
+        document.getElementById(id).style.visibility = "visible";
+    }
+    function hide(id) {
+        document.getElementById(id).style.display = "none";
+        document.getElementById(id).style.visibility = "hidden";
+    }
+    function showhide(id) {
+        if (document.getElementById(id).style.display == 'block') {
+            document.getElementById(id).style.display = "none";
+            document.getElementById(id).style.visibility = "hidden";
+        }
+        else {
+            document.getElementById(id).style.display = "block";
+            document.getElementById(id).style.visibility = "visible";
+        }
+    }
+</script>
+

@@ -397,14 +397,18 @@ namespace FamilyRecipes.Tests
 
 
 
+                // Skapa modellen och använd in-memory databas
+                //var addRecipeModel = new AddRecipeModel(context, null); // Mocka IWebHostEnvironment om det behövs
 
 
 
+                // Act: Utför den asynkrona metoden
+                //var result = await addRecipeModel.OnPostAddRecipe(null);
 
-
-
-
-
+                // Assert: Kontrollera om resultatet är BadRequest
+                //Assert.IsType<BadRequestObjectResult>(result);
+        //    }
+        //}
 
 
 
@@ -420,7 +424,6 @@ namespace FamilyRecipes.Tests
         //        return mockSet;
         //    }
         //}
-
 
 
         //public class AddRecipeTests
@@ -498,12 +501,6 @@ namespace FamilyRecipes.Tests
         //        Assert.Equal("/AddRecipe", redirectResult.RouteName);
         //    }
         //}
-
-
-
-
-
-
 
 
 
@@ -662,10 +659,6 @@ namespace FamilyRecipes.Tests
 
 
 
-
-
-
-
         //        [Fact]
         //        public async Task OnPostAddRecipe_Should_Return_A_Redirection_When_Ingredients_Are_Provided()
         //        {
@@ -743,10 +736,6 @@ namespace FamilyRecipes.Tests
         //        }
 
 
-
-
-
-
         //Commeted out to try a new test
 
         //[Fact]
@@ -787,6 +776,14 @@ namespace FamilyRecipes.Tests
         //        // Assert: Kontrollera om resultatet är BadRequest
         //        Assert.IsType<RedirectToActionResult>(result);
         //    }
+        //}
+
+                // Act: Utför den asynkrona metoden
+                //var result = await addRecipeModel.OnPostAddRecipe(ingredientsJson);
+
+                // Assert: Kontrollera om resultatet är BadRequest
+                //Assert.IsType<RedirectResult>(result);
+         //   }
         //}
 
 
