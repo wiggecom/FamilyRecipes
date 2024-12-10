@@ -18,6 +18,7 @@ namespace FamilyRecipes.Pages
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         private ApplicationDbContext @object;
+        private ApplicationDbContext context;
 
         public AddRecipeModel(Data.ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
@@ -25,10 +26,7 @@ namespace FamilyRecipes.Pages
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        //public AddRecipeModel(ApplicationDbContext @object)
-        //{
-        //    this.@object = @object;
-        //}
+       
 
         public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
         public List<string> DistinctMainCategories { get; set; } = new List<string>();
@@ -85,6 +83,9 @@ namespace FamilyRecipes.Pages
                 return BadRequest("No ingredients provided.");
             }
 
+          
+            
+
             List<Category> allCategories = _context.Categories.ToList();
             List<Ingredient> allIngredients = _context.Ingredients.ToList();
             List<Unit> allUnits = _context.Units.ToList();
@@ -94,6 +95,7 @@ namespace FamilyRecipes.Pages
 
             // Deserialize the ingredient list from JSON
             var ingredients = JsonSerializer.Deserialize<List<RecipeIngredientMapSource>>(ingredientList);
+           
             thisRecipe.Title = AddTitle;
             thisRecipe.UserName = thisUser.Name;
             thisRecipe.CreatedDate = DateTime.Now;
@@ -103,10 +105,12 @@ namespace FamilyRecipes.Pages
             thisRecipe.Description = AddDescription;
             thisRecipe.Image = AddImage;
             thisRecipe.AdultsOnly = AddAdultsOnly;
+
             foreach(string s in AddSteps)
             {
                 thisRecipe.Steps.Add(s);
             }
+
             foreach (RecipeIngredientMapSource i in ingredients)
             {
                 RecipeIngredient r = new RecipeIngredient();
@@ -115,11 +119,14 @@ namespace FamilyRecipes.Pages
                 r.Amount = int.Parse(i.Amount);
                 thisRecipe.RecipeIngredients.Add(r);
             }
+
+
+
             // commenting this out for test OnPostAddRecipe_Should_Return_A_Redirecttion_When_Ingredients_Are_Provided
-            //foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
-            //{ 
-            //    r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
-            //}
+            foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
+            {
+                r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
+            }
 
 
             try
