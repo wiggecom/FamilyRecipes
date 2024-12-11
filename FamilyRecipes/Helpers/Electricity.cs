@@ -17,7 +17,6 @@ namespace FamilyRecipes.Helpers
         {
             List<ElectricityPrice> priceList = new List<ElectricityPrice>();
 
-            string baseurl = "https://www.elprisetjustnu.se";
             string year = DateTime.Now.ToString("yyyy");
             string month = DateTime.Now.ToString("MM");
             string day = DateTime.Now.AddDays(dayAdd).ToString("dd");
