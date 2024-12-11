@@ -35,7 +35,6 @@
 }
 <script>
     localStorage.setItem('counter', 0);
-    //let mapSource = []; // No unexpected data
     localStorage.setItem('myIngredientName', '');
     localStorage.setItem('myUnitName', '');
     localStorage.setItem('myAmount', '');
@@ -204,6 +203,7 @@
 
                                 const subCategoryDropdown = document.getElementById("addRIIngredientName");
                                 subCategoryDropdown.innerHTML = '<option value="">[Select Ingredient]</option>'; // Reset dropdown
+                                document.getElementById("addRIUnitName").innerHTML = '<option value="">[Select Measure]</option>'; // Reset dropdown
 
                                 subcategories.forEach(sub => {
                                     const option = document.createElement("option");
