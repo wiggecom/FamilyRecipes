@@ -19,14 +19,14 @@ namespace FamilyRecipes.Tests
         public void CalculateTotalCalories_ValidInputs_ReturnsExpectedResult(string ingredientName, string unitName, int recipeAmount, int ingredientCalories, int expectedCalories)
         {
             //Arrange 
-            //Behövs inte eftersom CalculateTotalCalories är en isolerad metod och har inte några beroenden :)
-
+           
+            var calculations = new Calculations();
 
             // Act
-            //int result = Calculations.CalculateTotalCalories(ingredientName, unitName, recipeAmount, ingredientCalories);
+            int result = calculations.CalculateTotalCalories(ingredientName, unitName, recipeAmount, ingredientCalories);
 
             // Assert
-            //Assert.Equal(expectedCalories, result);
+            Assert.Equal(expectedCalories, result);
         }
     }
 
@@ -34,7 +34,17 @@ namespace FamilyRecipes.Tests
     {
         public int CalculateTotalCalories(string ingredientName, string unitName, int recipeAmount, int ingredientCalories = 0)
         {
-            throw new NotImplementedException();
+            if (recipeAmount <= 0 || ingredientCalories < 0)
+            {
+                return 0; // Om mängden är noll eller negativa kalorier, returnera 0
+            }
+
+            // Beräkna kalorier baserat på mängd och kalorier per 100g eller annan enhet
+            return (recipeAmount * ingredientCalories) / 100;
+
+
+            //return Math.Max(0, recipeAmount * ingredientCalories / 100);
+            // throw new NotImplementedException();
         }
     }
 }
