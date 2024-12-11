@@ -14,11 +14,18 @@
     string wallpaper = subCategory;
 }
 <script>
-
+    
 </script>
 <div class="scrollinside max80">
+    <style scoped>
+        select option {
+            background: rgba(0, 0, 0, 0.3) !important;
+            color: rgb(246, 255, 124) !important;
+        }
+    </style>
     <div class="text-center max80 recipe-bg scrollinside" id="recipe-bg">
         <br />
+        <!-- ------ SELECTOR MENU ------ -->
         <div class="d-flex flex-row justify-content-center">
             <div class="flex-column">
                 <label asp-for="@mainCategory" class="recipes-drop-title">Category</label><br />
@@ -40,10 +47,11 @@
 
         </div>
         <br />
-        <div class="d-flex flex-row justify-content-left hider" id="recipelist">
-            <div class="card1 card-color2 glass recipes-spacer">
+        <!-- ------ SELECTOR LIST ------ -->
+        <div class="d-flex flex-row justify-content-center hider" id="recipelist">
+            <div>
                 <label asp-for="@selectRecipe" class="recipes-drop-title">Subcategory</label><br />
-                <select class="recipes-field" name="Recipes" size="12" id="listbox">
+                <select class="recipes-field glass" name="Recipes" size="6" id="listbox">
                     <option class="recipes-field" value="">[Select Recipe]</option>
                 </select>
                 <br />
@@ -53,79 +61,51 @@
         </div>
         <br />
         <!-- Show Recipe START -->
-        <div class="d-flex flex-row justify-content-left hider" id="showrecipe">
-            <div class="card1 card-color2 glass" id="recipe">
+        <div class="d-flex flex-row justify-content-left hider" id="recipecontainer">
+            <div class="card1 card-color2 glass" id="showrecipe" onclick="showhide('recipelist')">
                 <br />
-                <div class="f-h2 t-goldy">@currentRecipe.Title</div>
-                <div class="f-h2 t-pinky">by @currentRecipe.UserName</div>
-                <div class="t-gld">@currentRecipe.CreatedDate.ToShortDateString()</div>
-                <div class="t-gld">@currentRecipe.Category.MainCategory - @currentRecipe.Category.SubCategory</div>
-                @if (currentRecipe.AdultsOnly == true)
-                {
-                    <div class="t-pinky">This recipe is for adults only</div>
-                }
-                else
-                {
-                    <div class="t-pinky">This recipe is for everyone</div>
-                }
+                <div class="f-h2 t-goldy flex-row" id="thisRecipeTitle"></div>
+                <div class="f-h2 t-pinky flex-row" id="thisRecipeUser"></div>
+                <div class="t-gld flex-row" id="thisRecipeDate"></div>
+                <div class="t-gld flex-row" id="thisRecipeCategory"></div>
+                <div class="t-gld flex-row" id="thisRecipeDescription"></div>
+                <div class="t-pinky flex-row" id="thisRecipeAdult"></div>
                 <br />
                 <div class="text-start blockcenter">
 
-                    <div>
+                    <div class="flex-row">
                         <span class="t-pinky ch8 textright">Time:</span>
-                        <span class="t-gld ch24 textleft">@currentRecipe.TimeRequired minutes</span>
+                        <span class="t-gld ch24 textleft" id="thisRecipeAdult"></span><span> minutes</span>
                         <span> - </span>
                         <span class="t-pinky ch10 textright">Servings:</span>
-                        <span class="t-gld ch24 textleft">@currentRecipe.Servings</span>
+                        <span class="t-gld ch24 textleft" id="thisRecipeServings"></span>
                     </div>
 
                     <!-- Logic: Check recipeIngredients for totalcalories in backend -->
                     <!-- If any has calories data can be displayed -->
                     <!-- If recipe also has number of servings, show kcal/serving -->
-                    @if (hasCaloriesAny)
-                    {
-                        int xCal = 0;
-                        int sCal = 0;
-                        foreach (Models.RecipeIngredient rx in currentRecipe.RecipeIngredients)
-                        {
-                            xCal += rx.TotalCalories;
-                        }
-                        <div>
-                            <span class="t-pinky ch10 textright">Calories:</span>
-                            <span class="t-gld ch24 textleft"> @xCal kcal</span>
-                            @if (currentRecipe.Servings > 0)
-                            {
-                                sCal = xCal / currentRecipe.Servings;
-                                <span> - </span>
-                                <span class="t-pinky ch10 textright">Serving:</span>
-                                <span class="t-gld ch24 textleft"> @sCal kcal</span>
-                            }
+                    <div class="flex-row">
+                    <span class="t-pinky ch10 textright">Calories:</span>
+                    <span class="t-gld ch24 textleft" id="thisRecipeTotalCalories"></span><span> kcal</span>
+                    <span> - </span>
+                    <span class="t-pinky ch10 textright">Servings:</span>
+                    <span class="t-gld ch24 textleft" id="thisRecipeCalPerServing"></span><span> kcal</span>
+                    </div>
+                    <br />
+                    <div class="t-gld ch16 textleft flex-row">Ingredients</div>
+                    <div class="t-pinky ch8 textright" id="thisRecipeIngredients">
+@*                      <!-- Generate this section in js and insert for each ingredient -->
+                        <div class="flex-row">
+                        <span id="thisRecipeAmountAndUnit"></span>
+                        <span>&nbsp;</span>
+                        <span class="t-gld" id="thisRecipeIngredientName"></span>
+                        <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
                         </div>
-                    }
+ *@                    </div>
                     <br />
-                    <div class="t-gld ch16 textleft">Ingredients</div>
-                    @foreach (Models.RecipeIngredient ri in currentRecipe.RecipeIngredients)
-                    {
-                        <div>
-                            <span class="t-pinky ch8 textright">@ri.Amount@ri.Unit.Short</span><span class="t-gld">@ri.Ingredient.Name</span>
-                            @if (ri.TotalCalories != 0)
-                            {
-                                <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
-                            }
-                            else
-                            {
-                                <span class="t-pinky ch16 textleft"> (Calories N/A)</span>
-                            }
-                        </div>
-                    }
+                    <!-- Generate this section in js and insert for each step -->
+                        @* <div class="t-pinky">@i. <span class="t-gld">@currentRecipe.Steps[i - 1]</span></div> *@
                     <br />
-                    @for (int i = 1; i <= currentRecipe.Steps.Count; i++)
-                    {
-                        <div class="t-pinky">@i. <span class="t-gld">@currentRecipe.Steps[i - 1]</span></div>
-                    }
-                    <br />
-                    <div class="t-gld">@currentRecipe.Description</div>
-
                 </div>
 
             </div>
@@ -140,7 +120,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    // Get Category //
+    // Get Category - Make Subcategories List //
     document.getElementById("maincategory").onchange = async function handleChange(evt) {
         const value = evt.target.value;
 
@@ -158,12 +138,13 @@
                 subCategoryDropdown.appendChild(option);
             });
             hide('recipelist');
+            hide('recipecontainer');
         } else {
             console.error("Failed to fetch subcategories");
         }
     };
 
-    // Get Subcategory //
+    // Get Subcategory - Make Recipe List //
     document.getElementById("subcategory").onchange = async function handleChange(evt) {
         const value = evt.target.value;
         let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
@@ -172,7 +153,7 @@
             const recipes = await response.json();
             document.getElementById("listbox").innerHTML = "";
             const recipeSelector = document.getElementById("listbox");
-            // subCategoryDropdown.innerHTML = '<option value="">[Select Recipe]</option>'; // Reset dropdown
+            // subcategory.innerHTML = '<option value="">[Select Recipe]</option>'; // Reset dropdown
 
             recipes.forEach(sub => {
                 const option = document.createElement("option");
@@ -186,62 +167,201 @@
         }
         
         wallpapermod(wallpaperName);
-        // show('showrecipe');
+        hide('recipecontainer');
         show('recipelist');
     };
 
-    // Get Recipe //
+    // Get Recipe - Send to html generator //
     document.getElementById("listbox").onchange = async function handleChange(evt) {
         const value = evt.target.value;
         //let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
         const response = await fetch('/Recipes?handler=GetSelectRecipe&selectRecipe=' + encodeURIComponent(value));
         if (response.ok) {
-            const selectedrecipe = await response.json();
-            //document.getElementById("listbox").innerHTML = "";
-            localStorage.setItem('selectedRecipeStorage', JSON.stringify(selectedrecipe));
-            const recipeSelector = document.getElementById("listbox");
-            // subCategoryDropdown.innerHTML = '<option value="">[Select Recipe]</option>'; // Reset dropdown
+            
+            const fetchedrecipe = await response.json();
+            // Debug: adding to localStorage
+            localStorage.setItem('selectedRecipeStorage', JSON.stringify(fetchedrecipe));
+            htmlgenerator(fetchedrecipe);
+            /*
+            CreatedDate.ToShortDateString()
+            Category.MainCategory - Category.SubCategory
 
-            recipes.forEach(sub => {
-                const option = document.createElement("option");
-                option.value = sub;
-                option.text = sub;
-                recipeSelector.appendChild(option);
-            });
+
+    Id	1
+    Title	"Easy Chicken Curry"
+    UserName	"Mr Lee"
+    CreatedDate	"2024-12-07T17:10:48.6410262"
+    Category
+    Id	67
+    MainCategory	"World"
+    SubCategory	"Chinese"
+    TimeRequired	45
+    Servings	4
+    Description	"This is the best recipe ever!"
+    Steps
+        0	"Chop Chicken"
+        1	"Fry mixed vegetables and chicken"
+        2	"Add cream and spices"
+    RecipeIngredients
+    0
+        Id	1
+        RecipeId	1
+        Ingredient
+            Id	516
+            Name	"Chicken Breast"
+            Type	"Poultry"
+            Calories	165
+            Volume100Grams	0
+            TypicalUnitWeight	0
+            IsMeasuredByVolume	false
+            IngredientId	516
+        Unit
+            Id	19
+            Name	"Gram"
+            Short	"g"
+            IsMetrical	true
+            IsVolume	false
+            InMl	0
+            InGr	1
+            UnitId	19
+        Amount	500
+        TotalCalories	825
+    1
+        Id	2
+        RecipeId	1
+            Ingredient
+                Id	686
+                Name	"Mixed Vegetables"
+                Type	"Vegetable"
+                Calories	60
+                Volume100Grams	0
+                TypicalUnitWeight	0
+                IsMeasuredByVolume	false
+                IngredientId	686
+            Unit
+                Id	19
+                Name	"Gram"
+                Short	"g"
+                IsMetrical	true
+                IsVolume	false
+                InMl	0
+                InGr	1
+                UnitId	19
+        Amount	750
+        TotalCalories	450
+    2
+        Id	3
+        RecipeId	1
+            Ingredient
+                Id	243
+                Name	"Cream (Heavy)"
+                Type	"Dairy"
+                Calories	410
+                Volume100Grams	0
+                TypicalUnitWeight	0
+                IsMeasuredByVolume	true
+                IngredientId	243
+            Unit
+                Id	4
+                Name	"Millilitre"
+                Short	"ml"
+                IsMetrical	true
+                IsVolume	true
+                InMl	1
+                InGr	0
+                UnitId	4
+        Amount	500
+        TotalCalories	2050
+    UserRatings	[]
+    AdultsOnly	false
+    Image	""
+            
+            
+            
+            
+            */
 
         } else {
             console.error("Failed to fetch subcategories");
         }
 
         //wallpapermod(wallpaperName);
-        show('showrecipe');
+        show('recipecontainer');
         //show('recipelist');
     };
+
+    function htmlgenerator(fetchedrecipe) {
+        document.getElementById("thisRecipeTitle").textContent = `${fetchedrecipe.Title}`;
+        document.getElementById("thisRecipeUser").textContent = `by ${fetchedrecipe.UserName}`;
+        var dateString = new Date(Date.parse(fetchedrecipe.CreatedDate)).toDateString();
+        document.getElementById("thisRecipeDate").textContent = `${dateString}`;
+        document.getElementById("thisRecipeCategory").textContent = `${fetchedrecipe.Category.MainCategory} - ${fetchedrecipe.Category.SubCategory}`;
+    }
+
+
+    // Add HTML
+    function addingredienthtml(localIngredientName, localUnitName, localAmount) {
+
+        let counter = Number(localStorage.getItem('counter'));
+        counter = counter + 1;
+        localStorage.setItem('counter', counter);
+
+        // Get the container where rows will be added
+        const container = document.getElementById("currentingredients");
+
+        // Create a new div or span to hold the row (for better structure)
+        const newRow = document.createElement("div"); // Or use a <span> if you prefer
+        newRow.id = 'ingredient' + counter;
+
+        // Create the first span for Amount and UnitName
+        const amountUnitSpan = document.createElement("span");
+        amountUnitSpan.className = "t-pinky textright"; // Add your classes
+        amountUnitSpan.textContent = `${localAmount} ${localUnitName}`; // Set the text
+
+        // Create the second span for IngredientName
+        const ingredientSpan = document.createElement("span");
+        ingredientSpan.className = "t-gld"; // Add your classes
+        ingredientSpan.textContent = ' - ' + localIngredientName; // Set the text
+
+        // Append both spans to the new row
+        newRow.appendChild(amountUnitSpan);
+        newRow.appendChild(ingredientSpan);
+
+        // Append the new row to the container
+        container.appendChild(newRow);
+    }
 
     // Wallpaper swapper //
     function wallpapermod(wallpaper) {
         document.getElementById("recipe-bg").style.backgroundImage = "url('../images/graphics/bg/" + wallpaper + "')";
-        document.getElementById("recipe-bg").style.backgroundRepeat = "no-repeat";
-        document.getElementById("recipe-bg").style.backgroundSize = "cover";
     }
     // ShowHidden //
     function show(id) {
         document.getElementById(id).style.display = "block";
         document.getElementById(id).style.visibility = "visible";
+        document.getElementById(id).style.position = "relative";
     }
     function hide(id) {
         document.getElementById(id).style.display = "none";
         document.getElementById(id).style.visibility = "hidden";
+        document.getElementById(id).style.position = "absolute";
     }
     function showhide(id) {
         if (document.getElementById(id).style.display == 'block') {
-            document.getElementById(id).style.display = "none";
-            document.getElementById(id).style.visibility = "hidden";
+            hide(id);
         }
         else {
-            document.getElementById(id).style.display = "block";
-            document.getElementById(id).style.visibility = "visible";
+            show(id);
         }
     }
+
+    function resetmenus() {
+        document.getElementById("maincategory").value = "";
+        document.getElementById("subcategory").value = "";
+        //document.getElementById("subcategory").innerHTML = '<option value="">[Select Subcategory]</option>';
+        //document.getElementById("maincategory").innerHTML = '<option value="">[Select Category]</option>';
+    }
+
+    window.onload = resetmenus();
 </script>
 
