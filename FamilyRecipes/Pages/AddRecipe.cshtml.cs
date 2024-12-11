@@ -47,7 +47,6 @@ namespace FamilyRecipes.Pages
         [BindProperty] public List<string> AddSteps { get; set; } = new List<string>();
         [BindProperty] public bool AddAdultsOnly { get; set; }
         [BindProperty] public string AddImage { get; set; }
-        public Recipe thisRecipe { get; set; }
 
         // RecipeIngredients
         public List<RecipeIngredient> AddRecipeIngredients { get; set; } = new List<RecipeIngredient>();
@@ -69,15 +68,7 @@ namespace FamilyRecipes.Pages
         public void OnGet()
         {
             DistinctMainCategories = _context.Categories.Select(c => c.MainCategory).Distinct().ToList();
-            //AllIngredients = _context.Ingredients.ToList();
             IngredientTypes = Ingredient.GetIngredientTypes();
-
-            //if (true)
-            //{
-            //    Thread.Sleep(1000);
-            //    return;
-            //}
-
         }
 
         public async Task<IActionResult> OnPostAddRecipe(string ingredientList)
@@ -122,19 +113,8 @@ namespace FamilyRecipes.Pages
                 r.Unit = allUnits.Where(u => u.Name == i.UnitName).FirstOrDefault();
                 r.Amount = int.Parse(i.Amount);
                 thisRecipe.RecipeIngredients.Add(r);
+                r.TotalCalories = _calculations.CalculateTotalCalories(r.Ingredient.Name, r.Unit.Name, r.Amount);
             }
-
-            // commenting this out for test OnPostAddRecipe_Should_Return_A_Redirecttion_When_Ingredients_Are_Provided
-            foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
-            {
-                r.TotalCalories = RecipeIngredient.CalculateTotalCalories(r.Amount, r.Ingredient.Calories);
-            }
-
-            //foreach (RecipeIngredient r in thisRecipe.RecipeIngredients)
-            //{ 
-            //    r.TotalCalories = _calculations.CalculateTotalCalories(r.Ingredient.Name, r.Unit.Name, r.Amount);
-            //}
-
 
             try
             {

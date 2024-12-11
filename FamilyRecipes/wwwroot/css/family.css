@@ -467,7 +467,6 @@ hr.hr1 {
 .recipes-drop-title {
     color: rgb(var(--recipedroptext));
     text-shadow: 2px 3px 3px rgba(0,0,0,0.7);
-    /*background-color: rgba(var(--recipemenu), 1.0);*/
     font-size: 1.2em;
     font-weight: 700;
     padding-top: 20px;
@@ -477,8 +476,8 @@ hr.hr1 {
 .recipes-drop-field {
     width: 200px;
     color: rgb(var(--recipedroptext));
-    background-color: rgba(var(--recipemenu), 1.0);
-    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    background-color: rgba(var(--recipemenu), 0.8);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.4);
     padding: 5px;
     font-weight: 700;
     border: none;
@@ -488,23 +487,23 @@ hr.hr1 {
 .recipes-field {
     width: 400px;
     color: rgb(var(--recipedroptext));
-    background-color: rgba(var(--recipemenu), 1.0);
-    text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
+    background-color: rgba(var(--recipemenu), 0.2);
+    text-shadow: 1px 2px 0px rgba(0,0,0,0.4);
     padding: 5px;
     font-weight: 700;
     border: none;
     outline: inset;
 }
-    .recipes-field:hover, .recipes-field:focus, .recipes-field::selection {
-        width: 400px;
-        color: rgb(var(--great));
-        background-color: rgba(var(--recipemenu), 1.0);
-        text-shadow: 1px 2px 0px rgba(0,0,0,0.5);
-        padding: 5px;
-        font-weight: 700;
-        border: none;
-        outline: inset;
+    .recipes-field:hover, .recipes-field:focus, .recipes-field::selection
+    {
+        background-color: rgba(var(--recipemenu), 0.5);
+        box-shadow: 5px 10px 10px rgba(0,0,0,1);
     }
+
+.recipes-drop-field:hover, .recipes-drop-field:focus, .recipes-drop-field::selection {
+    box-shadow: 5px 10px 10px rgba(0,0,0,1);
+}
+
 .recipes-spacer{
     margin-bottom: 20px;
     padding-bottom:20px;
@@ -533,4 +532,9 @@ hr.hr1 {
 .hider {
     display: none;
     visibility: hidden;
+    position: relative;
+}
+
+.blacktextedge{
+    -webkit-text-stroke: rgba(0,0,0,0.3) 2px;
 }

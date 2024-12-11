@@ -71,8 +71,8 @@ namespace FamilyRecipes.Pages
 
         public JsonResult OnGetGetSelectRecipe(string selectRecipe)
         {
-            // Use _context to fetch subcategories for the selected main category
-            var recipe = _context.Recipes
+            Recipe recipe = new Recipe();
+                recipe = _context.Recipes
                 .Include(c => c.Category)
                 .Include(c => c.RecipeIngredients)
                 .ThenInclude(c => c.Ingredient)
