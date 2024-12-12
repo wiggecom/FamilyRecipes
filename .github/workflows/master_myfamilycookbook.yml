@@ -28,14 +28,17 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Debug DOTNET_ROOT
+        run: echo "DOTNET_ROOT is set to ${{env.DOTNET_ROOT}}"
+
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/FamilyRecipes
+        run: dotnet publish -c Release -o ./FamilyRecipes
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/FamilyRecipes
+          path: ./FamilyRecipes
 
   deploy:
     runs-on: windows-latest
