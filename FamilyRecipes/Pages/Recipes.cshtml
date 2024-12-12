@@ -1,20 +1,26 @@
 ﻿@page
 @model FamilyRecipes.Pages.RecipesModel
 @using FamilyRecipes.Models
+@using FamilyRecipes
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Recipes";
     List<Unit> units = Model.Units;
     Recipe currentRecipe = Model.MyRecipe;
-    bool hasCaloriesAny = Model.HasCaloriesAny;
     List<Category> categories = Model.Categories;
+    FamilyUser currentUser = new FamilyUser();
+    currentUser = Model.CurrentUser;
+    bool printable = true;
     Recipe selectedRecipe = new Recipe();
     string mainCategory = "";
     string subCategory = "";
     string selectRecipe = "";
-    string wallpaper = subCategory;
 }
 <script>
-    
+    localStorage.setItem('print', false); // Set this value to 'true' from button for printable text
+    @printable = false;
+    localStorage.setItem('printable', @printable);
+    localStorage.setItem('storedUser', @Html.Raw(Json.Serialize(currentUser)));
+
 </script>
 <div class="scrollinside max80">
     <style scoped>
@@ -22,9 +28,27 @@
             background: rgba(0, 0, 0, 0.3) !important;
             color: rgb(246, 255, 124) !important;
         }
+
+        button {
+            background-color: rgba(57, 35, 90, 0.4);
+            border: solid 2px rgba(255,255,127,0.5);
+            color: rgba(255,255,127,0.7);
+            text-align: center;
+            padding: 5px 20px 10px 20px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+            button:active, button:hover {
+                background-color: rgba(57, 35, 90, 0.7);
+                box-shadow: 3px 5px 5px rgba(0,0,0,0.8);
+                color: rgba(255,255,127,1);
+                cursor: pointer;
+                border: solid 2px rgba(255,255,127,0.7);
+            }
     </style>
-    <div class="text-center max80 recipe-bg scrollinside" id="recipe-bg">
-        <br />
+    <div class="text-center max80 recipe-bg scrollinside z100" id="recipe-bg">
         <!-- ------ SELECTOR MENU ------ -->
         <div class="d-flex flex-row justify-content-center">
             <div class="flex-column">
@@ -61,55 +85,49 @@
         </div>
         <br />
         <!-- Show Recipe START -->
-        <div class="d-flex flex-row justify-content-left hider" id="recipecontainer">
-            <div class="card1 card-color2 glass" id="showrecipe" onclick="showhide('recipelist')">
+        <div class="d-flex flex-row justify-content-center hider" id="recipecontainer">
+            <div class="recipecard recipecard-bg glass" id="showrecipe" onclick="showhide('recipelist')">
                 <br />
-                <div class="f-h2 t-goldy flex-row" id="thisRecipeTitle"></div>
-                <div class="f-h2 t-pinky flex-row" id="thisRecipeUser"></div>
-                <div class="t-gld flex-row" id="thisRecipeDate"></div>
-                <div class="t-gld flex-row" id="thisRecipeCategory"></div>
-                <div class="t-gld flex-row" id="thisRecipeDescription"></div>
-                <div class="t-pinky flex-row" id="thisRecipeAdult"></div>
+                <div class="f-h2 t-goldy flex-row text-center" id="thisRecipeTitle"></div>
+                <div class="f-h2 t-pinky flex-row text-center" id="thisRecipeUser"></div>
+                <div class="t-gld flex-row text-center" id="thisRecipeDate"></div>
+                <div class="t-gld flex-row text-center" id="thisRecipeCategory"></div>
+                <br />
+                <div class="t-gld flex-row text-center" id="thisRecipeDescription"></div>
+                <div class="t-pinky flex-row text-center" id="thisRecipeAdult"></div>
                 <br />
                 <div class="text-start blockcenter">
 
-                    <div class="flex-row">
-                        <span class="t-pinky ch8 textright">Time:</span>
-                        <span class="t-gld ch24 textleft" id="thisRecipeAdult"></span><span> minutes</span>
-                        <span> - </span>
-                        <span class="t-pinky ch10 textright">Servings:</span>
-                        <span class="t-gld ch24 textleft" id="thisRecipeServings"></span>
+                    <div class="flex-row text-center">
+                        <span class="t-pinky ch10">Time: </span>
+                        <span class="t-gld ch24" id="thisRecipeTime"></span>
+                        <span>min</span>
+                        <br />
+                        <span class="t-pinky ch10">Servings: </span>
+                        <span class="t-gld ch24" id="thisRecipeServings"></span>
                     </div>
 
-                    <!-- Logic: Check recipeIngredients for totalcalories in backend -->
-                    <!-- If any has calories data can be displayed -->
-                    <!-- If recipe also has number of servings, show kcal/serving -->
-                    <div class="flex-row">
-                    <span class="t-pinky ch10 textright">Calories:</span>
+                    <!-- Calories - Calories per serving -->
+                    <div class="flex-row text-center">
+                    <span class="t-pinky ch10 textright">Calories: </span>
                     <span class="t-gld ch24 textleft" id="thisRecipeTotalCalories"></span><span> kcal</span>
-                    <span> - </span>
-                    <span class="t-pinky ch10 textright">Servings:</span>
+                    <br />
+                    <span class="t-pinky ch10 textright">Each Serving: </span>
                     <span class="t-gld ch24 textleft" id="thisRecipeCalPerServing"></span><span> kcal</span>
                     </div>
                     <br />
-                    <div class="t-gld ch16 textleft flex-row">Ingredients</div>
-                    <div class="t-pinky ch8 textright" id="thisRecipeIngredients">
-@*                      <!-- Generate this section in js and insert for each ingredient -->
-                        <div class="flex-row">
-                        <span id="thisRecipeAmountAndUnit"></span>
-                        <span>&nbsp;</span>
-                        <span class="t-gld" id="thisRecipeIngredientName"></span>
-                        <span class="t-pinky ch16 textleft"> (@ri.TotalCalories kcal)</span>
-                        </div>
- *@                    </div>
+                    <div class="t-gld text-center flex-row">Ingredients</div>
+                    <div class="t-pinky flex-row" id="thisRecipeIngredients">
+                    </div>
                     <br />
-                    <!-- Generate this section in js and insert for each step -->
-                        @* <div class="t-pinky">@i. <span class="t-gld">@currentRecipe.Steps[i - 1]</span></div> *@
+                    <div class="t-pinky text-center" id="thisRecipeSteps"></div>
                     <br />
                 </div>
-
             </div>
+            <br />
         </div>
+
+        <div class="d-flex flex-row justify-content-center hider" id="printbutton"> <button id="print" onclick="printContent('showrecipe');">Print</button></div>
         <!-- Show Recipe END -->
         <div>
             <br />
@@ -119,6 +137,7 @@
         </div>
     </div>
 </div>
+<div class="tagfield hider" id="tagfield"></div>
 <script type="text/javascript">
     // Get Category - Make Subcategories List //
     document.getElementById("maincategory").onchange = async function handleChange(evt) {
@@ -139,6 +158,8 @@
             });
             hide('recipelist');
             hide('recipecontainer');
+            hide('printbutton');
+            hide('tagfield');
         } else {
             console.error("Failed to fetch subcategories");
         }
@@ -147,7 +168,7 @@
     // Get Subcategory - Make Recipe List //
     document.getElementById("subcategory").onchange = async function handleChange(evt) {
         const value = evt.target.value;
-        let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
+        let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.webp';
         const response = await fetch('/Recipes?handler=GetRecipes&subCategory=' + encodeURIComponent(value));
         if (response.ok) {
             const recipes = await response.json();
@@ -165,23 +186,35 @@
         } else {
             console.error("Failed to fetch subcategories");
         }
-        
+        // set subcategory as tag on wallpaper
+        const tagger = document.getElementById('tagfield');
+        tagger.textContent = value;
+        tagshow('tagfield');
         wallpapermod(wallpaperName);
         hide('recipecontainer');
+        hide('printbutton');
         show('recipelist');
+        
     };
 
     // Get Recipe - Send to html generator //
     document.getElementById("listbox").onchange = async function handleChange(evt) {
         const value = evt.target.value;
+        const print = JSON.parse(localStorage.getItem('print'));
+        if (print) {
+            localStorage.setItem('print_result', true)
+        }
+        if (!print) {
+            localStorage.setItem('print_result', false)
+        }
+        let storedUser = localStorage.getItem('storedUser');
         //let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
         const response = await fetch('/Recipes?handler=GetSelectRecipe&selectRecipe=' + encodeURIComponent(value));
         if (response.ok) {
-            
             const fetchedrecipe = await response.json();
             // Debug: adding to localStorage
-            localStorage.setItem('selectedRecipeStorage', JSON.stringify(fetchedrecipe));
-            htmlgenerator(fetchedrecipe);
+            // localStorage.setItem('selectedRecipeStorage', JSON.stringify(fetchedrecipe));
+            htmlgenerator(fetchedrecipe, print);
             /*
             CreatedDate.ToShortDateString()
             Category.MainCategory - Category.SubCategory
@@ -287,55 +320,124 @@
 
         //wallpapermod(wallpaperName);
         show('recipecontainer');
+        show('printbutton')
         //show('recipelist');
     };
 
-    function htmlgenerator(fetchedrecipe) {
+    function htmlgenerator(fetchedrecipe, print) {
         document.getElementById("thisRecipeTitle").textContent = `${fetchedrecipe.Title}`;
         document.getElementById("thisRecipeUser").textContent = `by ${fetchedrecipe.UserName}`;
         var dateString = new Date(Date.parse(fetchedrecipe.CreatedDate)).toDateString();
         document.getElementById("thisRecipeDate").textContent = `${dateString}`;
-        document.getElementById("thisRecipeCategory").textContent = `${fetchedrecipe.Category.MainCategory} - ${fetchedrecipe.Category.SubCategory}`;
+        document.getElementById("thisRecipeCategory").textContent = `${fetchedrecipe.Category.SubCategory}`;
+        document.getElementById("thisRecipeDescription").textContent = `${fetchedrecipe.Description}`;
+        if (fetchedrecipe.AdultsOnly) { 
+            document.getElementById("thisRecipeAdult").textContent = `This recipe is for adults only!`;
+        }
+        document.getElementById("thisRecipeTime").textContent = `${fetchedrecipe.TimeRequired}`;
+        document.getElementById("thisRecipeServings").textContent = `${fetchedrecipe.Servings}`;
+        var totalRecipeCalories = totalcaloriescounter(fetchedrecipe);
+        document.getElementById("thisRecipeTotalCalories").textContent = `${totalRecipeCalories}`;
+        var calPerServing = totalRecipeCalories / parseInt(fetchedrecipe.Servings);
+        document.getElementById("thisRecipeCalPerServing").textContent = `${calPerServing}`;
+        generateingredients(fetchedrecipe, print);
+        generatesteps(fetchedrecipe, print);
     }
 
+    function totalcaloriescounter(fetchedrecipe) {
+        var countedCalories = 0;
+        for (const part of fetchedrecipe.RecipeIngredients){
+            countedCalories += parseInt(part.TotalCalories);
+        }
+        return countedCalories;
+    }
 
-    // Add HTML
-    function addingredienthtml(localIngredientName, localUnitName, localAmount) {
+    function generateingredients(fetchedrecipe, print) {
+        const container = document.getElementById("thisRecipeIngredients");
+        container.innerHTML = "";
+        for (const ing of fetchedrecipe.RecipeIngredients) {
+            var child = addingredient(ing.Ingredient.Name, ing.Unit.Short, ing.Amount, print);
+            container.appendChild(child);
+        }
+    }
 
-        let counter = Number(localStorage.getItem('counter'));
-        counter = counter + 1;
-        localStorage.setItem('counter', counter);
+    function generatesteps(fetchedrecipe, print) {
+        const container = document.getElementById("thisRecipeSteps");
+        container.innerHTML = "";
+        let counter = 1;
+        for (const step of fetchedrecipe.Steps) {
+            var childnumber = addstepnumber(counter, print);
+            var childtext = addsteptext(step, print);
+            container.appendChild(childnumber);
+            container.appendChild(childtext);
+            counter++;
+        }
+    }
 
-        // Get the container where rows will be added
-        const container = document.getElementById("currentingredients");
+    function addstepnumber(counter, print) {
 
-        // Create a new div or span to hold the row (for better structure)
         const newRow = document.createElement("div"); // Or use a <span> if you prefer
-        newRow.id = 'ingredient' + counter;
+        newRow.className = "flex-row text-center";
+
+        const stepnumber = document.createElement("span");
+        if (!print) { stepnumber.className = "t-pinky f-h3 textright"; }
+        else { stepnumber.className = "t-print f-h3 textright"; }
+        stepnumber.textContent = `${counter}.`; // Set the text
+
+        newRow.appendChild(stepnumber);
+
+        return newRow;
+    }
+
+    function addsteptext(step, print) {
+
+        const newRow = document.createElement("div"); // Or use a <span> if you prefer
+        newRow.className = "flex-row text-center stepspacer";
+
+        const steptext = document.createElement("span");
+        if (!print) { steptext.className = "t-gld textright"; }
+        else { steptext.className = "t-print fw700 textright"; }
+        steptext.textContent = `${step}`; // Set the text
+
+        const breakline = document.createElement("br");
+        newRow.appendChild(steptext);
+
+
+        // Return row
+        return newRow;
+    }
+
+    function addingredient(localIngredientName, localUnitName, localAmount, print) {
+
+        const newRow = document.createElement("div"); // Or use a <span> if you prefer
+        newRow.className = "text-center";
 
         // Create the first span for Amount and UnitName
         const amountUnitSpan = document.createElement("span");
-        amountUnitSpan.className = "t-pinky textright"; // Add your classes
+        if (!print) { amountUnitSpan.className = "t-pinky textright"; }
+        else { amountUnitSpan.className = "t-print fw700 textright"; }
         amountUnitSpan.textContent = `${localAmount} ${localUnitName}`; // Set the text
 
         // Create the second span for IngredientName
         const ingredientSpan = document.createElement("span");
-        ingredientSpan.className = "t-gld"; // Add your classes
-        ingredientSpan.textContent = ' - ' + localIngredientName; // Set the text
+        if (!print) { ingredientSpan.className = "t-gld"; }
+        else { ingredientSpan.className = "t-print fw700"; }
+        ingredientSpan.textContent = ` -  ${localIngredientName}`;
 
         // Append both spans to the new row
         newRow.appendChild(amountUnitSpan);
         newRow.appendChild(ingredientSpan);
 
-        // Append the new row to the container
-        container.appendChild(newRow);
+        // Return row
+        return newRow;
     }
 
     // Wallpaper swapper //
     function wallpapermod(wallpaper) {
         document.getElementById("recipe-bg").style.backgroundImage = "url('../images/graphics/bg/" + wallpaper + "')";
     }
-    // ShowHidden //
+
+    // Show Hide //
     function show(id) {
         document.getElementById(id).style.display = "block";
         document.getElementById(id).style.visibility = "visible";
@@ -346,6 +448,7 @@
         document.getElementById(id).style.visibility = "hidden";
         document.getElementById(id).style.position = "absolute";
     }
+
     function showhide(id) {
         if (document.getElementById(id).style.display == 'block') {
             hide(id);
@@ -355,13 +458,26 @@
         }
     }
 
+    function tagshow(id) {
+        document.getElementById(id).style.display = "block";
+        document.getElementById(id).style.visibility = "visible";
+    }
     function resetmenus() {
         document.getElementById("maincategory").value = "";
         document.getElementById("subcategory").value = "";
-        //document.getElementById("subcategory").innerHTML = '<option value="">[Select Subcategory]</option>';
-        //document.getElementById("maincategory").innerHTML = '<option value="">[Select Category]</option>';
+        show('maincategory');
+        show('subcategory');
+        hide('printbutton');
+        hide('tagfield');
     }
 
+    function printContent(el) {
+        var restorepage = $('body').html();
+        var printcontent = $('#' + el).clone();
+        $('body').empty().html(printcontent);
+        window.print();
+        $('body').html(restorepage);
+    }
     window.onload = resetmenus();
 </script>
 
