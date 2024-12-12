@@ -21,10 +21,10 @@
             
         }
 
-        public static int CalculateTotalCalories(int calcAmount, int calcIngredientCalories)
-        {
-            if (calcIngredientCalories > 0) return (calcIngredientCalories / 100) * calcAmount; // Early return
-            return 0;
-        }
+        //public static int CalculateTotalCalories(int calcAmount, int calcIngredientCalories)
+        //{
+        //    if (calcIngredientCalories > 0) return (calcIngredientCalories / 100) * calcAmount; // Early return
+        //    return 0;
+        //}
     }
 }
