@@ -3,14 +3,16 @@
     public class FamilyUser
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; } // can be reset by IsAdmin
-        public bool IsLoggedIn { get; set; }
-        public bool IsAdmin { get; set; } // first user is IsAdmin by default
-        public bool IsAdult { get; set; } // can only be set by IsAdmin
-        public string UserImage { get; set; } // Image
+        public string Name { get; set; } = ""; // should be required property on creation
+        public string Password { get; set; } = ""; // optional, can be reset by IsAdmin
+        public bool IsLoggedIn { get; set; } = false;
+        public bool IsAdmin { get; set; } = false; // first user is IsAdmin by default
+        public bool IsAdult { get; set; } = false; // can only be set by IsAdmin
+        public string UserImage { get; set; } = "";
+        public string UserIcon { get; set; } = "";
         public List<string> FavoriteRecipes { get; set; } = new List<string>();
-        public bool PreferMetrical { get; set; } // Set default for recipes
+        public bool PreferMetrical { get; set; } = true; // Default is metrical
+        public List<string> Dashboard { get; set; } = new List<string>();
 
         //TODO: Add form to add or change users,
         //if FamilyUser.Any() > require password for form
@@ -27,11 +29,9 @@
                 Id = 666,
                 Name = "Mr Crowley", 
                 Password = "password", 
-                IsLoggedIn = true, 
                 IsAdmin = true,
                 IsAdult = true,
-                UserImage = "UserImage", 
-                PreferMetrical = true
+                UserImage = "AdminUserImage.png", 
             };
             return user;
         }
@@ -44,11 +44,26 @@
                 Id = rnd.Next(100, 1000),
                 Name = name,
                 Password = "password",
-                IsLoggedIn = true,
-                IsAdmin = true,
+                IsAdmin = false,
                 IsAdult = true,
-                UserImage = "UserImage",
+                UserImage = "UserImage.png",
                 PreferMetrical = preferMetrical
+            };
+            return user;
+        }
+
+        public static FamilyUser GetFakeChild(string name)
+        {
+            Random rnd = new Random();
+            FamilyUser user = new FamilyUser
+            {
+                Id = rnd.Next(100, 1000),
+                Name = name,
+                Password = "password",
+                IsLoggedIn = false,
+                IsAdmin = false,
+                IsAdult = false,
+                UserImage = "ChildImage.png",
             };
             return user;
         }
