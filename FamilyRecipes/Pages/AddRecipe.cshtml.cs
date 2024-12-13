@@ -30,8 +30,6 @@ namespace FamilyRecipes.Pages
             this.webHostEnvironment = webHostEnvironment;
         }
 
-       
-
         public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
         public List<string> DistinctMainCategories { get; set; } = new List<string>();
         public Category AddCategory { get; set; }
@@ -53,17 +51,6 @@ namespace FamilyRecipes.Pages
         public string AddRI_IngredientName { get; set; }
         public string AddRI_UnitName { get; set; }
         public int AddRI_Amount { get; set; }
-
-        // BaseIngredient (Not used, upcoming feature)
-        //public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        //public string AddI_IngredientName { get; set; }
-        //public string AddI_Description { get; set; }
-        //public string AddI_Type { get; set; }
-        //public int AddI_Calories { get; set; }
-
-        // public string UserName { get; set; } // FamilyUser.Name
-        // public DateTime CreatedDate { get; set; }
-        // public List<UserRating> UserRatings { get; set; } = new List<UserRating>();
 
         public void OnGet()
         {
@@ -184,48 +171,7 @@ namespace FamilyRecipes.Pages
             return new JsonResult(unitsByType);
         }
 
-        #region old update ingredients
-        //public JsonResult UpdateIngredients([FromBody] List<RecipeIngredientMapSource> ingredients)
-        //{
-        //    if (ingredients.Any())
-        //    {
-        //        foreach (var ingredient in ingredients)
-        //        {
-        //            Console.WriteLine($"Ingredient: {ingredient.IngredientName}, Unit: {ingredient.UnitName}, Amount: {ingredient.Amount}");
-        //        }
-        //    }
-        //    return new JsonResult(new { success = true });
-        //}
-        #endregion
-
-        //public JsonResult OnPostUpdateIngredients([FromBody] IngredientsUpdateModel ingredients)
-        //{
-        //    if (ingredients == null || ingredients.Ingredients == null)
-        //    {
-        //        return new JsonResult(new { success = false, message = "Invalid data" });
-        //    }
-
-        //    foreach (var ingredient in ingredients.Ingredients)
-        //    {
-        //        RecipeIngredientsMapSource.Add(ingredient);
-        //    }
-
-        //    // Serialize the updated list and return it
-        //    return new JsonResult(new
-        //    {
-        //        success = true,
-        //        ingredients = RecipeIngredientsMapSource.Select(i => new
-        //        {
-        //            IngredientName = i.IngredientName,
-        //            UnitName = i.UnitName,
-        //            Amount = i.Amount
-        //        }).ToList()
-        //    });
-        //}
-
-        /*
-         AddRecipeIngredientList
-         */
+        // AddRecipeIngredientList
         public JsonResult OnPostAddRecipeIngredientList([FromBody] AddRecipeIngredientListModel model)
         {
             if (model == null)
@@ -256,49 +202,8 @@ namespace FamilyRecipes.Pages
             }
 
             // Return the updated list
-            //return new JsonResult(model.IngredientList);
-            //return new JsonResult(model.Ingredients);
             return new JsonResult(RecipeIngredientsMapSource);
         }
-
-        #region old add recipeingredient
-        //public JsonResult OnPostAddRecipeIngredient([FromBody] RecipeIngredientListModel model)
-        //{
-        //    // Ensure the list is not null
-        //    if (model.IngredientList == null)
-        //        model.IngredientList = new List<RecipeIngredient>();
-
-        //    List<RecipeIngredient> newList = new List<RecipeIngredient>();
-
-        //    // Process the received data
-        //    foreach (var item in model.IngredientList)
-        //    {
-        //        //RecipeIngredient item = new RecipeIngredient();
-        //        //item = ri;
-        //        // Guard-clause, Reversed If-Statement, Early Return
-        //        if (string.IsNullOrWhiteSpace(item.IngredientName)) return new JsonResult(model.IngredientList);
-        //        if (string.IsNullOrWhiteSpace(item.UnitName)) return new JsonResult(model.IngredientList);
-        //        if (item.Amount == null || item.Amount == 0) return new JsonResult(model.IngredientList);
-
-        //        var newIngredient = _context.Ingredients
-        //            .FirstOrDefault(i => i.Name == item.IngredientName);
-
-        //        var newUnit = _context.Units
-        //        .FirstOrDefault(u => u.Name == item.UnitName);
-
-        //        // If ingredient is complete, add to list
-        //        item.Ingredient = newIngredient;
-        //        item.IngredientId = item.Ingredient.Id;
-        //        item.Unit = newUnit;
-        //        item.UnitId = item.Unit.Id;
-        //        newList.Add(item);
-        //    }
-
-        //    // Return the updated list
-        //    //return new JsonResult(model.IngredientList);
-        //    return new JsonResult(newList);
-        //}
-        #endregion
 
         // Helper class for deserialization
         public class RecipeIngredientListModel

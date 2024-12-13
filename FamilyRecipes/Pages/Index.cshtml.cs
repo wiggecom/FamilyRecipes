@@ -13,12 +13,6 @@ namespace FamilyRecipes.Pages
 {
     public class IndexModel : PageModel
     {
-        //private readonly ILogger<IndexModel> _logger;
-
-        //public IndexModel(ILogger<IndexModel> logger)
-        //{
-        //    _logger = logger;
-        //}
         private readonly Data.ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly ICalculations _calculations;
@@ -31,16 +25,8 @@ namespace FamilyRecipes.Pages
             _calculations = calculations;
             _httpClient = httpClient;
             this.webHostEnvironment = webHostEnvironment;
-            _httpClient.Timeout = TimeSpan.FromSeconds(120);
+            _httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
-
-        [BindProperty] public List<Unit> Units { get; set; } = Models.Unit.GetUnits();
-        [BindProperty] public List<Category> Categories { get; set; } = new List<Category>();
-        [BindProperty] public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        [BindProperty] public Recipe MyRecipe { get; set; } = new Recipe();
-        public string success = "Boo!";
-
-        public dynamic ApiData { get; private set; } // GetPrice()
 
         [BindProperty] public List<ElectricityPrice> priceList { get; set; } = new List<ElectricityPrice>();
         [BindProperty] public List<ElectricityPrice> priceListTomorrow { get; set; } = new List<ElectricityPrice>();

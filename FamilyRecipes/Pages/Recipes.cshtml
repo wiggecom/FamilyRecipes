@@ -9,18 +9,13 @@
     List<Category> categories = Model.Categories;
     FamilyUser currentUser = new FamilyUser();
     currentUser = Model.CurrentUser;
-    bool printable = true;
     Recipe selectedRecipe = new Recipe();
     string mainCategory = "";
     string subCategory = "";
     string selectRecipe = "";
 }
 <script>
-    localStorage.setItem('print', false); // Set this value to 'true' from button for printable text
-    @printable = false;
-    localStorage.setItem('printable', @printable);
     localStorage.setItem('storedUser', @Html.Raw(Json.Serialize(currentUser)));
-
 </script>
 <div class="scrollinside max80">
     <style scoped>
@@ -200,131 +195,20 @@
     // Get Recipe - Send to html generator //
     document.getElementById("listbox").onchange = async function handleChange(evt) {
         const value = evt.target.value;
-        const print = JSON.parse(localStorage.getItem('print'));
-        if (print) {
-            localStorage.setItem('print_result', true)
-        }
-        if (!print) {
-            localStorage.setItem('print_result', false)
-        }
         let storedUser = localStorage.getItem('storedUser');
         //let wallpaperName = value.replace(/\s+/g, '').toLowerCase() + '.png';
         const response = await fetch('/Recipes?handler=GetSelectRecipe&selectRecipe=' + encodeURIComponent(value));
         if (response.ok) {
             const fetchedrecipe = await response.json();
-            // Debug: adding to localStorage
-            // localStorage.setItem('selectedRecipeStorage', JSON.stringify(fetchedrecipe));
             htmlgenerator(fetchedrecipe, print);
-            /*
-            CreatedDate.ToShortDateString()
-            Category.MainCategory - Category.SubCategory
-
-
-    Id	1
-    Title	"Easy Chicken Curry"
-    UserName	"Mr Lee"
-    CreatedDate	"2024-12-07T17:10:48.6410262"
-    Category
-    Id	67
-    MainCategory	"World"
-    SubCategory	"Chinese"
-    TimeRequired	45
-    Servings	4
-    Description	"This is the best recipe ever!"
-    Steps
-        0	"Chop Chicken"
-        1	"Fry mixed vegetables and chicken"
-        2	"Add cream and spices"
-    RecipeIngredients
-    0
-        Id	1
-        RecipeId	1
-        Ingredient
-            Id	516
-            Name	"Chicken Breast"
-            Type	"Poultry"
-            Calories	165
-            Volume100Grams	0
-            TypicalUnitWeight	0
-            IsMeasuredByVolume	false
-            IngredientId	516
-        Unit
-            Id	19
-            Name	"Gram"
-            Short	"g"
-            IsMetrical	true
-            IsVolume	false
-            InMl	0
-            InGr	1
-            UnitId	19
-        Amount	500
-        TotalCalories	825
-    1
-        Id	2
-        RecipeId	1
-            Ingredient
-                Id	686
-                Name	"Mixed Vegetables"
-                Type	"Vegetable"
-                Calories	60
-                Volume100Grams	0
-                TypicalUnitWeight	0
-                IsMeasuredByVolume	false
-                IngredientId	686
-            Unit
-                Id	19
-                Name	"Gram"
-                Short	"g"
-                IsMetrical	true
-                IsVolume	false
-                InMl	0
-                InGr	1
-                UnitId	19
-        Amount	750
-        TotalCalories	450
-    2
-        Id	3
-        RecipeId	1
-            Ingredient
-                Id	243
-                Name	"Cream (Heavy)"
-                Type	"Dairy"
-                Calories	410
-                Volume100Grams	0
-                TypicalUnitWeight	0
-                IsMeasuredByVolume	true
-                IngredientId	243
-            Unit
-                Id	4
-                Name	"Millilitre"
-                Short	"ml"
-                IsMetrical	true
-                IsVolume	true
-                InMl	1
-                InGr	0
-                UnitId	4
-        Amount	500
-        TotalCalories	2050
-    UserRatings	[]
-    AdultsOnly	false
-    Image	""
-            
-            
-            
-            
-            */
-
         } else {
             console.error("Failed to fetch subcategories");
         }
-
-        //wallpapermod(wallpaperName);
         show('recipecontainer');
         show('printbutton')
-        //show('recipelist');
     };
 
-    function htmlgenerator(fetchedrecipe, print) {
+    function htmlgenerator(fetchedrecipe) {
         document.getElementById("thisRecipeTitle").textContent = `${fetchedrecipe.Title}`;
         document.getElementById("thisRecipeUser").textContent = `by ${fetchedrecipe.UserName}`;
         var dateString = new Date(Date.parse(fetchedrecipe.CreatedDate)).toDateString();
@@ -340,8 +224,8 @@
         document.getElementById("thisRecipeTotalCalories").textContent = `${totalRecipeCalories}`;
         var calPerServing = totalRecipeCalories / parseInt(fetchedrecipe.Servings);
         document.getElementById("thisRecipeCalPerServing").textContent = `${calPerServing}`;
-        generateingredients(fetchedrecipe, print);
-        generatesteps(fetchedrecipe, print);
+        generateingredients(fetchedrecipe);
+        generatesteps(fetchedrecipe);
     }
 
     function totalcaloriescounter(fetchedrecipe) {
@@ -352,36 +236,35 @@
         return countedCalories;
     }
 
-    function generateingredients(fetchedrecipe, print) {
+    function generateingredients(fetchedrecipe) {
         const container = document.getElementById("thisRecipeIngredients");
         container.innerHTML = "";
         for (const ing of fetchedrecipe.RecipeIngredients) {
-            var child = addingredient(ing.Ingredient.Name, ing.Unit.Short, ing.Amount, print);
+            var child = addingredient(ing.Ingredient.Name, ing.Unit.Short, ing.Amount);
             container.appendChild(child);
         }
     }
 
-    function generatesteps(fetchedrecipe, print) {
+    function generatesteps(fetchedrecipe) {
         const container = document.getElementById("thisRecipeSteps");
         container.innerHTML = "";
         let counter = 1;
         for (const step of fetchedrecipe.Steps) {
-            var childnumber = addstepnumber(counter, print);
-            var childtext = addsteptext(step, print);
+            var childnumber = addstepnumber(counter);
+            var childtext = addsteptext(step);
             container.appendChild(childnumber);
             container.appendChild(childtext);
             counter++;
         }
     }
 
-    function addstepnumber(counter, print) {
+    function addstepnumber(counter) {
 
         const newRow = document.createElement("div"); // Or use a <span> if you prefer
         newRow.className = "flex-row text-center";
 
         const stepnumber = document.createElement("span");
-        if (!print) { stepnumber.className = "t-pinky f-h3 textright"; }
-        else { stepnumber.className = "t-print f-h3 textright"; }
+        stepnumber.className = "t-pinky f-h3 textright";
         stepnumber.textContent = `${counter}.`; // Set the text
 
         newRow.appendChild(stepnumber);
@@ -389,39 +272,35 @@
         return newRow;
     }
 
-    function addsteptext(step, print) {
+    function addsteptext(step) {
 
         const newRow = document.createElement("div"); // Or use a <span> if you prefer
         newRow.className = "flex-row text-center stepspacer";
 
         const steptext = document.createElement("span");
-        if (!print) { steptext.className = "t-gld textright"; }
-        else { steptext.className = "t-print fw700 textright"; }
+        steptext.className = "t-gld textright"; 
         steptext.textContent = `${step}`; // Set the text
 
         const breakline = document.createElement("br");
         newRow.appendChild(steptext);
 
-
         // Return row
         return newRow;
     }
 
-    function addingredient(localIngredientName, localUnitName, localAmount, print) {
+    function addingredient(localIngredientName, localUnitName, localAmount) {
 
         const newRow = document.createElement("div"); // Or use a <span> if you prefer
         newRow.className = "text-center";
 
         // Create the first span for Amount and UnitName
         const amountUnitSpan = document.createElement("span");
-        if (!print) { amountUnitSpan.className = "t-pinky textright"; }
-        else { amountUnitSpan.className = "t-print fw700 textright"; }
+        amountUnitSpan.className = "t-pinky textright";
         amountUnitSpan.textContent = `${localAmount} ${localUnitName}`; // Set the text
 
         // Create the second span for IngredientName
         const ingredientSpan = document.createElement("span");
-        if (!print) { ingredientSpan.className = "t-gld"; }
-        else { ingredientSpan.className = "t-print fw700"; }
+        ingredientSpan.className = "t-gld";
         ingredientSpan.textContent = ` -  ${localIngredientName}`;
 
         // Append both spans to the new row

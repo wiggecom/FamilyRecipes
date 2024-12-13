@@ -14,10 +14,6 @@
         public bool PreferMetrical { get; set; } = true; // Default is metrical
         public List<string> Dashboard { get; set; } = new List<string>();
 
-        //TODO: Add form to add or change users,
-        //if FamilyUser.Any() > require password for form
-        //else show form
-
         public FamilyUser()
         {
             

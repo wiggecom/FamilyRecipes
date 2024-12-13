@@ -20,13 +20,10 @@ public class Program
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<ApplicationDbContext>();
-        // OfflineTest
-        //builder.Services.AddRazorPages();
+
+        builder.Services.AddRazorPages();
+        
         builder.Services.AddHttpClient();
-        builder.Services.AddRazorPages(options =>
-        {
-            options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-        });
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
              {
