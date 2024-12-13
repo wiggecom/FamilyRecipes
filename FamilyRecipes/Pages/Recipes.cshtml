@@ -86,7 +86,7 @@
         <br />
         <!-- Show Recipe START -->
         <div class="d-flex flex-row justify-content-center hider" id="recipecontainer">
-            <div class="recipecard recipecard-bg glass" id="showrecipe" onclick="showhide('recipelist')">
+            <div class="recipecard recipecard-bg glass" id="showrecipe" tabindex="0" onKeyUp="showhide('recipelist')" onclick="showhide('recipelist')">
                 <br />
                 <div class="f-h2 t-goldy flex-row text-center" id="thisRecipeTitle"></div>
                 <div class="f-h2 t-pinky flex-row text-center" id="thisRecipeUser"></div>
