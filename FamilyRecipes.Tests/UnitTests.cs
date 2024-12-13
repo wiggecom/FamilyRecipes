@@ -10,6 +10,8 @@ namespace FamilyRecipes.Tests
 {
     public class UnitTests
     {
+
+        //Testet för att beräkna kalorier, ingredientName och unitName kan egentligen exkluderas-tillför inget värde
         [Theory]
         [InlineData("", "", 200, 150, 300)] // Exempeldata: 200g av en ingrediens med 150 kcal/100g ger 300 kcal
         [InlineData("", "", 100, 50, 50)]   // 100g av en ingrediens med 50 kcal/100g ger 50 kcal
