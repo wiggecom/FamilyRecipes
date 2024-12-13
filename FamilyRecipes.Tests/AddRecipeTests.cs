@@ -11,93 +11,60 @@ using static FamilyRecipes.Pages.AddRecipeModel;
 namespace FamilyRecipes.Tests
 {
 
-  
     public class AddRecipeTests
     {
 
         [Fact]
         public async Task OnPostAddRecipe_Should_Return_BadRequest_When_No_Ingredients_Provided()
         {
-            // Arrange: Skapa en in-memory databas
+            
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
             using (var context = new ApplicationDbContext(options))
             {
-                // Lägg till exempeldata för kategorier
+                
                 context.Categories.AddRange(
                     new Category { Id = 1, MainCategory = "Main Category 1", SubCategory = "SubCategory 1" },
                     new Category { Id = 2, MainCategory = "Main Category 2", SubCategory = "SubCategory 2" }
                 );
                 context.SaveChanges();
 
-                // Mocka ICalculations
+               
                 var calculationsMock = new Mock<ICalculations>();
 
-                // Skapa modellen och använd in-memory databas och mocken
+                
                 var addRecipeModel = new AddRecipeModel(context, null, calculationsMock.Object);
 
-                // Act: Utför den asynkrona metoden
+                
                 var result = await addRecipeModel.OnPostAddRecipe(null);
 
-                // Assert: Kontrollera om resultatet är BadRequest
+                
                 Assert.IsType<BadRequestObjectResult>(result);
             }
         }
 
 
 
-       
 
-        //[Fact]
-        //public async Task OnPostAddRecipe_Should_Return_BadRequest_When_No_Ingredients_Provided()
-        //{
-        //    // Arrange: Skapa en in-memory databas
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase(databaseName: "TestDatabase")
-        //        .Options;
-
-        //    using (var context = new ApplicationDbContext(options))
-        //    {
-        //        // Lägg till exempeldata för kategorier
-        //        context.Categories.AddRange(
-        //            new Category { Id = 1, MainCategory = "Main Category 1", SubCategory = "SubCategory 1" },
-        //            new Category { Id = 2, MainCategory = "Main Category 2", SubCategory = "SubCategory 2" }
-        //        );
-        //        context.SaveChanges();
-
-        //        var ingredientsJson = "[\"Ingredient 1\", \"Ingredient 2\"]";
-
-
-        //        // Skapa modellen och använd in-memory databas
-        //        var addRecipeModel = new AddRecipeModel(context, null); // Mocka IWebHostEnvironment om det behövs
-
-
-
-        //        // Act: Utför den asynkrona metoden
-        //        var result = await addRecipeModel.OnPostAddRecipe(null);
-
-        //        // Assert: Kontrollera om resultatet är BadRequest
-        //        Assert.IsType<BadRequestObjectResult>(result);
-        //    }
-        //}
 
 
         //-------------------------------------------------------------------------
 
 
+
         [Fact]
-        public async Task OnPostAddRecipe_Should_Return_A_Redirection_When_Ingredients_Are_Provided()
+        public async Task OnPostAddRecipe_Should_Return_Redirection_And_Save_Recipe_When_Ingredients_Are_Provided()
         {
-            // Arrange: Skapa en in-memory databas
+            // Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase_Ingredients_Provided")
                 .Options;
 
             using (var context = new ApplicationDbContext(options))
             {
-                // Lägg till exempeldata för kategorier, ingredienser och enheter
+                // Lägg till testdata i databasen
                 context.Categories.AddRange(
                     new Category { Id = 1, MainCategory = "Main Category 1", SubCategory = "SubCategory 1" },
                     new Category { Id = 2, MainCategory = "Main Category 2", SubCategory = "SubCategory 2" }
@@ -121,11 +88,7 @@ namespace FamilyRecipes.Tests
                     .Setup(c => c.CalculateTotalCalories(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                     .Returns(100); // Returnera ett testvärde för kalorier
 
-                // Ingredienslista i JSON-format
-                var ingredientsJson =
-                    "[{ \"IngredientName\": \"Ingredient 1\", \"UnitName\": \"grams\", \"Amount\": \"2\"}]";
-
-                // Skapa modellen och sätt obligatoriska egenskaper
+                // Skapa AddRecipeModel med mock och in-memory-databasen
                 var addRecipeModel = new AddRecipeModel(context, null, mockCalculations.Object)
                 {
                     AddTitle = "Test Recipe",
@@ -138,13 +101,16 @@ namespace FamilyRecipes.Tests
                     AddSteps = new List<string> { "Step 1", "Step 2" }
                 };
 
-                // Act: Kör den asynkrona metoden
+                var ingredientsJson =
+                    "[{ \"IngredientName\": \"Ingredient 1\", \"UnitName\": \"grams\", \"Amount\": \"2\"}]";
+
+                // Act: metoden som ska testas
                 var result = await addRecipeModel.OnPostAddRecipe(ingredientsJson);
 
-                // Assert: Kontrollera att resultatet är RedirectToActionResult
+                // Assert: Kontrollera resultat och data
                 Assert.IsType<RedirectToActionResult>(result);
 
-                // Kontrollera att receptet har sparats i databasen
+                // Kontrollera att receptet sparades korrekt
                 var createdRecipe = context.Recipes.Include(r => r.RecipeIngredients).FirstOrDefault();
                 Assert.NotNull(createdRecipe);
                 Assert.Equal("Test Recipe", createdRecipe.Title);
@@ -159,24 +125,22 @@ namespace FamilyRecipes.Tests
                 Assert.Equal("grams", ingredient.Unit.Name);
                 Assert.Equal(2, ingredient.Amount);
             }
+
+            // Cleanup: Databasen återställs automatiskt när using-blocket avslutas
         }
-
-
-
-
 
 
         //[Fact]
         //public async Task OnPostAddRecipe_Should_Return_A_Redirection_When_Ingredients_Are_Provided()
         //{
-        //    // Arrange: Skapa en in-memory databas
+
         //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
         //        .UseInMemoryDatabase(databaseName: "TestDatabase_Ingredients_Provided")
         //        .Options;
 
         //    using (var context = new ApplicationDbContext(options))
         //    {
-        //        // Lägg till exempeldata för kategorier, ingredienser och enheter
+
         //        context.Categories.AddRange(
         //            new Category { Id = 1, MainCategory = "Main Category 1", SubCategory = "SubCategory 1" },
         //            new Category { Id = 2, MainCategory = "Main Category 2", SubCategory = "SubCategory 2" }
@@ -194,12 +158,18 @@ namespace FamilyRecipes.Tests
 
         //        context.SaveChanges();
 
-        //        // Ingredienslista i JSON-format
+        //        // Mocka ICalculations
+        //        var mockCalculations = new Mock<ICalculations>();
+        //        mockCalculations
+        //            .Setup(c => c.CalculateTotalCalories(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+        //            .Returns(100); // Returnera ett testvärde för kalorier
+
+
         //        var ingredientsJson =
         //            "[{ \"IngredientName\": \"Ingredient 1\", \"UnitName\": \"grams\", \"Amount\": \"2\"}]";
 
-        //        // Skapa modellen och sätt obligatoriska egenskaper
-        //        var addRecipeModel = new AddRecipeModel(context, null)
+
+        //        var addRecipeModel = new AddRecipeModel(context, null, mockCalculations.Object)
         //        {
         //            AddTitle = "Test Recipe",
         //            AddSubCategory = "SubCategory 1",
@@ -235,7 +205,10 @@ namespace FamilyRecipes.Tests
         //}
 
 
-        //-------------------------------------------------------------------------
+
+
+
+
 
 
 
@@ -250,7 +223,7 @@ namespace FamilyRecipes.Tests
 
             using (var context = new ApplicationDbContext(options))
             {
-                // Lägg till exempeldata för kategorier
+               
                 context.Categories.AddRange(
                     new Category { Id = 1, MainCategory = "Main", SubCategory = "Sub1" },
                     new Category { Id = 2, MainCategory = "Main", SubCategory = "Sub2" },
@@ -261,8 +234,9 @@ namespace FamilyRecipes.Tests
                 // Mocka ICalculations (används inte direkt här, men behövs för konstruktorn)
                 var mockCalculations = new Mock<ICalculations>();
 
-                // Skapa modellen
+                
                 var addRecipeModel = new AddRecipeModel(context, null, mockCalculations.Object);
+                
 
                 // Act
                 var result = addRecipeModel.OnGetGetSubcategories("Main") as JsonResult;
@@ -281,45 +255,6 @@ namespace FamilyRecipes.Tests
 
 
 
-        //[Fact]
-        //public void OnGetGetSubcategories_Should_Return_Correct_Subcategories_For_Valid_MainCategory()
-        //{
-        //    // Arrange
-        //    //var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //    //    .UseInMemoryDatabase(databaseName: "TestDatabase")
-        //    //    .Options;
-
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //   .UseInMemoryDatabase(Guid.NewGuid().ToString()) // Isolerad databas för detta test
-        //   .Options;
-
-        //    using (var context = new ApplicationDbContext(options))
-        //    {
-        //        context.Categories.AddRange(
-        //            new Category { Id = 1, MainCategory = "Main", SubCategory = "Sub1" },
-        //            new Category { Id = 2, MainCategory = "Main", SubCategory = "Sub2" },
-        //            new Category { Id = 3, MainCategory = "Other", SubCategory = "Sub3" }
-        //        );
-        //        context.SaveChanges();
-
-        //        var addRecipeModel = new AddRecipeModel(context, null);
-
-        //        // Act
-        //        var result = addRecipeModel.OnGetGetSubcategories("Main") as JsonResult;
-
-        //        // Assert
-        //        Assert.NotNull(result);
-        //        var subcategories = result.Value as List<string>;
-        //        Assert.NotNull(subcategories);
-        //        Assert.Contains("Sub1", subcategories);
-        //        Assert.Contains("Sub2", subcategories);
-        //        Assert.DoesNotContain("Sub3", subcategories);
-        //    }
-        //}
-
-
-
-        //-------------------------------------------------------------------------
 
 
         [Fact]
@@ -332,7 +267,7 @@ namespace FamilyRecipes.Tests
 
             using (var context = new ApplicationDbContext(options))
             {
-                // Mocka ICalculations
+                
                 var mockCalculations = new Mock<ICalculations>();
 
                 // Skapa instansen av AddRecipeModel
@@ -363,41 +298,7 @@ namespace FamilyRecipes.Tests
 
 
 
-        //[Fact]
-        //public void OnPostAddRecipeIngredientList_Should_Add_Valid_Ingredients_To_RecipeIngredientsMapSource()
-        //{
-        //    // Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("TestDatabase_AddRecipeIngredientList")
-        //        .Options;
-
-        //    using (var context = new ApplicationDbContext(options))
-        //    {
-        //        var model = new AddRecipeModel(context, null);
-        //        var validIngredients = new AddRecipeModel.AddRecipeIngredientListModel
-        //        {
-        //            Ingredients = new List<RecipeIngredientMapSource>
-        //            {
-        //                new RecipeIngredientMapSource { IngredientName = "Sugar", UnitName = "grams", Amount = "100" },
-        //                new RecipeIngredientMapSource { IngredientName = "Flour", UnitName = "grams", Amount = "200" }
-        //            }
-        //        };
-
-        //        // Act
-        //        var result = model.OnPostAddRecipeIngredientList(validIngredients) as JsonResult;
-
-        //        // Assert
-        //        Assert.NotNull(result);
-        //        Assert.IsType<JsonResult>(result);
-        //        Assert.Equal(2, model.RecipeIngredientsMapSource.Count); // Kontrollera att två ingredienser lagts till
-        //        Assert.Contains(model.RecipeIngredientsMapSource, i => i.IngredientName == "Sugar");
-        //        Assert.Contains(model.RecipeIngredientsMapSource, i => i.IngredientName == "Flour");
-        //    }
-        //}
-
-
-
-        //-------------------------------------------------------------------------
+        
 
 
         [Fact]
@@ -410,7 +311,7 @@ namespace FamilyRecipes.Tests
 
             using (var context = new ApplicationDbContext(options))
             {
-                // Mocka ICalculations
+                
                 var mockCalculations = new Mock<ICalculations>();
 
                 // Skapa instansen av AddRecipeModel
@@ -431,31 +332,7 @@ namespace FamilyRecipes.Tests
 
 
 
-        //[Fact]
-        //public void OnPostAddRecipeIngredientList_Should_Return_Error_When_Model_Is_Null()
-        //{
-        //    // Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("TestDatabase_AddRecipeIngredientList_NullModel")
-        //        .Options;
-
-        //    using (var context = new ApplicationDbContext(options))
-        //    {
-        //        var model = new AddRecipeModel(context, null);
-
-        //        // Act
-        //        var result = model.OnPostAddRecipeIngredientList(null) as JsonResult;
-
-        //        // Assert
-        //        Assert.NotNull(result);
-        //        Assert.IsType<JsonResult>(result);
-        //        Assert.Equal("Model is null", result.Value);
-        //    }
-        //}
-
-
-
-        //-------------------------------------------------------------------------
+       
 
 
         [Fact]
@@ -494,33 +371,7 @@ namespace FamilyRecipes.Tests
 
 
 
-        //[Fact]
-        //public void OnPostAddRecipeIngredientList_Should_Return_Error_When_IngredientList_Is_Null()
-        //{
-        //    // Arrange
-        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-        //        .UseInMemoryDatabase("TestDatabase_AddRecipeIngredientList_NullIngredients")
-        //        .Options;
-
-        //    using (var context = new ApplicationDbContext(options))
-        //    {
-        //        var model = new AddRecipeModel(context, null);
-        //        var invalidIngredients = new AddRecipeModel.AddRecipeIngredientListModel
-        //        {
-        //            Ingredients = null
-        //        };
-
-        //        // Act
-        //        var result = model.OnPostAddRecipeIngredientList(invalidIngredients) as JsonResult;
-
-        //        // Assert
-        //        Assert.NotNull(result);
-        //        Assert.IsType<JsonResult>(result);
-        //        Assert.Equal("Ingredients list is null", result.Value);
-        //    }
-        //}
-
-        //-----------------------------------------------------------------
+       
 
         [Fact]
         public void OnGetGetUnitsByType_Should_Return_Correct_Units_For_Valid_Ingredient()

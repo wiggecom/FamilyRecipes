@@ -36,10 +36,10 @@ namespace FamilyRecipes.Tests
         {
             if (recipeAmount <= 0 || ingredientCalories < 0)
             {
-                return 0; // Om mängden är noll eller negativa kalorier, returnera 0
+                return 0; 
             }
 
-            // Beräkna kalorier baserat på mängd och kalorier per 100g eller annan enhet
+            
             return (recipeAmount * ingredientCalories) / 100;
 
 
