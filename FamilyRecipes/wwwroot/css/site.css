@@ -77,10 +77,6 @@ a:hover {
     color: rgba(255, 255, 128, 0.9);
 }
 
-p {
-    /*color: rgba(255, 255, 255, 0.8);*/
-}
-
 .navcolors a:link {
     color: rgba(255, 255, 128, 0.7) !important;
 }

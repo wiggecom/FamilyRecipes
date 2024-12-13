@@ -31,12 +31,6 @@ namespace FamilyRecipes.Pages
 
         public void OnGet()
         {
-            // Demo Family //
-            Family.Members.Add(FamilyUser.GetFakeAdmin()); // Admin is adult, admin
-            Family.Members.Add(FamilyUser.GetFakeUser("Lisa", true)); // Lisa is adult, not admin, likes metrical
-            Family.Members.Add(FamilyUser.GetFakeChild("Leifi")); // Leifi is not adult or admin
-            Family.Members[1].IsLoggedIn = true; // Logging in Lisa
-
             if (User?.Identity.IsAuthenticated == true)
             {
                 UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,7 +53,6 @@ namespace FamilyRecipes.Pages
 
         public JsonResult OnGetGetSubcategories(string mainCategory)
         {
-            // Use _context to fetch subcategories for the selected main category
             var subcategories = _context.Categories
                 .Where(c => c.MainCategory == mainCategory)
                 .Select(c => c.SubCategory)
@@ -70,7 +63,6 @@ namespace FamilyRecipes.Pages
 
         public JsonResult OnGetGetRecipes(string subCategory)
         {
-            // Use _context to fetch subcategories for the selected main category
             var recipes = _context.Recipes
                 .Include(c => c.Category)
                 .Where(c => c.Category.SubCategory == subCategory)

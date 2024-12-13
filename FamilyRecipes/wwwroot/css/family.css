@@ -26,6 +26,8 @@
     --recipemenu: 57, 35, 90;
     --recipedroptext: 246, 255, 124;
 }
+
+/* Drop-slot for testing/adjusting color variables */
 .x {
 
 }
@@ -149,7 +151,6 @@
 
 .footer-bg-layer {
     background-color: rgba(255,128,192,0.8);
-    /*background: linear-gradient(-150deg, transparent 0%, rgba(var(--goldycolor),0.2) 50%, transparent 100%);*/
     background: linear-gradient(-150deg, transparent 0%, rgb(0, 181, 103, 0.50) 50%, transparent 100%);
     position: fixed;
     top: calc( 100vh - 60px );
@@ -186,11 +187,6 @@
     background: linear-gradient(85deg, rgba(var(--navfirstcolor),1) 0%, rgba(var(--navsecondcolor),1) 100%);
     z-index: 1;
 }
-    /*
-    .footer-bg {
-    background-color: rgb(var(--bgplaincolor));
-    background: linear-gradient(85deg, rgba(var(--navfirstcolor),1) 0%, rgba(var(--navsecondcolor),1) 100%);
-    }*/
 
 .main-bg {
     background-color: rgb(var(--bgplaincolor)); /* fallback color */
@@ -611,7 +607,6 @@ hr.hr1 {
     font-size: clamp(1.5em, 4em, 6em);
     white-space: nowrap;
     z-index: 15;
-    /*transition-duration: 10s;*/
     animation-duration: 10s;
     animation-iteration-count: infinite;
     animation-name: tag;
@@ -639,6 +634,3 @@ hr.hr1 {
     }
 
 }
-/*.tagfield::before{
-    position: relative;
-}*/
