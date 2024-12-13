@@ -274,6 +274,11 @@
     text-shadow: rgba(0,0,0,0.7) 7px 3px 7px !important;
 }
 
+.t-print {
+    color: black;
+    text-shadow: none !important;
+}
+
 .f-h1{
     font-size: 3em;
     font-weight: 1000; 
@@ -331,6 +336,10 @@ hr.hr1 {
     min-height: 100%;
 }
 
+.fw700 {
+    font-weight: 700;
+}
+
 .fw1000{
     font-weight: 1000;
 }
@@ -359,6 +368,10 @@ hr.hr1 {
 
 .fieldspacer{
     margin-top: 10px;
+}
+
+.stepspacer {
+    padding-bottom: 10px;
 }
 
 .ch8 {
@@ -417,6 +430,30 @@ hr.hr1 {
     rgba(var(--darkpurple),0.3) clamp(75%, calc(100% - 120px), calc(100% - 120px)), 
     rgba(var(--darkpurple),0.5) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
     border: solid 4px rgba(0,0,0,0.4);
+}
+
+.recipecard-bg {
+    background-image: linear-gradient(170deg, 
+    rgba(var(--recipemenu),0.5) clamp(25%, 120px, 120px), 
+    rgba(var(--recipemenu),0.2) clamp(25%, 120px, 120px), 
+    rgba(var(--recipemenu),0.3) clamp(75%, calc(100% - 120px), calc(100% - 120px)), 
+    rgba(var(--recipemenu),0.6) clamp(75%, calc(100% - 120px), calc(100% - 120px)));
+    border: solid 4px rgba(0,0,0,0.4);
+}
+
+.recipecard {
+    width: clamp(350px, 70%, 700px);
+    color: rgb(var(--cardtextcolor1));
+    max-height: fit-content;
+    min-height: 40vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    margin-bottom: 0px;
+    z-index: 20;
+    resize: vertical;
 }
 
 .card1 {
@@ -509,6 +546,18 @@ hr.hr1 {
     padding-bottom:20px;
 }
 
+.z10 {
+    z-index: 10;
+}
+
+.z50 {
+    z-index: 50;
+}
+
+.z100 {
+    z-index: 100;
+}
+
 .z300{
     z-index:300;
 }
@@ -538,3 +587,58 @@ hr.hr1 {
 .blacktextedge{
     -webkit-text-stroke: rgba(0,0,0,0.3) 2px;
 }
+
+.linkfield {
+    background-color: rgba(57, 35, 90, 0.4);
+    border: solid 2px rgba(255,255,127,0.5);
+    max-width: 80vw;
+    color: rgba(255,255,127,0.7);
+    text-align: center;
+    padding: 5px 20px 10px 20px;
+    text-decoration: none;
+}
+
+.tagfield {
+    display: none;
+    visibility: invisible;
+    position: fixed;
+    color: rgba(255,255,255,0.3);
+    left: 50px;
+    bottom: 70px;
+    font-weight: 800;
+    width: fit-content;
+    height: fit-content;
+    font-size: clamp(1.5em, 4em, 6em);
+    white-space: nowrap;
+    z-index: 15;
+    /*transition-duration: 10s;*/
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-name: tag;
+}
+
+@keyframes tag{
+    0%, 100% {
+        color: rgba(255,255,255,0.2);
+        text-shadow: rgba(255, 255, 170, 0.2) 0px 0px 40px;
+        transform: rotate(deg(-5));
+    }
+    25% {
+        color: rgba(255,255,255,0.2);
+        text-shadow: rgba(255,255,255,0.3) 0px 0px 10px;
+    }
+
+    50% {
+        color: rgba(255,255,255,0.2);
+        text-shadow: rgba(255,255,255,0.3) 0px 0px 5px;
+    }
+
+    75% {
+        color: rgba(255,255,255,0.2);
+        text-shadow: rgba(255, 255, 170, 0.2) 0px 0px 10px;
+    }
+
+}
+/*.tagfield::before{
+    position: relative;
+}*/

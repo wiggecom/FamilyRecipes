@@ -86,7 +86,7 @@ namespace FamilyRecipes.Pages
             List<Unit> allUnits = _context.Units.ToList();
             List<Recipe> allRecipes = _context.Recipes.ToList();
             Recipe thisRecipe = new Recipe();
-            FamilyUser thisUser = FamilyUser.GetFakeUser("Feta Greta", true);
+            FamilyUser thisUser = FamilyUser.GetFakeUser("Greger Man", true);
 
             // Deserialize the ingredient list from JSON
             var ingredients = JsonSerializer.Deserialize<List<RecipeIngredientMapSource>>(ingredientList);
