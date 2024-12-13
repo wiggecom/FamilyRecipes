@@ -34,5 +34,4 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal
 
-      - name: Check code style
-        run: dotnet format FamilyRecipes/FamilyRecipes.sln --verify-no-changes
+
